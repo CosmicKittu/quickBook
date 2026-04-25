@@ -2,17 +2,21 @@
 
 A curated, beautifully styled static library for developer references, algorithms, and technical tutorials.
 
+🔗 **Live Site**: [https://cosmickittu.github.io/quickBook/](https://cosmickittu.github.io/quickBook/)
+
 ## ✨ Features
 - **Premium Interface**: Dark mode, glassmorphism, and responsive layouts.
 - **Instant Search**: Filter guides instantly by keyword or auto-generated tags.
 - **Zero-Config Authoring**: Built on GitHub Pages with an automated indexing workflow.
+- **Markdown-to-HTML Generator**: Write guides in plain Markdown — compile to styled HTML with one command.
 
 ## 🚀 How to Add a New Guide
-This repository is designed for "Vibe Coding". You do not need to update any JSON files or the home page manually.
+This repository is designed for "Vibe Coding" content generation. You do not need to update any JSON files or the home page manually.
 
-1. Write your new guide as an HTML file. (Refer to the [`GUIDE_AUTHORING_REFERENCE.md`](./GUIDE_AUTHORING_REFERENCE.md) for layout rules, colors, and structure).
-2. Drop the `.html` file into the `guides/` folder.
-3. Commit and push to `main`.
+1. Write your new guide as a `.md` file. (Refer to the [`GUIDE_AUTHORING_REFERENCE.md`](./GUIDE_AUTHORING_REFERENCE.md) for layout rules, colors, and structure).
+2. Compile it: `python scripts/build_guide.py guides/my-guide.md guides/my-guide.html`
+3. Rebuild the index: `python scripts/build_index.py`
+4. Commit and push to `main`.
 
 That's it! A GitHub Action will automatically:
 - Run `scripts/build_index.py`

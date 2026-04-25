@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA in JavaScript — C++ Developer's Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161e;
+    --bg3: #1a1e28;
+    --bg4: #222736;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8eaf0;
+    --text2: #8b90a8;
+    --text3: #555c78;
+    --accent: #7c6ef7;
+    --accent2: #5b4fe3;
+    --green: #3ecf8e;
+    --amber: #f5a623;
+    --red: #f06565;
+    --blue: #4da6ff;
+    --pink: #e879a0;
+    --teal: #2ed8c3;
+    --cpp: #f5a623;
+    --js: #3ecf8e;
+    --font: 'Syne', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+  .sidebar-header {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .sidebar-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .sidebar-sub {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .sidebar-nav { padding: 12px 0; flex: 1; }
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 12px 20px 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    font-size: 13.5px;
+    color: var(--text2);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .nav-link:hover { color: var(--text); background: var(--bg3); border-left-color: var(--border2); }
+  .nav-link.active { color: var(--accent); background: rgba(124,110,247,0.08); border-left-color: var(--accent); }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; opacity: 0.6; }
+
+  /* ── MAIN ── */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 48px 56px;
+  }
+  #main > * {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #main::-webkit-scrollbar { width: 6px; }
+  #main::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 64px; scroll-margin-top: 24px; }
+  .section-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(124,110,247,0.12);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-family: var(--mono);
+  }
+  h1.section-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  h2.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: var(--text2);
+    margin-bottom: 28px;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, rgba(124,110,247,0.1) 0%, rgba(62,207,142,0.06) 100%);
+    border: 1px solid rgba(124,110,247,0.2);
+    border-radius: 16px;
+    padding: 36px;
+    margin-bottom: 48px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-family: var(--mono);
+  }
+  .hero h1 {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p { font-size: 16px; color: var(--text2); line-height: 1.7; max-width: 560px; margin-bottom: 20px; }
+  .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .hero-tag {
+    font-size: 12px;
+    font-family: var(--mono);
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .tag-cpp { color: var(--cpp); border-color: rgba(245,166,35,0.3); background: rgba(245,166,35,0.08); }
+  .tag-js { color: var(--js); border-color: rgba(62,207,142,0.3); background: rgba(62,207,142,0.08); }
+  .tag-blue { color: var(--blue); border-color: rgba(77,166,255,0.3); background: rgba(77,166,255,0.08); }
+
+  /* ── CODE COMPARE ── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .compare-block { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  .compare-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-header.cpp { background: rgba(245,166,35,0.08); color: var(--cpp); }
+  .compare-header.js { background: rgba(62,207,142,0.08); color: var(--js); }
+  .compare-header .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* ── CODE BLOCKS ── */
+  pre {
+    background: var(--bg3);
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 16px 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .compare pre { margin: 0; border-radius: 0; border: none; }
+  code {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--bg3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--teal);
+  }
+
+  /* syntax colors */
+  .kw { color: var(--accent); font-weight: 500; }
+  .fn { color: var(--blue); }
+  .str { color: var(--green); }
+  .num { color: var(--amber); }
+  .cmt { color: var(--text3); font-style: italic; }
+  .type { color: var(--teal); }
+  .op { color: var(--pink); }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 20px 0;
+    border-left: 3px solid;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; }
+  .callout-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .callout-text { font-size: 13.5px; color: var(--text2); line-height: 1.6; }
+  .callout-text code { font-size: 12px; }
+  .callout.warn { background: rgba(245,166,35,0.07); border-color: var(--amber); }
+  .callout.warn .callout-title { color: var(--amber); }
+  .callout.info { background: rgba(77,166,255,0.07); border-color: var(--blue); }
+  .callout.info .callout-title { color: var(--blue); }
+  .callout.tip { background: rgba(62,207,142,0.07); border-color: var(--green); }
+  .callout.tip .callout-title { color: var(--green); }
+  .callout.danger { background: rgba(240,101,101,0.07); border-color: var(--red); }
+  .callout.danger .callout-title { color: var(--red); }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg3);
+    color: var(--text2);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+  }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  td:first-child { color: var(--text); font-weight: 500; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .cpp-col { color: var(--cpp) !important; }
+  .js-col { color: var(--js) !important; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ── INLINE TAG ── */
+  .tag-inline {
+    display: inline-block;
+    font-size: 11px;
+    font-family: var(--mono);
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    vertical-align: middle;
+  }
+  .tag-o1 { background: rgba(62,207,142,0.15); color: var(--green); }
+  .tag-on { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .tag-onlogn { background: rgba(77,166,255,0.15); color: var(--blue); }
+  .tag-on2 { background: rgba(240,101,101,0.15); color: var(--red); }
+
+  /* ── SCROLL PROGRESS ── */
+  #progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 999; transition: width 0.1s; }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 48px;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text3);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">DSA Guide</div>
+    <div class="sidebar-title">JavaScript for C++ Devs</div>
+    <div class="sidebar-sub">Intermediate → Advanced</div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section-label">Foundations</div>
+    <a class="nav-link active" onclick="navTo('intro')"><span class="nav-dot"></span>Introduction</a>
+    <a class="nav-link" onclick="navTo('syntax')"><span class="nav-dot"></span>Basic Syntax</a>
+    <a class="nav-link" onclick="navTo('classes')"><span class="nav-dot"></span>Classes & OOP</a>
+    <a class="nav-link" onclick="navTo('types')"><span class="nav-dot"></span>Types & Numbers</a>
+    <a class="nav-link" onclick="navTo('io')"><span class="nav-dot"></span>I/O & Setup</a>
+
+    <div class="nav-section-label">Core Data Structures</div>
+    <a class="nav-link" onclick="navTo('arrays')"><span class="nav-dot"></span>Arrays</a>
+    <a class="nav-link" onclick="navTo('strings')"><span class="nav-dot"></span>Strings</a>
+    <a class="nav-link" onclick="navTo('maps')"><span class="nav-dot"></span>Maps & Sets</a>
+    <a class="nav-link" onclick="navTo('stack-queue')"><span class="nav-dot"></span>Stack & Queue</a>
+    <a class="nav-link" onclick="navTo('heap')"><span class="nav-dot"></span>Heap / Priority Queue</a>
+
+    <div class="nav-section-label">Algorithms</div>
+    <a class="nav-link" onclick="navTo('sorting')"><span class="nav-dot"></span>Sorting</a>
+    <a class="nav-link" onclick="navTo('bsearch')"><span class="nav-dot"></span>Binary Search</a>
+    <a class="nav-link" onclick="navTo('patterns')"><span class="nav-dot"></span>Common Patterns</a>
+    <a class="nav-link" onclick="navTo('graph')"><span class="nav-dot"></span>Graphs</a>
+    <a class="nav-link" onclick="navTo('dp')"><span class="nav-dot"></span>DP & Memoization</a>
+    <a class="nav-link" onclick="navTo('bits')"><span class="nav-dot"></span>Bit Manipulation</a>
+
+    <div class="nav-section-label">Reference</div>
+    <a class="nav-link" onclick="navTo('gotchas')"><span class="nav-dot"></span>JS Gotchas</a>
+    <a class="nav-link" onclick="navTo('complexity')"><span class="nav-dot"></span>Complexity Ref</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main id="main">
+
+<!-- HERO -->
+<div class="hero" id="intro">
+  <div class="hero-eyebrow">Complete Reference Booklet</div>
+  <h1>DSA in <span>JavaScript</span></h1>
+  <p>A focused guide for C++ developers transitioning to JavaScript for competitive programming and interviews. Skip the basics — this is about the translation.</p>
+  <div class="hero-tags">
+    <span class="hero-tag tag-cpp">C++ → JS Mapping</span>
+    <span class="hero-tag tag-js">No STL, No Problem</span>
+    <span class="hero-tag tag-blue">Interview Ready</span>
+  </div>
+</div>
+
+<!-- ══════════════════════ SYNTAX ══════════════════════ -->
+<section class="section" id="syntax">
+  <div class="section-badge">01 — Foundations</div>
+  <h2 class="section-title">Basic Syntax — C++ → JS</h2>
+  <p class="section-desc">Everything you'd Google in the first hour. Variables, loops, functions, and the JS-specific patterns you'll use constantly in DSA.</p>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ — Variables</div>
+      <pre><span class="kw">int</span> x = <span class="num">5</span>;
+<span class="kw">const int</span> y = <span class="num">10</span>;
+<span class="kw">int</span> a, b, c;
+<span class="kw">auto</span> z = <span class="num">3.14</span>;</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript — Variables</div>
+      <pre><span class="kw">let</span> x = <span class="num">5</span>;         <span class="cmt">// mutable</span>
+<span class="kw">const</span> y = <span class="num">10</span>;      <span class="cmt">// immutable binding</span>
+<span class="kw">let</span> a, b, c;       <span class="cmt">// undefined by default</span>
+<span class="kw">const</span> z = <span class="num">3.14</span>;   <span class="cmt">// type inferred always</span></pre>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ — Conditionals</div>
+      <pre><span class="kw">if</span> (x > <span class="num">0</span>) {
+  <span class="cmt">// do something</span>
+} <span class="kw">else if</span> (x &lt; <span class="num">0</span>) {
+  <span class="cmt">// do something</span>
+} <span class="kw">else</span> {
+  <span class="cmt">// default</span>
+}
+
+<span class="kw">switch</span> (val) {
+  <span class="kw">case</span> <span class="num">1</span>: <span class="kw">break</span>;
+  <span class="kw">default</span>: <span class="kw">break</span>;
+}</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript — Conditionals</div>
+      <pre><span class="kw">if</span> (x > <span class="num">0</span>) {
+  <span class="cmt">// Identical syntax!</span>
+} <span class="kw">else if</span> (x &lt; <span class="num">0</span>) {
+  <span class="cmt">// ...</span>
+} <span class="kw">else</span> {
+  <span class="cmt">// ...</span>
+}
+
+<span class="kw">switch</span> (val) {
+  <span class="kw">case</span> <span class="num">1</span>: <span class="kw">break</span>;
+  <span class="kw">default</span>: <span class="kw">break</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">✓</span>
+    <div class="callout-body">
+      <div class="callout-title">Falsy Values in JS</div>
+      <div class="callout-text">In JS, <code>0</code>, <code>""</code>, <code>null</code>, <code>undefined</code>, <code>NaN</code>, and <code>false</code> evaluate to false in an <code>if</code> statement. Everything else evaluates to true, including empty arrays <code>[]</code> and empty objects <code>{}</code>!</div>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ — for loops</div>
+      <pre><span class="cmt">// index loop</span>
+<span class="kw">for</span>(<span class="kw">int</span> i=<span class="num">0</span>; i&lt;n; i++) { }
+
+<span class="cmt">// range-based</span>
+<span class="kw">for</span>(<span class="kw">auto</span> x : arr) { }
+
+<span class="cmt">// reverse</span>
+<span class="kw">for</span>(<span class="kw">int</span> i=n-<span class="num">1</span>; i&gt;=<span class="num">0</span>; i--) { }</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript — for loops</div>
+      <pre><span class="cmt">// index loop — same syntax!</span>
+<span class="kw">for</span>(<span class="kw">let</span> i=<span class="num">0</span>; i&lt;n; i++) { }
+
+<span class="cmt">// range-based equivalent (for...of)</span>
+<span class="kw">for</span>(<span class="kw">const</span> x <span class="kw">of</span> arr) { }
+
+<span class="cmt">// reverse — identical</span>
+<span class="kw">for</span>(<span class="kw">let</span> i=n-<span class="num">1</span>; i&gt;=<span class="num">0</span>; i--) { }</pre>
+    </div>
+  </div>
+
+  <pre><span class="cmt">// All loop types you will use in DSA</span>
+
+<span class="cmt">// 1. Classic index loop</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; arr.length; i++) {
+  console.<span class="fn">log</span>(arr[i]);
+}
+
+<span class="cmt">// 2. for...of — iterate VALUES (like C++ range-based for)</span>
+<span class="kw">for</span> (<span class="kw">const</span> val <span class="kw">of</span> arr) {
+  console.<span class="fn">log</span>(val);
+}
+
+<span class="cmt">// 3. for...of with index (entries gives [i, val] pairs)</span>
+<span class="kw">for</span> (<span class="kw">const</span> [i, val] <span class="kw">of</span> arr.<span class="fn">entries</span>()) {
+  console.<span class="fn">log</span>(i, val);
+}
+
+<span class="cmt">// 4. for...of on Map — key-value destructuring</span>
+<span class="kw">for</span> (<span class="kw">const</span> [key, val] <span class="kw">of</span> myMap) {
+  console.<span class="fn">log</span>(key, val);
+}
+
+<span class="cmt">// 5. for...of on string — iterates characters</span>
+<span class="kw">for</span> (<span class="kw">const</span> ch <span class="kw">of</span> str) {
+  console.<span class="fn">log</span>(ch);
+}
+
+<span class="cmt">// 6. while and do...while — identical to C++</span>
+<span class="kw">while</span> (condition) { }
+<span class="kw">do</span> { } <span class="kw">while</span> (condition);
+
+<span class="cmt">// for...in iterates KEYS of an object — avoid on arrays</span>
+<span class="kw">for</span> (<span class="kw">const</span> key <span class="kw">in</span> obj) { console.<span class="fn">log</span>(obj[key]); }</pre>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ — Functions</div>
+      <pre><span class="kw">int</span> <span class="fn">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+  <span class="kw">return</span> a + b;
+}
+<span class="cmt">// Lambda</span>
+<span class="kw">auto</span> fn = [](<span class="kw">int</span> x) { <span class="kw">return</span> x*<span class="num">2</span>; };
+<span class="cmt">// Default param</span>
+<span class="kw">void</span> <span class="fn">dfs</span>(<span class="kw">int</span> node, <span class="kw">int</span> par = -<span class="num">1</span>) {}</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript — Functions</div>
+      <pre><span class="kw">function</span> <span class="fn">add</span>(a, b) {
+  <span class="kw">return</span> a + b;
+}
+<span class="cmt">// Arrow function (lambda equivalent)</span>
+<span class="kw">const</span> fn = x => x * <span class="num">2</span>;
+<span class="cmt">// Default param — same syntax</span>
+<span class="kw">function</span> <span class="fn">dfs</span>(node, par = -<span class="num">1</span>) {}</pre>
+    </div>
+  </div>
+
+  <pre><span class="cmt">// Destructuring — very common in JS DSA</span>
+<span class="kw">const</span> arr = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+<span class="kw">const</span> [a, b, c] = arr;        <span class="cmt">// a=1, b=2, c=3</span>
+<span class="kw">const</span> [x, ...rest] = arr;     <span class="cmt">// x=1, rest=[2,3]</span>
+
+<span class="cmt">// Swap without temp — use this constantly</span>
+[arr[i], arr[j]] = [arr[j], arr[i]];
+
+<span class="cmt">// Template literals — string formatting</span>
+<span class="kw">const</span> key = `${i},${j}`;          <span class="cmt">// memo key for 2D DP</span>
+console.<span class="fn">log</span>(`dist[${v}] = ${dist[v]}`);
+
+<span class="cmt">// Nullish coalescing — great for Map default values</span>
+mp.<span class="fn">set</span>(k, (mp.<span class="fn">get</span>(k) ?? <span class="num">0</span>) + <span class="num">1</span>); <span class="cmt">// ?? returns right if left is null/undefined</span>
+<span class="cmt">// || does the same but also triggers on 0, "", false — avoid for counts</span>
+
+<span class="cmt">// Spread — copy array (important: avoids aliasing)</span>
+<span class="kw">const</span> copy = [...original];
+<span class="kw">const</span> merged = [...a, ...b];</pre>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">
+      <div class="callout-title">Use <code>for...of</code>, not <code>forEach</code>, in DSA</div>
+      <div class="callout-text"><code>arr.forEach(fn)</code> cannot be broken with <code>break</code> or <code>return</code> (return only exits the callback, not the outer function). <code>for...of</code> supports <code>break</code>, <code>continue</code>, and <code>return</code> exactly like C++ range-based for loops.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ CLASSES ══════════════════════ -->
+<section class="section" id="classes">
+  <div class="section-badge">01 — Foundations</div>
+  <h2 class="section-title">Classes & OOP</h2>
+  <p class="section-desc">JavaScript introduced the <code>class</code> keyword in ES6. It's perfectly suited for building custom data structures like Tries, Segment Trees, or Linked Lists, and feels very similar to C++ classes/structs.</p>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ — Classes / Structs</div>
+      <pre><span class="kw">struct</span> <span class="type">Node</span> {
+  <span class="kw">int</span> val;
+  <span class="type">Node</span>* next;
+  <span class="type">Node</span>(<span class="kw">int</span> v) : <span class="fn">val</span>(v), <span class="fn">next</span>(<span class="kw">nullptr</span>) {}
+};
+
+<span class="kw">class</span> <span class="type">TrieNode</span> {
+<span class="kw">public</span>:
+  <span class="type">TrieNode</span>* children[<span class="num">26</span>] = {<span class="kw">nullptr</span>};
+  <span class="kw">bool</span> isWord = <span class="kw">false</span>;
+  
+  <span class="kw">void</span> <span class="fn">markAsWord</span>() {
+    isWord = <span class="kw">true</span>;
+  }
+};</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript — Classes</div>
+      <pre><span class="kw">class</span> <span class="type">Node</span> {
+  <span class="fn">constructor</span>(v) {
+    <span class="kw">this</span>.val = v;
+    <span class="kw">this</span>.next = <span class="kw">null</span>; <span class="cmt">// no pointers, just references</span>
+  }
+}
+
+<span class="kw">class</span> <span class="type">TrieNode</span> {
+  <span class="fn">constructor</span>() {
+    <span class="kw">this</span>.children = <span class="kw">new</span> <span class="type">Array</span>(<span class="num">26</span>).<span class="fn">fill</span>(<span class="kw">null</span>);
+    <span class="kw">this</span>.isWord = <span class="kw">false</span>;
+  }
+  
+  <span class="cmt">// Methods don't need 'function' keyword</span>
+  <span class="fn">markAsWord</span>() {
+    <span class="kw">this</span>.isWord = <span class="kw">true</span>;
+  }
+}</pre>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">
+      <div class="callout-title">The <code>this</code> Keyword is Mandatory</div>
+      <div class="callout-text">In C++, you can access class properties directly (e.g. <code>isWord = true;</code>). In JavaScript, you <strong>must</strong> prefix properties with <code>this.</code> inside methods (e.g. <code>this.isWord = true;</code>), otherwise it looks for a local or global variable.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ TYPES ══════════════════════ -->
+<section class="section" id="types">
+  <div class="section-badge">01 — Foundations</div>
+  <h2 class="section-title">Types & Numbers</h2>
+  <p class="section-desc">JavaScript is dynamically typed. No <code>int</code>, <code>long long</code>, <code>double</code> — everything numeric is a 64-bit float by default, with <code>BigInt</code> for overflow-safe large integers.</p>
+
+  <table>
+    <thead><tr><th>C++ Type</th><th>JS Equivalent</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="cpp-col">int / long long</td><td class="js-col">number</td><td>Safe up to 2⁵³−1 (<code>Number.MAX_SAFE_INTEGER</code>)</td></tr>
+      <tr><td class="cpp-col">__int128 / big values</td><td class="js-col">BigInt</td><td>Use <code>1n</code>, <code>BigInt(x)</code>. Can't mix with number.</td></tr>
+      <tr><td class="cpp-col">double / float</td><td class="js-col">number</td><td>Same — JS number IS a float64</td></tr>
+      <tr><td class="cpp-col">bool</td><td class="js-col">boolean</td><td>Truthy/falsy rules differ — see gotchas</td></tr>
+      <tr><td class="cpp-col">char</td><td class="js-col">string (length 1)</td><td>No char type. Use <code>s.charCodeAt(i)</code></td></tr>
+      <tr><td class="cpp-col">INT_MAX / LLONG_MAX</td><td class="js-col">Infinity / Number.MAX_SAFE_INTEGER</td><td>Use <code>Infinity</code> for DP initialization</td></tr>
+      <tr><td class="cpp-col">INT_MIN</td><td class="js-col">-Infinity</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++</div>
+      <pre><span class="kw">long long</span> n = <span class="num">1e18</span>;
+<span class="kw">int</span> maxVal = <span class="type">INT_MAX</span>;
+<span class="kw">__int128</span> big = <span class="num">1</span>;
+<span class="kw">bool</span> flag = <span class="kw">true</span>;</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript</div>
+      <pre><span class="kw">const</span> n = <span class="num">1e18</span>; <span class="cmt">// fine up to 2^53</span>
+<span class="kw">const</span> maxVal = <span class="type">Infinity</span>;
+<span class="kw">const</span> big = <span class="num">1n</span>; <span class="cmt">// BigInt literal</span>
+<span class="kw">let</span> flag = <span class="kw">true</span>;</pre>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">
+      <div class="callout-title">Integer Division</div>
+      <div class="callout-text">In C++, <code>7 / 2 = 3</code>. In JS, <code>7 / 2 = 3.5</code>. Always use <code>Math.floor(a / b)</code> or <code>~~(a / b)</code> for integer division. Watch out in DP and index calculations.</div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">
+      <div class="callout-title">Declaring Variables</div>
+      <div class="callout-text">Use <code>const</code> for values you don't reassign (objects/arrays can still be mutated), <code>let</code> for everything else. Avoid <code>var</code> entirely — it has function scope, not block scope.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ I/O ══════════════════════ -->
+<section class="section" id="io">
+  <div class="section-badge">02 — Foundations</div>
+  <h2 class="section-title">I/O & Setup for Competitive Programming</h2>
+  <p class="section-desc">JS has no <code>cin/cout</code>. In Node.js, you read from <code>process.stdin</code>. Here's the standard template for online judges (Codeforces, LeetCode, etc.).</p>
+
+  <pre><span class="cmt">// Node.js competitive programming template</span>
+<span class="kw">const</span> lines = <span class="fn">require</span>(<span class="str">'fs'</span>).<span class="fn">readFileSync</span>(<span class="str">'/dev/stdin'</span>, <span class="str">'utf8'</span>).<span class="fn">trim</span>().<span class="fn">split</span>(<span class="str">'\n'</span>);
+<span class="kw">let</span> ptr = <span class="num">0</span>;
+<span class="kw">const</span> <span class="fn">readline</span> = () => lines[ptr++];
+<span class="kw">const</span> <span class="fn">readInts</span> = () => <span class="fn">readline</span>().<span class="fn">split</span>(<span class="str">' '</span>).<span class="fn">map</span>(<span class="type">Number</span>);
+
+<span class="kw">const</span> [n, m] = <span class="fn">readInts</span>();
+<span class="kw">const</span> arr = <span class="fn">readInts</span>();
+
+<span class="cmt">// Output — use console.log or build a buffer</span>
+<span class="kw">const</span> out = [];
+out.<span class="fn">push</span>(answer);
+console.<span class="fn">log</span>(out.<span class="fn">join</span>(<span class="str">'\n'</span>)); <span class="cmt">// single write is faster</span></pre>
+
+  <div class="callout tip">
+    <span class="callout-icon">✓</span>
+    <div class="callout-body">
+      <div class="callout-title">LeetCode / Interview Style</div>
+      <div class="callout-text">On LeetCode, functions are already set up. Just write the function body. No I/O needed — inputs come as parameters.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ ARRAYS ══════════════════════ -->
+<section class="section" id="arrays">
+  <div class="section-badge">03 — Data Structures</div>
+  <h2 class="section-title">Arrays (vs <code>vector</code>)</h2>
+  <p class="section-desc">JS arrays are dynamic by default — like <code>vector</code> but with different APIs. They're also objects, so <code>typeof []</code> is <code>"object"</code>, not array.</p>
+
+  <table>
+    <thead><tr><th>Operation</th><th>C++ (vector)</th><th>JavaScript</th></tr></thead>
+    <tbody>
+      <tr><td>Declare</td><td class="cpp-col"><code>vector&lt;int&gt; v;</code></td><td class="js-col"><code>const v = [];</code></td></tr>
+      <tr><td>Fill with size</td><td class="cpp-col"><code>vector&lt;int&gt;(n, 0)</code></td><td class="js-col"><code>new Array(n).fill(0)</code></td></tr>
+      <tr><td>2D array</td><td class="cpp-col"><code>vector&lt;vector&lt;int&gt;&gt;(r, vector&lt;int&gt;(c,0))</code></td><td class="js-col"><code>Array.from({length:r}, ()=>new Array(c).fill(0))</code></td></tr>
+      <tr><td>Push back</td><td class="cpp-col"><code>v.push_back(x)</code></td><td class="js-col"><code>v.push(x)</code></td></tr>
+      <tr><td>Pop back</td><td class="cpp-col"><code>v.pop_back()</code></td><td class="js-col"><code>v.pop()</code></td></tr>
+      <tr><td>Push front</td><td class="cpp-col"><code>v.insert(v.begin(), x)</code></td><td class="js-col"><code>v.unshift(x)</code> — O(n)!</td></tr>
+      <tr><td>Pop front</td><td class="cpp-col"><code>v.erase(v.begin())</code></td><td class="js-col"><code>v.shift()</code> — O(n)!</td></tr>
+      <tr><td>Size</td><td class="cpp-col"><code>v.size()</code></td><td class="js-col"><code>v.length</code></td></tr>
+      <tr><td>Slice (copy)</td><td class="cpp-col"><code>vector&lt;int&gt;(v.begin()+l, v.begin()+r)</code></td><td class="js-col"><code>v.slice(l, r)</code></td></tr>
+      <tr><td>Reverse</td><td class="cpp-col"><code>reverse(v.begin(), v.end())</code></td><td class="js-col"><code>v.reverse()</code> — in place!</td></tr>
+      <tr><td>Splice (insert/delete)</td><td class="cpp-col"><code>v.erase() / v.insert()</code></td><td class="js-col"><code>v.splice(idx, delCount, ...items)</code></td></tr>
+      <tr><td>Find</td><td class="cpp-col"><code>find(v.begin(), v.end(), x)</code></td><td class="js-col"><code>v.indexOf(x)</code> → -1 if not found</td></tr>
+      <tr><td>Map / Filter</td><td class="cpp-col">Manual loop or <code>transform</code></td><td class="js-col"><code>v.map(f)</code>, <code>v.filter(f)</code>, <code>v.reduce(f, init)</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ — Common patterns</div>
+      <pre><span class="cmt">// 2D grid</span>
+vector&lt;vector&lt;<span class="kw">int</span>&gt;&gt; grid(n, vector&lt;<span class="kw">int</span>&gt;(m, <span class="num">0</span>));
+
+<span class="cmt">// Sum of vector</span>
+<span class="kw">int</span> sum = accumulate(v.<span class="fn">begin</span>(), v.<span class="fn">end</span>(), <span class="num">0</span>);
+
+<span class="cmt">// Max element</span>
+<span class="kw">int</span> mx = *max_element(v.<span class="fn">begin</span>(), v.<span class="fn">end</span>());</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript</div>
+      <pre><span class="cmt">// 2D grid</span>
+<span class="kw">const</span> grid = <span class="type">Array</span>.<span class="fn">from</span>({length: n},
+  () => <span class="kw">new</span> <span class="type">Array</span>(m).<span class="fn">fill</span>(<span class="num">0</span>));
+
+<span class="cmt">// Sum of array</span>
+<span class="kw">const</span> sum = v.<span class="fn">reduce</span>((a, b) => a + b, <span class="num">0</span>);
+
+<span class="cmt">// Max element</span>
+<span class="kw">const</span> mx = <span class="type">Math</span>.<span class="fn">max</span>(...v); <span class="cmt">// spread has stack limit!</span>
+<span class="cmt">// Safe: v.reduce((a,b) => Math.max(a,b))</span></pre>
+    </div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-icon">✗</span>
+    <div class="callout-body">
+      <div class="callout-title">Never use <code>new Array(n)</code> without <code>.fill()</code></div>
+      <div class="callout-text"><code>new Array(5)</code> creates a sparse array with holes — iterating it with <code>.map()</code> or <code>.forEach()</code> skips holes entirely. Always chain <code>.fill(0)</code> or use <code>Array.from({length: n}, () => 0)</code>.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ STRINGS ══════════════════════ -->
+<section class="section" id="strings">
+  <div class="section-badge">04 — Data Structures</div>
+  <h2 class="section-title">Strings</h2>
+  <p class="section-desc">JS strings are <strong>immutable</strong>. You cannot do <code>s[i] = 'a'</code>. For character-level mutation, convert to array first.</p>
+
+  <table>
+    <thead><tr><th>Operation</th><th>C++</th><th>JavaScript</th></tr></thead>
+    <tbody>
+      <tr><td>Char at index</td><td class="cpp-col"><code>s[i]</code></td><td class="js-col"><code>s[i]</code> or <code>s.charAt(i)</code></td></tr>
+      <tr><td>Char code</td><td class="cpp-col"><code>(int)s[i]</code></td><td class="js-col"><code>s.charCodeAt(i)</code></td></tr>
+      <tr><td>From char code</td><td class="cpp-col"><code>(char)65 → 'A'</code></td><td class="js-col"><code>String.fromCharCode(65)</code></td></tr>
+      <tr><td>Substring</td><td class="cpp-col"><code>s.substr(i, len)</code></td><td class="js-col"><code>s.substring(i, j)</code> or <code>s.slice(i, j)</code></td></tr>
+      <tr><td>Find</td><td class="cpp-col"><code>s.find("abc")</code></td><td class="js-col"><code>s.indexOf("abc")</code> → -1 if not found</td></tr>
+      <tr><td>Concatenate</td><td class="cpp-col"><code>s += "abc"</code></td><td class="js-col"><code>s += "abc"</code> (creates new string each time!)</td></tr>
+      <tr><td>Split</td><td class="cpp-col">Manual / stringstream</td><td class="js-col"><code>s.split(' ')</code> → array</td></tr>
+      <tr><td>Lowercase</td><td class="cpp-col"><code>tolower(c)</code></td><td class="js-col"><code>s.toLowerCase()</code></td></tr>
+      <tr><td>Trim</td><td class="cpp-col">Manual</td><td class="js-col"><code>s.trim()</code></td></tr>
+      <tr><td>Repeat</td><td class="cpp-col">Manual</td><td class="js-col"><code>s.repeat(n)</code></td></tr>
+      <tr><td>Includes</td><td class="cpp-col"><code>s.find(t) != string::npos</code></td><td class="js-col"><code>s.includes(t)</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++</div>
+      <pre><span class="cmt">// Mutate string in place</span>
+<span class="type">string</span> s = <span class="str">"hello"</span>;
+s[<span class="num">0</span>] = <span class="str">'H'</span>;
+
+<span class="cmt">// Build string char by char</span>
+<span class="type">string</span> res = <span class="str">""</span>;
+<span class="kw">for</span>(<span class="kw">char</span> c : s) res += c;</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript</div>
+      <pre><span class="cmt">// Convert to array for mutation</span>
+<span class="kw">const</span> arr = s.<span class="fn">split</span>(<span class="str">''</span>);
+arr[<span class="num">0</span>] = <span class="str">'H'</span>;
+<span class="kw">const</span> result = arr.<span class="fn">join</span>(<span class="str">''</span>);
+
+<span class="cmt">// Efficient string building</span>
+<span class="kw">const</span> parts = [];
+<span class="kw">for</span> (<span class="kw">const</span> c <span class="kw">of</span> s) parts.<span class="fn">push</span>(c);
+<span class="kw">const</span> res = parts.<span class="fn">join</span>(<span class="str">''</span>); <span class="cmt">// join once at end</span></pre>
+    </div>
+  </div>
+
+  <pre><span class="cmt">// Frequency map for chars (common pattern)</span>
+<span class="kw">const</span> freq = <span class="kw">new</span> <span class="type">Array</span>(<span class="num">26</span>).<span class="fn">fill</span>(<span class="num">0</span>);
+<span class="kw">for</span> (<span class="kw">const</span> c <span class="kw">of</span> s) {
+  freq[c.<span class="fn">charCodeAt</span>(<span class="num">0</span>) - <span class="str">'a'</span>.<span class="fn">charCodeAt</span>(<span class="num">0</span>)]++;
+}
+<span class="cmt">// Or using Map:</span>
+<span class="kw">const</span> freq2 = <span class="kw">new</span> <span class="type">Map</span>();
+<span class="kw">for</span> (<span class="kw">const</span> c <span class="kw">of</span> s) freq2.<span class="fn">set</span>(c, (freq2.<span class="fn">get</span>(c) ?? <span class="num">0</span>) + <span class="num">1</span>);</pre>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ MAPS & SETS ══════════════════════ -->
+<section class="section" id="maps">
+  <div class="section-badge">05 — Data Structures</div>
+  <h2 class="section-title">Maps & Sets</h2>
+  <p class="section-desc">JS has both <code>Map</code>/<code>Set</code> (hash-based, like <code>unordered_map</code>) and plain objects. There is <strong>no built-in ordered map</strong> like C++ <code>map</code>. Use a sorted array + binary search, or a custom BST, for ordered access.</p>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ unordered_map</div>
+      <pre><span class="type">unordered_map</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; mp;
+mp[key] = val;
+mp[key]++;
+<span class="kw">if</span>(mp.<span class="fn">count</span>(key)) { ... }
+mp.<span class="fn">erase</span>(key);
+<span class="kw">for</span>(<span class="kw">auto</span>&amp; [k, v] : mp) { ... }</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript Map</div>
+      <pre><span class="kw">const</span> mp = <span class="kw">new</span> <span class="type">Map</span>();
+mp.<span class="fn">set</span>(key, val);
+mp.<span class="fn">set</span>(key, (mp.<span class="fn">get</span>(key) ?? <span class="num">0</span>) + <span class="num">1</span>);
+<span class="kw">if</span> (mp.<span class="fn">has</span>(key)) { ... }
+mp.<span class="fn">delete</span>(key);
+<span class="kw">for</span> (<span class="kw">const</span> [k, v] <span class="kw">of</span> mp) { ... }</pre>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ unordered_set</div>
+      <pre><span class="type">unordered_set</span>&lt;<span class="kw">int</span>&gt; st;
+st.<span class="fn">insert</span>(x);
+st.<span class="fn">erase</span>(x);
+<span class="kw">if</span>(st.<span class="fn">count</span>(x)) { ... }
+st.<span class="fn">size</span>();</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript Set</div>
+      <pre><span class="kw">const</span> st = <span class="kw">new</span> <span class="type">Set</span>();
+st.<span class="fn">add</span>(x);
+st.<span class="fn">delete</span>(x);
+<span class="kw">if</span> (st.<span class="fn">has</span>(x)) { ... }
+st.<span class="fn">size</span>; <span class="cmt">// property, not method!</span></pre>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">
+      <div class="callout-title">Object keys vs Map keys</div>
+      <div class="callout-text">Plain objects <code>{}</code> only support string/Symbol keys. <code>Map</code> supports any type as key (objects, arrays, numbers). For DSA always prefer <code>Map</code> over <code>{}</code>. Also, <code>{}</code> has prototype keys that can collide (<code>"constructor"</code>, <code>"hasOwnProperty"</code>). Use <code>Object.create(null)</code> if you must use objects as maps.</div>
+    </div>
+  </div>
+
+  <pre><span class="cmt">// Simulating ordered map with sorted array</span>
+<span class="kw">const</span> keys = [...mp.<span class="fn">keys</span>()].<span class="fn">sort</span>((a, b) => a - b);
+<span class="kw">for</span> (<span class="kw">const</span> k <span class="kw">of</span> keys) {
+  console.<span class="fn">log</span>(k, mp.<span class="fn">get</span>(k));
+}</pre>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ STACK & QUEUE ══════════════════════ -->
+<section class="section" id="stack-queue">
+  <div class="section-badge">06 — Data Structures</div>
+  <h2 class="section-title">Stack & Queue</h2>
+  <p class="section-desc">No separate stack/queue classes. Arrays serve as stacks natively. For a proper O(1) queue, use a class with head pointer, not <code>shift()</code>.</p>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ stack</div>
+      <pre><span class="type">stack</span>&lt;<span class="kw">int</span>&gt; st;
+st.<span class="fn">push</span>(x);
+<span class="kw">int</span> top = st.<span class="fn">top</span>(); st.<span class="fn">pop</span>();
+st.<span class="fn">empty</span>();</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JS Array as Stack</div>
+      <pre><span class="kw">const</span> st = [];
+st.<span class="fn">push</span>(x);
+<span class="kw">const</span> top = st[st.length - <span class="num">1</span>]; st.<span class="fn">pop</span>();
+st.length === <span class="num">0</span>;</pre>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++ queue</div>
+      <pre><span class="type">queue</span>&lt;<span class="kw">int</span>&gt; q;
+q.<span class="fn">push</span>(x);
+<span class="kw">int</span> front = q.<span class="fn">front</span>(); q.<span class="fn">pop</span>();
+q.<span class="fn">empty</span>();</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JS O(1) Queue</div>
+      <pre><span class="kw">class</span> <span class="type">Queue</span> {
+  <span class="fn">constructor</span>() { <span class="kw">this</span>.data = {}; <span class="kw">this</span>.head = <span class="kw">this</span>.tail = <span class="num">0</span>; }
+  <span class="fn">push</span>(x) { <span class="kw">this</span>.data[<span class="kw">this</span>.tail++] = x; }
+  <span class="fn">pop</span>()  { <span class="kw">return</span> <span class="kw">this</span>.data[<span class="kw">this</span>.head++]; }
+  <span class="fn">front</span>(){ <span class="kw">return</span> <span class="kw">this</span>.data[<span class="kw">this</span>.head]; }
+  <span class="fn">size</span>() { <span class="kw">return</span> <span class="kw">this</span>.tail - <span class="kw">this</span>.head; }
+  <span class="fn">isEmpty</span>(){ <span class="kw">return</span> <span class="kw">this</span>.size() === <span class="num">0</span>; }
+}</pre>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">
+      <div class="callout-title"><code>array.shift()</code> is O(n)</div>
+      <div class="callout-text">Using a plain array and calling <code>shift()</code> for dequeue is O(n). In BFS over large graphs, this tanks performance. Use the Queue class above, or index into the array with a pointer instead of shifting.</div>
+    </div>
+  </div>
+
+  <pre><span class="cmt">// BFS with O(1) queue using pointer trick</span>
+<span class="kw">const</span> q = [start];
+<span class="kw">let</span> head = <span class="num">0</span>;
+<span class="kw">while</span> (head < q.length) {
+  <span class="kw">const</span> node = q[head++]; <span class="cmt">// O(1) dequeue</span>
+  <span class="kw">for</span> (<span class="kw">const</span> nb <span class="kw">of</span> adj[node]) {
+    <span class="kw">if</span> (!visited[nb]) { visited[nb] = <span class="kw">true</span>; q.<span class="fn">push</span>(nb); }
+  }
+}</pre>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ HEAP ══════════════════════ -->
+<section class="section" id="heap">
+  <div class="section-badge">07 — Data Structures</div>
+  <h2 class="section-title">Heap / Priority Queue</h2>
+  <p class="section-desc">JavaScript has <strong>no built-in heap</strong>. You must implement one. Here's a production-ready MinHeap with the standard interface — extend for MaxHeap by negating values.</p>
+
+  <pre><span class="kw">class</span> <span class="type">MinHeap</span> {
+  <span class="fn">constructor</span>(compareFn = (a, b) => a - b) {
+    <span class="kw">this</span>.heap = [];
+    <span class="kw">this</span>.cmp = compareFn; <span class="cmt">// negative = a has higher priority</span>
+  }
+  <span class="fn">push</span>(val) {
+    <span class="kw">this</span>.heap.<span class="fn">push</span>(val);
+    <span class="kw">this</span>.<span class="fn">_bubbleUp</span>(<span class="kw">this</span>.heap.length - <span class="num">1</span>);
+  }
+  <span class="fn">pop</span>() {
+    <span class="kw">const</span> top = <span class="kw">this</span>.heap[<span class="num">0</span>];
+    <span class="kw">const</span> last = <span class="kw">this</span>.heap.<span class="fn">pop</span>();
+    <span class="kw">if</span> (<span class="kw">this</span>.heap.length > <span class="num">0</span>) { <span class="kw">this</span>.heap[<span class="num">0</span>] = last; <span class="kw">this</span>.<span class="fn">_siftDown</span>(<span class="num">0</span>); }
+    <span class="kw">return</span> top;
+  }
+  <span class="fn">peek</span>() { <span class="kw">return</span> <span class="kw">this</span>.heap[<span class="num">0</span>]; }
+  <span class="fn">size</span>() { <span class="kw">return</span> <span class="kw">this</span>.heap.length; }
+  <span class="fn">_bubbleUp</span>(i) {
+    <span class="kw">while</span> (i > <span class="num">0</span>) {
+      <span class="kw">const</span> p = (i - <span class="num">1</span>) >> <span class="num">1</span>;
+      <span class="kw">if</span> (<span class="kw">this</span>.<span class="fn">cmp</span>(<span class="kw">this</span>.heap[i], <span class="kw">this</span>.heap[p]) < <span class="num">0</span>) {
+        [<span class="kw">this</span>.heap[i], <span class="kw">this</span>.heap[p]] = [<span class="kw">this</span>.heap[p], <span class="kw">this</span>.heap[i]];
+        i = p;
+      } <span class="kw">else</span> <span class="kw">break</span>;
+    }
+  }
+  <span class="fn">_siftDown</span>(i) {
+    <span class="kw">const</span> n = <span class="kw">this</span>.heap.length;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+      <span class="kw">let</span> best = i, l = <span class="num">2</span>*i+<span class="num">1</span>, r = <span class="num">2</span>*i+<span class="num">2</span>;
+      <span class="kw">if</span> (l < n && <span class="kw">this</span>.<span class="fn">cmp</span>(<span class="kw">this</span>.heap[l], <span class="kw">this</span>.heap[best]) < <span class="num">0</span>) best = l;
+      <span class="kw">if</span> (r < n && <span class="kw">this</span>.<span class="fn">cmp</span>(<span class="kw">this</span>.heap[r], <span class="kw">this</span>.heap[best]) < <span class="num">0</span>) best = r;
+      <span class="kw">if</span> (best === i) <span class="kw">break</span>;
+      [<span class="kw">this</span>.heap[i], <span class="kw">this</span>.heap[best]] = [<span class="kw">this</span>.heap[best], <span class="kw">this</span>.heap[i]];
+      i = best;
+    }
+  }
+}
+
+<span class="cmt">// MaxHeap: negate the comparator</span>
+<span class="kw">const</span> maxHeap = <span class="kw">new</span> <span class="type">MinHeap</span>((a, b) => b - a);
+
+<span class="cmt">// Heap with pairs (Dijkstra): [dist, node]</span>
+<span class="kw">const</span> pq = <span class="kw">new</span> <span class="type">MinHeap</span>((a, b) => a[<span class="num">0</span>] - b[<span class="num">0</span>]);
+pq.<span class="fn">push</span>([<span class="num">0</span>, src]);</pre>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">
+      <div class="callout-title">Dijkstra / K-th Largest Patterns</div>
+      <div class="callout-text">The custom comparator approach is fully flexible. Use <code>(a,b) =&gt; a[0]-b[0]</code> for pairs sorted by first element, or use any field in objects. Copy this class into your solutions template.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ SORTING ══════════════════════ -->
+<section class="section" id="sorting">
+  <div class="section-badge">08 — Algorithms</div>
+  <h2 class="section-title">Sorting — The Biggest JS Gotcha</h2>
+  <p class="section-desc">JavaScript's built-in <code>.sort()</code> converts elements to strings by default. This is the #1 source of bugs when switching from C++.</p>
+
+  <div class="callout danger">
+    <span class="callout-icon">✗</span>
+    <div class="callout-body">
+      <div class="callout-title"><code>[10, 9, 2, 1].sort()</code> → <code>[1, 10, 2, 9]</code></div>
+      <div class="callout-text">Default sort is lexicographic (string-based). <strong>Always pass a comparator for numbers.</strong> This will not throw an error — it silently gives wrong results.</div>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-block">
+      <div class="compare-header cpp"><span class="dot"></span>C++</div>
+      <pre><span class="cmt">// Ascending</span>
+<span class="fn">sort</span>(v.<span class="fn">begin</span>(), v.<span class="fn">end</span>());
+
+<span class="cmt">// Descending</span>
+<span class="fn">sort</span>(v.<span class="fn">begin</span>(), v.<span class="fn">end</span>(), <span class="fn">greater</span>&lt;<span class="kw">int</span>&gt;());
+
+<span class="cmt">// Custom comparator</span>
+<span class="fn">sort</span>(v.<span class="fn">begin</span>(), v.<span class="fn">end</span>(), [](<span class="kw">auto</span>&amp; a, <span class="kw">auto</span>&amp; b){
+  <span class="kw">return</span> a.first < b.first;
+});</pre>
+    </div>
+    <div class="compare-block">
+      <div class="compare-header js"><span class="dot"></span>JavaScript</div>
+      <pre><span class="cmt">// Ascending — ALWAYS pass comparator</span>
+arr.<span class="fn">sort</span>((a, b) => a - b);
+
+<span class="cmt">// Descending</span>
+arr.<span class="fn">sort</span>((a, b) => b - a);
+
+<span class="cmt">// Custom: sort by second element</span>
+arr.<span class="fn">sort</span>((a, b) => {
+  <span class="kw">if</span> (a[<span class="num">0</span>] !== b[<span class="num">0</span>]) <span class="kw">return</span> a[<span class="num">0</span>] - b[<span class="num">0</span>];
+  <span class="kw">return</span> a[<span class="num">1</span>] - b[<span class="num">1</span>];
+});</pre>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">
+      <div class="callout-title"><code>.sort()</code> mutates in place and returns the same array</div>
+      <div class="callout-text">Unlike C++, <code>arr.sort()</code> modifies the original array. If you need to sort without mutating, spread first: <code>[...arr].sort((a,b) => a-b)</code>. JS sort is guaranteed stable (V8 uses TimSort) since Node 11 / Chrome 70.</div>
+    </div>
+  </div>
+
+  <pre><span class="cmt">// No lower_bound / upper_bound — implement yourself</span>
+<span class="kw">function</span> <span class="fn">lowerBound</span>(arr, target) {
+  <span class="kw">let</span> lo = <span class="num">0</span>, hi = arr.length;
+  <span class="kw">while</span> (lo < hi) {
+    <span class="kw">const</span> mid = (lo + hi) >> <span class="num">1</span>;
+    <span class="kw">if</span> (arr[mid] < target) lo = mid + <span class="num">1</span>;
+    <span class="kw">else</span> hi = mid;
+  }
+  <span class="kw">return</span> lo; <span class="cmt">// first index >= target</span>
+}
+
+<span class="kw">function</span> <span class="fn">upperBound</span>(arr, target) {
+  <span class="kw">let</span> lo = <span class="num">0</span>, hi = arr.length;
+  <span class="kw">while</span> (lo < hi) {
+    <span class="kw">const</span> mid = (lo + hi) >> <span class="num">1</span>;
+    <span class="kw">if</span> (arr[mid] <= target) lo = mid + <span class="num">1</span>;
+    <span class="kw">else</span> hi = mid;
+  }
+  <span class="kw">return</span> lo; <span class="cmt">// first index > target</span>
+}</pre>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ BINARY SEARCH ══════════════════════ -->
+<section class="section" id="bsearch">
+  <div class="section-badge">09 — Algorithms</div>
+  <h2 class="section-title">Binary Search</h2>
+  <p class="section-desc">Same logic as C++, slightly different syntax. Key difference: use <code>(lo + hi) >> 1</code> for mid (avoids overflow — though JS numbers are floats, so overflow is less of an issue). No <code>lower_bound</code>, you write it.</p>
+
+  <pre><span class="cmt">// Classic binary search</span>
+<span class="kw">function</span> <span class="fn">binarySearch</span>(arr, target) {
+  <span class="kw">let</span> lo = <span class="num">0</span>, hi = arr.length - <span class="num">1</span>;
+  <span class="kw">while</span> (lo <= hi) {
+    <span class="kw">const</span> mid = (lo + hi) >> <span class="num">1</span>;
+    <span class="kw">if</span>      (arr[mid] === target) <span class="kw">return</span> mid;
+    <span class="kw">else if</span> (arr[mid] < target)  lo = mid + <span class="num">1</span>;
+    <span class="kw">else</span>                         hi = mid - <span class="num">1</span>;
+  }
+  <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="cmt">// Binary search on answer (predicate-based)</span>
+<span class="kw">function</span> <span class="fn">bsOnAnswer</span>(lo, hi, predicate) {
+  <span class="kw">while</span> (lo < hi) {
+    <span class="kw">const</span> mid = <span class="type">Math</span>.<span class="fn">floor</span>((lo + hi) / <span class="num">2</span>);
+    <span class="kw">if</span> (<span class="fn">predicate</span>(mid)) hi = mid;    <span class="cmt">// find first true</span>
+    <span class="kw">else</span>                lo = mid + <span class="num">1</span>;
+  }
+  <span class="kw">return</span> lo;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ PATTERNS ══════════════════════ -->
+<section class="section" id="patterns">
+  <div class="section-badge">10 — Algorithms</div>
+  <h2 class="section-title">Common Patterns</h2>
+  <p class="section-desc">Two Pointers, Sliding Window, and Prefix Sum — identical logic to C++, just JS syntax.</p>
+
+  <pre><span class="cmt">// ── Two Pointers ──────────────────────────────</span>
+<span class="kw">function</span> <span class="fn">twoSum</span>(arr, target) {
+  <span class="kw">let</span> l = <span class="num">0</span>, r = arr.length - <span class="num">1</span>;
+  <span class="kw">while</span> (l < r) {
+    <span class="kw">const</span> s = arr[l] + arr[r];
+    <span class="kw">if</span>      (s === target) <span class="kw">return</span> [l, r];
+    <span class="kw">else if</span> (s < target)  l++;
+    <span class="kw">else</span>                   r--;
+  }
+  <span class="kw">return</span> [-<span class="num">1</span>, -<span class="num">1</span>];
+}
+
+<span class="cmt">// ── Sliding Window (variable) ─────────────────</span>
+<span class="kw">function</span> <span class="fn">longestSubarrayAtMostK</span>(arr, k) {
+  <span class="kw">let</span> l = <span class="num">0</span>, sum = <span class="num">0</span>, best = <span class="num">0</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> r = <span class="num">0</span>; r < arr.length; r++) {
+    sum += arr[r];
+    <span class="kw">while</span> (sum > k) sum -= arr[l++];
+    best = <span class="type">Math</span>.<span class="fn">max</span>(best, r - l + <span class="num">1</span>);
+  }
+  <span class="kw">return</span> best;
+}
+
+<span class="cmt">// ── Prefix Sum ────────────────────────────────</span>
+<span class="kw">function</span> <span class="fn">buildPrefix</span>(arr) {
+  <span class="kw">const</span> pre = <span class="kw">new</span> <span class="type">Array</span>(arr.length + <span class="num">1</span>).<span class="fn">fill</span>(<span class="num">0</span>);
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < arr.length; i++) pre[i+<span class="num">1</span>] = pre[i] + arr[i];
+  <span class="kw">return</span> pre;
+}
+<span class="kw">const</span> <span class="fn">rangeSum</span> = (pre, l, r) => pre[r+<span class="num">1</span>] - pre[l]; <span class="cmt">// [l, r] inclusive</span></pre>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ GRAPH ══════════════════════ -->
+<section class="section" id="graph">
+  <div class="section-badge">11 — Algorithms</div>
+  <h2 class="section-title">Graphs</h2>
+  <p class="section-desc">Build adjacency lists with arrays of arrays, or Map for non-integer node labels. DFS/BFS structure is identical to C++.</p>
+
+  <pre><span class="cmt">// Adjacency list — integer nodes</span>
+<span class="kw">const</span> adj = <span class="type">Array</span>.<span class="fn">from</span>({length: n}, () => []);
+<span class="kw">for</span> (<span class="kw">const</span> [u, v, w] <span class="kw">of</span> edges) {
+  adj[u].<span class="fn">push</span>([v, w]);
+  adj[v].<span class="fn">push</span>([u, w]); <span class="cmt">// undirected</span>
+}
+
+<span class="cmt">// DFS (iterative, same as C++ with explicit stack)</span>
+<span class="kw">function</span> <span class="fn">dfs</span>(start, adj, n) {
+  <span class="kw">const</span> visited = <span class="kw">new</span> <span class="type">Array</span>(n).<span class="fn">fill</span>(<span class="kw">false</span>);
+  <span class="kw">const</span> stack = [start];
+  visited[start] = <span class="kw">true</span>;
+  <span class="kw">while</span> (stack.length) {
+    <span class="kw">const</span> u = stack.<span class="fn">pop</span>();
+    <span class="kw">for</span> (<span class="kw">const</span> [v] <span class="kw">of</span> adj[u]) {
+      <span class="kw">if</span> (!visited[v]) { visited[v] = <span class="kw">true</span>; stack.<span class="fn">push</span>(v); }
+    }
+  }
+}
+
+<span class="cmt">// Dijkstra — needs MinHeap (from heap section above)</span>
+<span class="kw">function</span> <span class="fn">dijkstra</span>(src, adj, n) {
+  <span class="kw">const</span> dist = <span class="kw">new</span> <span class="type">Array</span>(n).<span class="fn">fill</span>(<span class="type">Infinity</span>);
+  dist[src] = <span class="num">0</span>;
+  <span class="kw">const</span> pq = <span class="kw">new</span> <span class="type">MinHeap</span>((a, b) => a[<span class="num">0</span>] - b[<span class="num">0</span>]);
+  pq.<span class="fn">push</span>([<span class="num">0</span>, src]);
+  <span class="kw">while</span> (pq.<span class="fn">size</span>()) {
+    <span class="kw">const</span> [d, u] = pq.<span class="fn">pop</span>();
+    <span class="kw">if</span> (d > dist[u]) <span class="kw">continue</span>;
+    <span class="kw">for</span> (<span class="kw">const</span> [v, w] <span class="kw">of</span> adj[u]) {
+      <span class="kw">if</span> (dist[u] + w < dist[v]) {
+        dist[v] = dist[u] + w;
+        pq.<span class="fn">push</span>([dist[v], v]);
+      }
+    }
+  }
+  <span class="kw">return</span> dist;
+}
+
+<span class="cmt">// Union-Find (DSU)</span>
+<span class="kw">class</span> <span class="type">DSU</span> {
+  <span class="fn">constructor</span>(n) {
+    <span class="kw">this</span>.parent = <span class="type">Array</span>.<span class="fn">from</span>({length: n}, (_, i) => i);
+    <span class="kw">this</span>.rank = <span class="kw">new</span> <span class="type">Array</span>(n).<span class="fn">fill</span>(<span class="num">0</span>);
+  }
+  <span class="fn">find</span>(x) {
+    <span class="kw">if</span> (<span class="kw">this</span>.parent[x] !== x) <span class="kw">this</span>.parent[x] = <span class="kw">this</span>.<span class="fn">find</span>(<span class="kw">this</span>.parent[x]);
+    <span class="kw">return</span> <span class="kw">this</span>.parent[x];
+  }
+  <span class="fn">union</span>(x, y) {
+    <span class="kw">let</span> px = <span class="kw">this</span>.<span class="fn">find</span>(x), py = <span class="kw">this</span>.<span class="fn">find</span>(y);
+    <span class="kw">if</span> (px === py) <span class="kw">return false</span>;
+    <span class="kw">if</span> (<span class="kw">this</span>.rank[px] < <span class="kw">this</span>.rank[py]) [px, py] = [py, px];
+    <span class="kw">this</span>.parent[py] = px;
+    <span class="kw">if</span> (<span class="kw">this</span>.rank[px] === <span class="kw">this</span>.rank[py]) <span class="kw">this</span>.rank[px]++;
+    <span class="kw">return true</span>;
+  }
+}</pre>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ DP ══════════════════════ -->
+<section class="section" id="dp">
+  <div class="section-badge">12 — Algorithms</div>
+  <h2 class="section-title">Dynamic Programming & Memoization</h2>
+  <p class="section-desc">Memoization in JS is elegant using closures and <code>Map</code>. Tabulation (bottom-up) is identical to C++.</p>
+
+  <pre><span class="cmt">// Top-down memoization with Map</span>
+<span class="kw">function</span> <span class="fn">solve</span>(n) {
+  <span class="kw">const</span> memo = <span class="kw">new</span> <span class="type">Map</span>();
+  <span class="kw">function</span> <span class="fn">dp</span>(i, j) {
+    <span class="kw">const</span> key = `${i},${j}`;
+    <span class="kw">if</span> (memo.<span class="fn">has</span>(key)) <span class="kw">return</span> memo.<span class="fn">get</span>(key);
+    <span class="kw">let</span> res = <span class="num">0</span>;
+    <span class="cmt">// ... base cases and transitions ...</span>
+    memo.<span class="fn">set</span>(key, res);
+    <span class="kw">return</span> res;
+  }
+  <span class="kw">return</span> <span class="fn">dp</span>(<span class="num">0</span>, <span class="num">0</span>);
+}
+
+<span class="cmt">// Bottom-up (same as C++)</span>
+<span class="kw">const</span> dp = <span class="kw">new</span> <span class="type">Array</span>(n + <span class="num">1</span>).<span class="fn">fill</span>(<span class="num">0</span>);
+dp[<span class="num">0</span>] = <span class="num">1</span>;
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i <= n; i++) {
+  dp[i] = dp[i-<span class="num">1</span>] + dp[i-<span class="num">2</span>]; <span class="cmt">// fibonacci example</span>
+}
+
+<span class="cmt">// 2D DP table</span>
+<span class="kw">const</span> dp2 = <span class="type">Array</span>.<span class="fn">from</span>({length: n+<span class="num">1</span>}, () => <span class="kw">new</span> <span class="type">Array</span>(m+<span class="num">1</span>).<span class="fn">fill</span>(<span class="num">0</span>));</pre>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">
+      <div class="callout-title">Stack Overflow in Deep Recursion</div>
+      <div class="callout-text">JS call stack is much smaller than C++ (typically ~10,000 frames). For n=10⁵+ recursive calls, convert to iterative or increase stack size in Node.js: <code>node --stack-size=65536 solution.js</code>. Alternatively, convert to explicit stack-based DFS.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ BITS ══════════════════════ -->
+<section class="section" id="bits">
+  <div class="section-badge">13 — Algorithms</div>
+  <h2 class="section-title">Bit Manipulation</h2>
+  <p class="section-desc">Bitwise operators are the same as C++, but JS bitwise ops work on 32-bit signed integers. For values above 2³¹−1, use BigInt.</p>
+
+  <table>
+    <thead><tr><th>Operation</th><th>C++</th><th>JavaScript</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>AND</td><td class="cpp-col"><code>a & b</code></td><td class="js-col"><code>a & b</code></td><td>Same</td></tr>
+      <tr><td>OR</td><td class="cpp-col"><code>a | b</code></td><td class="js-col"><code>a | b</code></td><td>Same</td></tr>
+      <tr><td>XOR</td><td class="cpp-col"><code>a ^ b</code></td><td class="js-col"><code>a ^ b</code></td><td>Same</td></tr>
+      <tr><td>NOT</td><td class="cpp-col"><code>~a</code></td><td class="js-col"><code>~a</code></td><td>32-bit. <code>~0 = -1</code></td></tr>
+      <tr><td>Left shift</td><td class="cpp-col"><code>a &lt;&lt; b</code></td><td class="js-col"><code>a &lt;&lt; b</code></td><td>32-bit max</td></tr>
+      <tr><td>Right shift (signed)</td><td class="cpp-col"><code>a &gt;&gt; b</code></td><td class="js-col"><code>a &gt;&gt; b</code></td><td>Arithmetic shift</td></tr>
+      <tr><td>Right shift (unsigned)</td><td class="cpp-col"><code>a &gt;&gt;&gt; b</code> (Java/JS only)</td><td class="js-col"><code>a &gt;&gt;&gt; b</code></td><td>Fills with 0s</td></tr>
+      <tr><td>Popcount</td><td class="cpp-col"><code>__builtin_popcount(x)</code></td><td class="js-col">Manual — see below</td><td>No built-in</td></tr>
+      <tr><td>Set bit k</td><td class="cpp-col"><code>x | (1 &lt;&lt; k)</code></td><td class="js-col"><code>x | (1 &lt;&lt; k)</code></td><td>Same</td></tr>
+      <tr><td>Clear bit k</td><td class="cpp-col"><code>x & ~(1 &lt;&lt; k)</code></td><td class="js-col"><code>x & ~(1 &lt;&lt; k)</code></td><td>Same</td></tr>
+      <tr><td>Check bit k</td><td class="cpp-col"><code>(x &gt;&gt; k) & 1</code></td><td class="js-col"><code>(x &gt;&gt; k) & 1</code></td><td>Same</td></tr>
+      <tr><td>Integer division by 2</td><td class="cpp-col"><code>x &gt;&gt; 1</code></td><td class="js-col"><code>x &gt;&gt; 1</code></td><td>Same, faster than Math.floor</td></tr>
+    </tbody>
+  </table>
+
+  <pre><span class="cmt">// Popcount (number of set bits)</span>
+<span class="kw">const</span> <span class="fn">popcount</span> = x => {
+  x = x - ((x >> <span class="num">1</span>) & <span class="num">0x55555555</span>);
+  x = (x & <span class="num">0x33333333</span>) + ((x >> <span class="num">2</span>) & <span class="num">0x33333333</span>);
+  x = (x + (x >> <span class="num">4</span>)) & <span class="num">0x0f0f0f0f</span>;
+  <span class="kw">return</span> (x * <span class="num">0x01010101</span>) >> <span class="num">24</span>;
+};
+
+<span class="cmt">// Or simple loop:</span>
+<span class="kw">const</span> <span class="fn">popcount2</span> = x => { <span class="kw">let</span> c = <span class="num">0</span>; <span class="kw">while</span>(x) { x &= x-<span class="num">1</span>; c++; } <span class="kw">return</span> c; };
+
+<span class="cmt">// Enumerate all subsets of a mask</span>
+<span class="kw">for</span> (<span class="kw">let</span> sub = mask; sub > <span class="num">0</span>; sub = (sub - <span class="num">1</span>) & mask) {
+  <span class="cmt">// process sub</span>
+}</pre>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">
+      <div class="callout-title">32-bit Limit for Bitwise Ops</div>
+      <div class="callout-text">Bitwise ops in JS work on 32-bit signed integers. <code>1 &lt;&lt; 31 = -2147483648</code> and <code>1 &lt;&lt; 32 = 1</code> (wraps). For bitmasks beyond 30 bits, use BigInt: <code>1n &lt;&lt; 40n</code>.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ GOTCHAS ══════════════════════ -->
+<section class="section" id="gotchas">
+  <div class="section-badge">14 — Reference</div>
+  <h2 class="section-title">JS Gotchas for C++ Devs</h2>
+  <p class="section-desc">The things that will silently break your code if you're not aware of them.</p>
+
+  <table>
+    <thead><tr><th>Gotcha</th><th>Explanation</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td><code>[10,9,2].sort()</code></td><td>Lexicographic sort by default</td><td>Always pass <code>(a,b)=>a-b</code></td></tr>
+      <tr><td><code>7 / 2 === 3.5</code></td><td>No integer division</td><td><code>Math.floor(7/2)</code> or <code>7>>1</code></td></tr>
+      <tr><td><code>0.1 + 0.2 !== 0.3</code></td><td>Float precision</td><td>Use <code>Math.round()</code> or avoid floats</td></tr>
+      <tr><td><code>NaN === NaN</code> is false</td><td>NaN is not equal to itself</td><td>Use <code>Number.isNaN(x)</code></td></tr>
+      <tr><td><code>[] == false</code> is true</td><td>Loose equality coerces types</td><td>Always use <code>===</code> (strict)</td></tr>
+      <tr><td><code>typeof null === "object"</code></td><td>Historical JS bug</td><td>Check <code>x === null</code> explicitly</td></tr>
+      <tr><td><code>parseInt("08")</code></td><td>May be octal in old engines</td><td><code>parseInt("08", 10)</code> or <code>Number("08")</code></td></tr>
+      <tr><td>Object key order</td><td>Integer keys sort ascending, strings in insertion order</td><td>Use <code>Map</code> for reliable order</td></tr>
+      <tr><td><code>arr.length = 0</code></td><td>Clears array in-place (mutation!)</td><td>Know this when sharing references</td></tr>
+      <tr><td><code>Math.max(...largeArr)</code></td><td>Stack overflow for arr.length > ~100,000</td><td><code>arr.reduce((a,b)=>Math.max(a,b))</code></td></tr>
+    </tbody>
+  </table>
+
+  <pre><span class="cmt">// Modular arithmetic (JS % can be negative)</span>
+<span class="kw">const</span> MOD = <span class="num">1e9</span> + <span class="num">7</span>;
+<span class="cmt">// In C++: (a % MOD + MOD) % MOD not needed if a >= 0</span>
+<span class="cmt">// In JS: -5 % 7 === -5  ← same as C++</span>
+<span class="kw">const</span> <span class="fn">mod</span> = (x, m) => ((x % m) + m) % m; <span class="cmt">// always positive</span>
+
+<span class="cmt">// Safe modular multiply for large numbers</span>
+<span class="kw">const</span> <span class="fn">mulmod</span> = (a, b, m) => <span class="type">Number</span>(<span class="type">BigInt</span>(a) * <span class="type">BigInt</span>(b) % <span class="type">BigInt</span>(m));</pre>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════ COMPLEXITY ══════════════════════ -->
+<section class="section" id="complexity">
+  <div class="section-badge">15 — Reference</div>
+  <h2 class="section-title">Complexity Quick Reference</h2>
+  <p class="section-desc">JS operations vs C++ equivalents — complexity is the same, constant factors vary.</p>
+
+  <table>
+    <thead><tr><th>Operation</th><th>JS</th><th>Complexity</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Array push/pop</td><td><code>arr.push/pop</code></td><td><span class="tag-inline tag-o1">O(1)</span></td><td>Amortized</td></tr>
+      <tr><td>Array shift/unshift</td><td><code>arr.shift/unshift</code></td><td><span class="tag-inline tag-on">O(n)</span></td><td>Avoid in hot paths</td></tr>
+      <tr><td>Array splice</td><td><code>arr.splice</code></td><td><span class="tag-inline tag-on">O(n)</span></td><td>Shifts elements</td></tr>
+      <tr><td>Map get/set/has/delete</td><td><code>Map methods</code></td><td><span class="tag-inline tag-o1">O(1)</span></td><td>Avg. Like unordered_map</td></tr>
+      <tr><td>Set add/has/delete</td><td><code>Set methods</code></td><td><span class="tag-inline tag-o1">O(1)</span></td><td>Avg.</td></tr>
+      <tr><td>Array sort</td><td><code>arr.sort(cmp)</code></td><td><span class="tag-inline tag-onlogn">O(n log n)</span></td><td>TimSort (stable)</td></tr>
+      <tr><td>String concat in loop</td><td><code>s += c</code></td><td><span class="tag-inline tag-on2">O(n²)</span></td><td>Use array + join instead</td></tr>
+      <tr><td>Heap push/pop</td><td>MinHeap class above</td><td><span class="tag-inline tag-onlogn">O(log n)</span></td><td></td></tr>
+      <tr><td>Array slice</td><td><code>arr.slice(l,r)</code></td><td><span class="tag-inline tag-on">O(r-l)</span></td><td>Creates new array</td></tr>
+      <tr><td>Spread operator</td><td><code>[...arr]</code></td><td><span class="tag-inline tag-on">O(n)</span></td><td>Creates copy</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <span class="callout-icon">✓</span>
+    <div class="callout-body">
+      <div class="callout-title">JS is ~2-5x slower than C++ for the same algorithm</div>
+      <div class="callout-text">On Codeforces with TL 2s for C++, JS typically gets 3-5s. LeetCode gives generous TL for JS. Optimize big-O first, then avoid hidden O(n) operations in hot loops (<code>slice</code>, <code>shift</code>, <code>join</code> inside loops).</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 32px; padding: 20px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);">
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); font-family: var(--mono); margin-bottom: 12px;">Template — Paste this at the top of every solution</div>
+    <pre style="margin: 0; border: none; background: transparent; padding: 0;"><span class="cmt">// ═══════════════════════════════════════════════════
+// JS DSA Template — Paste into solution files
+// ═══════════════════════════════════════════════════</span>
+
+<span class="kw">class</span> <span class="type">MinHeap</span> {
+  <span class="fn">constructor</span>(c=(a,b)=>a-b){<span class="kw">this</span>.h=[];<span class="kw">this</span>.c=c}
+  <span class="fn">push</span>(v){<span class="kw">this</span>.h.<span class="fn">push</span>(v);<span class="kw">this</span>.<span class="fn">_up</span>(<span class="kw">this</span>.h.length-<span class="num">1</span>)}
+  <span class="fn">pop</span>(){<span class="kw">const</span> t=<span class="kw">this</span>.h[<span class="num">0</span>],l=<span class="kw">this</span>.h.<span class="fn">pop</span>();<span class="kw">if</span>(<span class="kw">this</span>.h.length){<span class="kw">this</span>.h[<span class="num">0</span>]=l;<span class="kw">this</span>.<span class="fn">_dn</span>(<span class="num">0</span>)}<span class="kw">return</span> t}
+  <span class="fn">peek</span>(){<span class="kw">return</span> <span class="kw">this</span>.h[<span class="num">0</span>]} <span class="fn">size</span>(){<span class="kw">return</span> <span class="kw">this</span>.h.length}
+  <span class="fn">_up</span>(i){<span class="kw">while</span>(i){<span class="kw">const</span> p=(i-<span class="num">1</span>)>><span class="num">1</span>;<span class="kw">if</span>(<span class="kw">this</span>.c(<span class="kw">this</span>.h[i],<span class="kw">this</span>.h[p])<<span class="num">0</span>){[<span class="kw">this</span>.h[i],<span class="kw">this</span>.h[p]]=[<span class="kw">this</span>.h[p],<span class="kw">this</span>.h[i]];i=p}<span class="kw">else</span> <span class="kw">break</span>}}
+  <span class="fn">_dn</span>(i){<span class="kw">const</span> n=<span class="kw">this</span>.h.length;<span class="kw">while</span>(<span class="kw">true</span>){<span class="kw">let</span> b=i,l=<span class="num">2</span>*i+<span class="num">1</span>,r=<span class="num">2</span>*i+<span class="num">2</span>;<span class="kw">if</span>(l<n&&<span class="kw">this</span>.c(<span class="kw">this</span>.h[l],<span class="kw">this</span>.h[b])<<span class="num">0</span>)b=l;<span class="kw">if</span>(r<n&&<span class="kw">this</span>.c(<span class="kw">this</span>.h[r],<span class="kw">this</span>.h[b])<<span class="num">0</span>)b=r;<span class="kw">if</span>(b===i)<span class="kw">break</span>;[<span class="kw">this</span>.h[i],<span class="kw">this</span>.h[b]]=[<span class="kw">this</span>.h[b],<span class="kw">this</span>.h[i]];i=b}}
+}
+<span class="kw">class</span> <span class="type">DSU</span> {
+  <span class="fn">constructor</span>(n){<span class="kw">this</span>.p=<span class="type">Array</span>.<span class="fn">from</span>({length:n},(_,i)=>i);<span class="kw">this</span>.r=<span class="kw">new</span> <span class="type">Array</span>(n).<span class="fn">fill</span>(<span class="num">0</span>)}
+  <span class="fn">find</span>(x){<span class="kw">return</span> <span class="kw">this</span>.p[x]===x?x:(<span class="kw">this</span>.p[x]=<span class="kw">this</span>.<span class="fn">find</span>(<span class="kw">this</span>.p[x]))}
+  <span class="fn">union</span>(x,y){<span class="kw">let</span> a=<span class="kw">this</span>.<span class="fn">find</span>(x),b=<span class="kw">this</span>.<span class="fn">find</span>(y);<span class="kw">if</span>(a===b)<span class="kw">return false</span>;<span class="kw">if</span>(<span class="kw">this</span>.r[a]<<span class="kw">this</span>.r[b])[a,b]=[b,a];<span class="kw">this</span>.p[b]=a;<span class="kw">if</span>(<span class="kw">this</span>.r[a]===<span class="kw">this</span>.r[b])<span class="kw">this</span>.r[a]++;<span class="kw">return true</span>}
+}
+<span class="kw">const</span> <span class="fn">lowerBound</span>=(a,t)=>{<span class="kw">let</span> l=<span class="num">0</span>,h=a.length;<span class="kw">while</span>(l<h){<span class="kw">const</span> m=(l+h)>><span class="num">1</span>;a[m]<t?l=m+<span class="num">1</span>:h=m}<span class="kw">return</span> l};
+<span class="kw">const</span> <span class="fn">upperBound</span>=(a,t)=>{<span class="kw">let</span> l=<span class="num">0</span>,h=a.length;<span class="kw">while</span>(l<h){<span class="kw">const</span> m=(l+h)>><span class="num">1</span>;a[m]<=t?l=m+<span class="num">1</span>:h=m}<span class="kw">return</span> l};
+<span class="kw">const</span> MOD = <span class="num">1_000_000_007</span>;</pre>
+  </div>
+</section>
+
+<div class="footer">
+  DSA in JavaScript — C++ Developer's Guide &nbsp;·&nbsp; Built for intermediate-to-advanced practitioners &nbsp;·&nbsp; 2025
+</div>
+
+</main>
+
+<script>
+  // Progress bar
+  const main = document.getElementById('main');
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const pct = (scrollTop / scrollHeight) * 100;
+    progress.style.width = pct + '%';
+  });
+
+  // Navigation
+  const sections = document.querySelectorAll('.section, .hero');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Highlight active nav link based on scroll position
+  window.addEventListener('scroll', () => {
+    let current = 'intro';
+    
+    sections.forEach(s => {
+      const rect = s.getBoundingClientRect();
+      if (rect.top <= 150) {
+        current = s.id;
+      }
+    });
+
+    // If at the absolute bottom of the page, highlight the last section
+    if (window.innerHeight + Math.round(window.scrollY) >= document.documentElement.scrollHeight - 10) {
+      if (sections.length > 0) {
+        current = sections[sections.length - 1].id;
+      }
+    }
+
+    navLinks.forEach(l => {
+      const onclick = l.getAttribute('onclick') || '';
+      l.classList.toggle('active', onclick.includes(`'${current}'`));
+    });
+  });
+
+  // Trigger initial highlight
+  window.dispatchEvent(new Event('scroll'));
+</script>
+</body>
+</html>

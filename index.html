@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Guides Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --bg2: #13161e;
+      --bg3: #1a1e28;
+      --bg-glass: rgba(26, 30, 40, 0.7);
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(124,110,247,0.4);
+      --text: #e8eaf0;
+      --text2: #8b90a8;
+      --accent: #7c6ef7;
+      --accent-glow: rgba(124,110,247,0.15);
+      --accent2: #3ecf8e;
+      --font: 'Syne', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background Glow Effects */
+    .glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      border-radius: 50%;
+      top: -200px;
+      left: -100px;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .glow.right {
+      top: auto;
+      bottom: -200px;
+      left: auto;
+      right: -100px;
+      background: radial-gradient(circle, rgba(62,207,142,0.1) 0%, transparent 70%);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .hero-eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      font-family: var(--mono);
+    }
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--text2);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Search & Filters */
+    .controls {
+      background: var(--bg-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .search-wrapper {
+      position: relative;
+    }
+    .search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text2);
+      pointer-events: none;
+    }
+    #search-input {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px 16px 50px;
+      font-size: 16px;
+      color: var(--text);
+      font-family: var(--font);
+      outline: none;
+      transition: all 0.2s;
+    }
+    #search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+    
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .tags-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-right: 8px;
+    }
+    .filter-tag {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-family: var(--mono);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-tag:hover {
+      background: var(--bg3);
+      color: var(--text);
+    }
+    .filter-tag.active {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Grid */
+    #guides-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-hover);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2), 0 0 20px var(--accent-glow);
+    }
+    .card:hover::before {
+      opacity: 1;
+    }
+    
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--bg2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+    
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 24px;
+    }
+    .card-tag {
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: var(--bg2);
+      color: var(--text2);
+      border: 1px solid var(--border);
+    }
+
+    /* Empty State */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px;
+      color: var(--text2);
+      background: var(--bg-glass);
+      border-radius: var(--radius);
+      border: 1px dashed var(--border);
+    }
+    
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 40px; }
+      .container { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow"></div>
+  <div class="glow right"></div>
+
+  <div class="container">
+    
+    <header class="hero">
+      <div class="hero-eyebrow">The Vault</div>
+      <h1>Developer <span>Guides</span></h1>
+      <p>A curated collection of references, tutorials, and algorithmic blueprints. Search by topic, technology, or keywords.</p>
+    </header>
+
+    <div class="controls">
+      <div class="search-wrapper">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="search-input" placeholder="Search guides... (e.g. 'stl', 'javascript')">
+      </div>
+      <div class="tags-container" id="tags-container">
+        <span class="tags-label">Filter:</span>
+        <button class="filter-tag active" data-tag="all">All</button>
+        <!-- Dynamic tags will go here -->
+      </div>
+    </div>
+
+    <div id="guides-grid">
+      <!-- Cards will be injected via JS -->
+    </div>
+
+  </div>
+
+  <script src="guides.js"></script>
+  <script>
+    let allGuides = [];
+    let allTags = new Set();
+    let currentTag = 'all';
+
+    const searchInput = document.getElementById('search-input');
+    const grid = document.getElementById('guides-grid');
+    const tagsContainer = document.getElementById('tags-container');
+
+    // Load from window.guidesData generated by the python script
+    if (window.guidesData) {
+      allGuides = window.guidesData;
+      
+      // Extract all unique tags
+      allGuides.forEach(guide => {
+        if (guide.tags) {
+          guide.tags.forEach(tag => allTags.add(tag));
+        }
+      });
+
+      renderTags();
+      renderGuides();
+    } else {
+      console.error("Error loading guides: window.guidesData is not defined.");
+      grid.innerHTML = `<div class="empty-state"><h3>Error loading guides.</h3><p>Make sure you have run the build_index.py script to generate guides.js.</p></div>`;
+    }
+
+    // Render filter tags
+    function renderTags() {
+      // Sort tags alphabetically
+      const sortedTags = Array.from(allTags).sort();
+      
+      sortedTags.forEach(tag => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-tag';
+        btn.dataset.tag = tag;
+        btn.textContent = tag.toUpperCase();
+        btn.addEventListener('click', () => {
+          // Update active states
+          document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentTag = tag;
+          renderGuides();
+        });
+        tagsContainer.appendChild(btn);
+      });
+
+      // Handle 'All' button click
+      const allBtn = document.querySelector('.filter-tag[data-tag="all"]');
+      allBtn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+        allBtn.classList.add('active');
+        currentTag = 'all';
+        renderGuides();
+      });
+    }
+
+    // Render guide cards
+    function renderGuides() {
+      const query = searchInput.value.toLowerCase();
+      
+      const filtered = allGuides.filter(guide => {
+        const matchesSearch = guide.title.toLowerCase().includes(query) || 
+                              guide.url.toLowerCase().includes(query);
+        const matchesTag = currentTag === 'all' || (guide.tags && guide.tags.includes(currentTag));
+        return matchesSearch && matchesTag;
+      });
+
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <h3>No guides found</h3>
+            <p>Try adjusting your search or filters.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(guide => {
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.href = guide.url;
+
+        // Determine a generic icon based on tags
+        let icon = '📄';
+        if (guide.tags) {
+          if (guide.tags.includes('cpp')) icon = '⚡';
+          else if (guide.tags.includes('js')) icon = '✨';
+        }
+
+        const tagsHtml = guide.tags 
+          ? guide.tags.map(t => `<span class="card-tag">${t.toUpperCase()}</span>`).join('') 
+          : '';
+
+        card.innerHTML = `
+          <div class="card-icon">${icon}</div>
+          <div class="card-title">${guide.title}</div>
+          <div class="card-tags">${tagsHtml}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Search listener
+    searchInput.addEventListener('input', renderGuides);
+  </script>
+</body>
+</html>

@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPP STL DSA Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161e;
+    --bg3: #1a1e28;
+    --bg4: #222736;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8eaf0;
+    --text2: #8b90a8;
+    --text3: #555c78;
+    --accent: #7c6ef7;
+    --accent2: #5b4fe3;
+    --green: #3ecf8e;
+    --amber: #f5a623;
+    --red: #f06565;
+    --blue: #4da6ff;
+    --pink: #e879a0;
+    --teal: #2ed8c3;
+    --cpp: #f5a623;
+    --js: #3ecf8e;
+    --font: 'Syne', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+  .sidebar-header {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .sidebar-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .sidebar-sub {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .sidebar-nav { padding: 12px 0; flex: 1; }
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 12px 20px 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    font-size: 13.5px;
+    color: var(--text2);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .nav-link:hover { color: var(--text); background: var(--bg3); border-left-color: var(--border2); }
+  .nav-link.active { color: var(--accent); background: rgba(124,110,247,0.08); border-left-color: var(--accent); }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; opacity: 0.6; }
+
+  /* ── MAIN ── */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 48px 56px;
+  }
+  #main > * {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #main::-webkit-scrollbar { width: 6px; }
+  #main::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 64px; scroll-margin-top: 24px; }
+  .section-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(124,110,247,0.12);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-family: var(--mono);
+  }
+  h1.section-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  h2.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: var(--text2);
+    margin-bottom: 28px;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, rgba(124,110,247,0.1) 0%, rgba(62,207,142,0.06) 100%);
+    border: 1px solid rgba(124,110,247,0.2);
+    border-radius: 16px;
+    padding: 36px;
+    margin-bottom: 48px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-family: var(--mono);
+  }
+  .hero h1 {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p { font-size: 16px; color: var(--text2); line-height: 1.7; max-width: 560px; margin-bottom: 20px; }
+  .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .hero-tag {
+    font-size: 12px;
+    font-family: var(--mono);
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .tag-cpp { color: var(--cpp); border-color: rgba(245,166,35,0.3); background: rgba(245,166,35,0.08); }
+  .tag-js { color: var(--js); border-color: rgba(62,207,142,0.3); background: rgba(62,207,142,0.08); }
+  .tag-blue { color: var(--blue); border-color: rgba(77,166,255,0.3); background: rgba(77,166,255,0.08); }
+
+  /* ── CODE COMPARE ── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .compare-block { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  .compare-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-header.cpp { background: rgba(245,166,35,0.08); color: var(--cpp); }
+  .compare-header.js { background: rgba(62,207,142,0.08); color: var(--js); }
+  .compare-header .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* ── CODE BLOCKS ── */
+  pre {
+    background: var(--bg3);
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 16px 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .compare pre { margin: 0; border-radius: 0; border: none; }
+  code {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--bg3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--teal);
+  }
+
+  /* syntax colors */
+  .kw { color: var(--accent); font-weight: 500; }
+  .fn { color: var(--blue); }
+  .str { color: var(--green); }
+  .num { color: var(--amber); }
+  .cmt { color: var(--text3); font-style: italic; }
+  .type { color: var(--teal); }
+  .op { color: var(--pink); }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 20px 0;
+    border-left: 3px solid;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; }
+  .callout-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .callout-text { font-size: 13.5px; color: var(--text2); line-height: 1.6; }
+  .callout-text code { font-size: 12px; }
+  .callout.warn { background: rgba(245,166,35,0.07); border-color: var(--amber); }
+  .callout.warn .callout-title { color: var(--amber); }
+  .callout.info { background: rgba(77,166,255,0.07); border-color: var(--blue); }
+  .callout.info .callout-title { color: var(--blue); }
+  .callout.tip { background: rgba(62,207,142,0.07); border-color: var(--green); }
+  .callout.tip .callout-title { color: var(--green); }
+  .callout.danger { background: rgba(240,101,101,0.07); border-color: var(--red); }
+  .callout.danger .callout-title { color: var(--red); }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg3);
+    color: var(--text2);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+  }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  td:first-child { color: var(--text); font-weight: 500; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .cpp-col { color: var(--cpp) !important; }
+  .js-col { color: var(--js) !important; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ── INLINE TAG ── */
+  .tag-inline {
+    display: inline-block;
+    font-size: 11px;
+    font-family: var(--mono);
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    vertical-align: middle;
+  }
+  .tag-o1 { background: rgba(62,207,142,0.15); color: var(--green); }
+  .tag-on { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .tag-onlogn { background: rgba(77,166,255,0.15); color: var(--blue); }
+  .tag-on2 { background: rgba(240,101,101,0.15); color: var(--red); }
+
+  /* ── SCROLL PROGRESS ── */
+  #progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 999; transition: width 0.1s; }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 48px;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text3);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">CPP STL Guide</div>
+    <div class="sidebar-title">C++ Standard Template Library</div>
+    <div class="sidebar-sub">DSA Reference</div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section-label">Containers</div>
+    <a class="nav-link active" onclick="navTo('getting-started')"><span class="nav-dot"></span>Getting Started</a>
+    <a class="nav-link" onclick="navTo('vector')"><span class="nav-dot"></span>Vector</a>
+    <a class="nav-link" onclick="navTo('stack')"><span class="nav-dot"></span>Stack</a>
+    <a class="nav-link" onclick="navTo('queue')"><span class="nav-dot"></span>Queue</a>
+    <a class="nav-link" onclick="navTo('priority-queue')"><span class="nav-dot"></span>Priority-Queue</a>
+    <a class="nav-link" onclick="navTo('set')"><span class="nav-dot"></span>Set</a>
+    <a class="nav-link" onclick="navTo('unordered-set')"><span class="nav-dot"></span>Unordered-Set</a>
+    <a class="nav-link" onclick="navTo('map')"><span class="nav-dot"></span>Map</a>
+    <a class="nav-link" onclick="navTo('unordered-map')"><span class="nav-dot"></span>Unordered-Map</a>
+    <a class="nav-link" onclick="navTo('deque')"><span class="nav-dot"></span>Deque</a>
+    <a class="nav-link" onclick="navTo('pair')"><span class="nav-dot"></span>Pair</a>
+    <a class="nav-link" onclick="navTo('list')"><span class="nav-dot"></span>List</a>
+    <a class="nav-link" onclick="navTo('string')"><span class="nav-dot"></span>String</a>
+    <a class="nav-link" onclick="navTo('multi-set')"><span class="nav-dot"></span>Multi-Set</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<div class="hero" id="intro">
+  <div class="hero-eyebrow">Quick Reference</div>
+  <h1>CPP <span>STL</span> DSA</h1>
+  <p>This is not full reference for CPP STL, this doc only contains those CPP STL which are used frequently and important for DSA.</p>
+  <div class="hero-tags">
+    <span class="hero-tag tag-cpp">C++ STL</span>
+    <span class="hero-tag tag-blue">Interview Ready</span>
+  </div>
+</div>
+
+<section class="section" id="getting-started">
+  <div class="section-badge">00 — STL</div>
+  <h2 class="section-title">Getting Started</h2>
+  <pre>#include &lt;iostream&gt;
+
+<span class="kw">int</span> main() {
+    std::cout &lt;&lt; <span class="str">&quot;Hello, World!&quot;</span> &lt;&lt; std::endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="vector">
+  <div class="section-badge">01 — STL</div>
+  <h2 class="section-title">Vector</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Working Principle ========== //</span>
+    <span class="cmt">// Dynamic array — stores elements in contiguous memory.</span>
+    <span class="cmt">// Allows O(<span class="num">1</span>) random access via index and fast push_back().</span>
+    <span class="cmt">// Insertion/deletion in middle/front is O(n) (shifting needed).</span>
+    <span class="cmt">// Resizes by allocating new memory when capacity is exceeded.</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Declaration ========== //</span>
+    <span class="cmt">// Creates an empty <span class="kw">vector</span> of integers.</span>
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; v;
+    <span class="cmt">// Creates an empty <span class="kw">vector</span> of <span class="kw">string</span>.</span>
+    <span class="kw">vector</span>&lt;<span class="kw">string</span>&gt; vs;
+    <span class="cmt">// Creates a <span class="kw">vector</span> of size <span class="num">5</span>, all elements initialized to <span class="num">20</span>.</span>
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; v(<span class="num">5</span>, <span class="num">20</span>);
+    <span class="cmt">// Initializes with the given values.</span>
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; v = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>};
+    <span class="cmt">// Copies all elements from v1 to v2.</span>
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; v1 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>};
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; v2(v1);
+    <span class="cmt">// Copies all elements from v3 to v4.</span>
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; v3 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>};
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; v4(v3.begin(), v3.end());
+
+    <span class="cmt">// 2D <span class="kw">vector</span> <span class="kw">for</span> matrices</span>
+    <span class="kw">vector</span>&lt;<span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;&gt; mat;
+
+    <span class="kw">int</span> m = <span class="num">3</span>;
+    <span class="kw">int</span> n = <span class="num">3</span>;
+    <span class="cmt">// m x n matrix initialized with <span class="num">0</span> || m = row, n = col</span>
+    <span class="kw">vector</span>&lt;<span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;&gt; mat(m, <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;(n, <span class="num">0</span>));
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding Elements ========== //</span>
+    <span class="cmt">// Adds <span class="num">13</span> to the end of the <span class="kw">vector</span>.</span>
+    v.push_back(<span class="num">13</span>);
+    v.emplace_back(<span class="num">13</span>); <span class="cmt">// generally faster than &lt;push_back&gt;</span>
+
+    <span class="cmt">// Add <span class="num">14</span> to the position (start) of the <span class="kw">vector</span></span>
+    v.insert(v.begin(), <span class="num">10</span>);
+
+    <span class="cmt">// Add <span class="num">14</span> to the position (end) of the <span class="kw">vector</span></span>
+    v.insert(v.end(), <span class="num">14</span>);
+
+    <span class="cmt">// Adds all three values at once to the end of the <span class="kw">vector</span></span>
+    v.insert(v.end(), {<span class="num">14</span>, <span class="num">20</span>, <span class="num">25</span>});
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+    <span class="cmt">// Delete element from end.</span>
+    v.pop_back();
+    <span class="cmt">// Clear the whole <span class="kw">vector</span>.</span>
+    v.clear();
+    <span class="cmt">// Erases element at position <span class="num">1</span>.</span>
+    v.erase(v.begin() + <span class="num">1</span>);
+    <span class="cmt">// Erases first <span class="num">2</span> element from start.</span>
+    v.erase(v.begin(), v.begin() + <span class="num">2</span>);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Getting Elements ========== //</span>
+    <span class="cmt">// Using []</span>
+    v[<span class="num">0</span>];
+    <span class="cmt">// Using at()</span>
+    v.at(<span class="num">0</span>);
+    <span class="cmt">// Returns first element value</span>
+    v.front();
+    <span class="cmt">// Returns last element value</span>
+    v.back();
+
+    <span class="cmt">// Points to the first element (<span class="num">1</span>)</span>
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; vec = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>};
+    <span class="kw">auto</span> it = vec.begin();
+    <span class="cmt">// Points to the last element (<span class="num">1</span>)</span>
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; vec = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>};
+    <span class="kw">auto</span> it = vec.end();
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Important Methods ========== //</span>
+    <span class="cmt">// Returns the number of elements in the <span class="kw">vector</span>.</span>
+    v.size();
+    <span class="cmt">// Checks <span class="kw">if</span> the <span class="kw">vector</span> is empty</span>
+    v.empty(); <span class="cmt">// <span class="kw">return</span> true or false</span>
+
+    <span class="cmt">// Sorting [Time complexity:O(n log n)]</span>
+    <span class="cmt">// Ascending order (default)</span>
+    sort(vec.begin(), vec.end());
+    <span class="cmt">// Descending order</span>
+    sort(vec.begin(), vec.end(), greater&lt;<span class="kw">int</span>&gt;());
+    <span class="cmt">// Reverse <span class="kw">vector</span></span>
+    reverse(vec.begin(), vec.end());
+    <span class="cmt">// Check <span class="kw">if</span> <span class="kw">vector</span> is sorted</span>
+    <span class="kw">bool</span> sorted = is_sorted(v.begin(), v.end());
+
+    <span class="cmt">// get maximum value</span>
+    <span class="kw">int</span> maxVal = *max_element(v.begin(), v.end());
+    <span class="cmt">// get minimum value</span>
+    <span class="kw">int</span> minVal = *min_element(v.begin(), v.end());
+
+    <span class="cmt">// Sum of all elements</span>
+    <span class="kw">int</span> total = accumulate(v.begin(), v.end(), <span class="num">0</span>);
+
+    <span class="cmt">// Product of all elements</span>
+    <span class="kw">int</span> product = accumulate(v.begin(), v.end(), <span class="num">1</span>, [](<span class="kw">int</span> a, <span class="kw">int</span> b)
+                             { <span class="kw">return</span> a * b; });
+
+    <span class="cmt">// Rotate <span class="kw">vector</span> (circular shift)</span>
+    <span class="cmt">// rotates left by k positions; use reverse trick <span class="kw">for</span> right rotation</span>
+    <span class="kw">int</span> k = <span class="num">4</span>;
+    rotate(v.begin(), v.begin() + k, v.end());
+
+    <span class="cmt">// count how many times <span class="num">5</span> appears</span>
+    <span class="kw">int</span> countVal = count(v.begin(), v.end(), <span class="num">5</span>);
+
+    <span class="cmt">// Binary search (needs sorted <span class="kw">vector</span>) returns true <span class="kw">if</span> <span class="num">10</span> exists</span>
+    <span class="kw">bool</span> exists = binary_search(v.begin(), v.end(), <span class="num">10</span>);
+
+    <span class="cmt">// Iterating vectors</span>
+    <span class="cmt">// you can use &lt;<span class="kw">int</span>&gt; instead of &lt;<span class="kw">auto</span>&gt;</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> num : v)
+    {
+        cout &lt;&lt; num &lt;&lt; endl;
+    }
+
+    <span class="cmt">// Swapping two vectors</span>
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; vec1 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>};
+    <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; vec2 = {<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>};
+    vec1.swap(vec2); <span class="cmt">// vec1 = {<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>}, vec2 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>}</span>
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="stack">
+  <div class="section-badge">02 — STL</div>
+  <h2 class="section-title">Stack</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Declaration ========== //</span>
+    <span class="cmt">// Creates an empty <span class="kw">stack</span> of integers.</span>
+    <span class="kw">stack</span>&lt;<span class="kw">int</span>&gt; st;
+    <span class="cmt">// Creates an empty <span class="kw">stack</span> of strings.</span>
+    <span class="kw">stack</span>&lt;<span class="kw">string</span>&gt; st_str;
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding Elements ========== //</span>
+    <span class="cmt">// Adds <span class="num">23</span> to the top of the <span class="kw">stack</span>.</span>
+    st.push(<span class="num">23</span>);
+    <span class="cmt">// Adds <span class="num">34</span> to the top of the <span class="kw">stack</span> (alternative to push()).</span>
+    st.emplace(<span class="num">34</span>);
+    <span class="cmt">// Emplace is slightly more efficient as it constructs the element in-place.</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+    <span class="cmt">// Removes the top element from the <span class="kw">stack</span>.</span>
+    st.pop();
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+    <span class="cmt">// Returns the top element of the <span class="kw">stack</span>.</span>
+    <span class="kw">int</span> top_element = st.top();
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Important Methods ========== //</span>
+    <span class="cmt">// Checks <span class="kw">if</span> the <span class="kw">stack</span> is empty.</span>
+    st.empty(); <span class="cmt">// Returns true or false.</span>
+    <span class="cmt">// Returns the number of elements in the <span class="kw">stack</span>.</span>
+    st.size();
+
+    <span class="cmt">// Swapping two stacks.</span>
+    <span class="kw">stack</span>&lt;<span class="kw">int</span>&gt; st2;
+    st2.swap(st); <span class="cmt">// Swaps the elements of st and st2.</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Iterating Through Stack ========== //</span>
+    <span class="cmt">// Iterates through the <span class="kw">stack</span> and prints elements.</span>
+    <span class="cmt">// Note: Direct indexing is not allowed in stacks.</span>
+    <span class="kw">while</span> (!st.empty())
+    {
+        <span class="cmt">// Prints the top element of the <span class="kw">stack</span>.</span>
+        std::cout &lt;&lt; st.top() &lt;&lt; std::endl;
+        <span class="cmt">// Removes the top element from the <span class="kw">stack</span>.</span>
+        st.pop();
+    }
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="queue">
+  <div class="section-badge">03 — STL</div>
+  <h2 class="section-title">Queue</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Working Principal ========== //</span>
+    <span class="cmt">// FIFO --&gt; First In First Out</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Declaration ========== //</span>
+    <span class="cmt">// Creates an empty <span class="kw">queue</span> of integers.</span>
+    <span class="kw">queue</span>&lt;<span class="kw">int</span>&gt; que;
+    <span class="cmt">// Creates an empty <span class="kw">queue</span> of strings.</span>
+    <span class="kw">queue</span>&lt;<span class="kw">string</span>&gt; que_str;
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding Elements ========== //</span>
+    <span class="cmt">// Adds <span class="num">1</span> at the end of the <span class="kw">queue</span>.</span>
+    que.push(<span class="num">1</span>);
+    que.push(<span class="num">2</span>);
+    <span class="cmt">// (alternative to push()).</span>
+    que.emplace(<span class="num">3</span>); <span class="cmt">// generally faster than &lt;push&gt;</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+    <span class="cmt">// Removes the front element from the <span class="kw">queue</span>.</span>
+    que.pop();
+    <span class="cmt">// Clear the whole <span class="kw">queue</span>.</span>
+    <span class="kw">while</span> (!que.empty())
+    {
+        que.pop();
+    }
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+    <span class="cmt">// Returns the front element of the <span class="kw">queue</span>.</span>
+    <span class="kw">int</span> front_element = que.front();
+    <span class="cmt">// Returns the back/end element of the <span class="kw">queue</span>.</span>
+    <span class="kw">int</span> back_element = que.back();
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Important Methods ========== //</span>
+    <span class="cmt">// Checks <span class="kw">if</span> the <span class="kw">queue</span> is empty.</span>
+    que.empty(); <span class="cmt">// Returns true or false.</span>
+    <span class="cmt">// Returns the number of elements in the <span class="kw">queue</span>.</span>
+    que.size();
+
+    <span class="cmt">// Copying the <span class="kw">queue</span> to another <span class="kw">queue</span></span>
+    <span class="kw">queue</span>&lt;<span class="kw">int</span>&gt; tmp_que = que;
+
+    <span class="cmt">// Swapping two queues.</span>
+    <span class="kw">queue</span>&lt;<span class="kw">int</span>&gt; que2;
+    que2.swap(que); <span class="cmt">// Swaps the elements of que and que2.</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Iterating Through Queue ========== //</span>
+    <span class="cmt">// Iterates through the <span class="kw">queue</span> and prints elements.</span>
+    <span class="cmt">// Note: Direct indexing is not allowed in queues.</span>
+    <span class="kw">while</span> (!que.empty())
+    {
+        <span class="cmt">// Prints the front element of the <span class="kw">queue</span>.</span>
+        std::cout &lt;&lt; que.front() &lt;&lt; std::endl;
+        <span class="cmt">// Removes the front element from the <span class="kw">queue</span>.</span>
+        que.pop();
+    }
+
+    <span class="cmt">// RECOMMENDED METHOD FOR INTERATING:</span>
+    std::<span class="kw">queue</span>&lt;<span class="kw">int</span>&gt; temp = que; <span class="cmt">// Copy the original <span class="kw">queue</span></span>
+    <span class="cmt">// so that original <span class="kw">queue</span> remain same, <span class="kw">for</span> future reference</span>
+    <span class="cmt">// but to &lt;reduce time complexity&gt; you can use above method :)</span>
+    <span class="kw">while</span> (!temp.empty())
+    {
+        std::cout &lt;&lt; temp.front() &lt;&lt; <span class="str">&quot; &quot;</span>;
+        temp.pop();
+    }
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="priority-queue">
+  <div class="section-badge">04 — STL</div>
+  <h2 class="section-title">Priority-Queue</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Working Principle ========== //</span>
+    <span class="cmt">// Max-Heap by default: Largest element at the top</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Declaration ========== //</span>
+    <span class="cmt">// Max-Heap (default)</span>
+    <span class="kw">priority_queue</span>&lt;<span class="kw">int</span>&gt; max_pq;
+
+    <span class="cmt">// Min-Heap</span>
+    <span class="kw">priority_queue</span>&lt;<span class="kw">int</span>, <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;, greater&lt;<span class="kw">int</span>&gt;&gt; min_pq;
+
+    <span class="cmt">// Max-Heap <span class="kw">for</span> strings (lexicographical)</span>
+    <span class="kw">priority_queue</span>&lt;<span class="kw">string</span>&gt; str_pq;
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding Elements ========== //</span>
+    max_pq.push(<span class="num">10</span>);
+    max_pq.push(<span class="num">30</span>);
+    max_pq.emplace(<span class="num">20</span>); <span class="cmt">// Generally faster than push</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+    <span class="cmt">// Removes the top (largest) element.</span>
+    max_pq.pop();
+    <span class="cmt">// Clear the entire <span class="kw">priority_queue</span>.</span>
+    <span class="kw">while</span> (!max_pq.empty())
+    {
+        max_pq.pop();
+    }
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+    <span class="cmt">// Returns the top element (max <span class="kw">for</span> max-heap, min <span class="kw">for</span> min-heap).</span>
+    <span class="kw">int</span> top_element = max_pq.top();
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Important Methods ========== //</span>
+    <span class="cmt">// Check <span class="kw">if</span> the <span class="kw">priority_queue</span> is empty.</span>
+    max_pq.empty(); <span class="cmt">// Returns true or false.</span>
+    <span class="cmt">// Returns the number of elements in the <span class="kw">queue</span>.</span>
+    max_pq.size();
+
+    <span class="cmt">// Copying to another <span class="kw">priority_queue</span></span>
+    <span class="kw">priority_queue</span>&lt;<span class="kw">int</span>&gt; temp_pq = max_pq;
+
+    <span class="cmt">// Swapping two priority_queues</span>
+    <span class="kw">priority_queue</span>&lt;<span class="kw">int</span>&gt; another_pq;
+    another_pq.swap(max_pq);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Iterating Through Priority Queue ========== //</span>
+    <span class="cmt">// NOTE: No direct indexing</span>
+    <span class="cmt">// So we copy and iterate</span>
+
+    std::<span class="kw">priority_queue</span>&lt;<span class="kw">int</span>&gt; pq_copy = max_pq;
+    <span class="kw">while</span> (!pq_copy.empty())
+    {
+        std::cout &lt;&lt; pq_copy.top() &lt;&lt; <span class="str">&quot; &quot;</span>;
+        pq_copy.pop();
+    }
+    std::cout &lt;&lt; std::endl;
+
+    <span class="cmt">// For min-heap</span>
+    min_pq.push(<span class="num">5</span>);
+    min_pq.push(<span class="num">1</span>);
+    min_pq.push(<span class="num">3</span>);
+
+    std::<span class="kw">priority_queue</span>&lt;<span class="kw">int</span>, <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;, greater&lt;<span class="kw">int</span>&gt;&gt; min_copy = min_pq;
+    <span class="kw">while</span> (!min_copy.empty())
+    {
+        std::cout &lt;&lt; min_copy.top() &lt;&lt; <span class="str">&quot; &quot;</span>;
+        min_copy.pop();
+    }
+    std::cout &lt;&lt; std::endl;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="set">
+  <div class="section-badge">05 — STL</div>
+  <h2 class="section-title">Set</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+
+    <span class="cmt">// ========== Note ========== //</span>
+    <span class="cmt">// std::<span class="kw">set</span> is always sorted in ascending order by default.</span>
+
+    <span class="cmt">// ========== Declaration ========== //</span>
+    <span class="cmt">// Creates an empty <span class="kw">set</span> of integers.</span>
+    <span class="kw">set</span>&lt;<span class="kw">int</span>&gt; s;
+    <span class="cmt">// Creates an empty <span class="kw">set</span> of <span class="kw">string</span>.</span>
+    <span class="kw">set</span>&lt;<span class="kw">string</span>&gt; s;
+    <span class="cmt">// Creates a <span class="kw">set</span> containing {<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>}.</span>
+    <span class="kw">set</span>&lt;<span class="kw">int</span>&gt; s{<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>};
+    <span class="cmt">// Creates a <span class="kw">set</span> containing {<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>}.</span>
+    <span class="kw">set</span>&lt;<span class="kw">int</span>&gt; s = {<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>};
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding New Elements ========== //</span>
+    <span class="cmt">// Adds <span class="num">13</span> to the <span class="kw">set</span>.</span>
+    s.insert(<span class="num">13</span>);
+    s.emplace(<span class="num">14</span>);
+    <span class="cmt">// For <span class="kw">int</span>, insert() and emplace() are effectively the same.</span>
+
+    <span class="cmt">// emplace_hint will insert <span class="num">20</span> after <span class="num">10</span></span>
+    <span class="kw">auto</span> it = s.find(<span class="num">10</span>);
+    s.emplace_hint(it, <span class="num">20</span>); <span class="cmt">// Hint: insert near <span class="num">10</span></span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+    <span class="cmt">// Delete element from the <span class="kw">set</span>.</span>
+    s.erase(<span class="num">10</span>);
+    
+    <span class="cmt">// Removes all elements.</span>
+    s.clear();
+
+    <span class="cmt">// Erases element by range</span>
+    <span class="cmt">// {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>}</span>
+    <span class="kw">auto</span> start = s.find(<span class="num">20</span>);
+    <span class="kw">auto</span> end = s.find(<span class="num">50</span>);
+    s.erase(start, end); <span class="cmt">// removes <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span></span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+    <span class="cmt">// find(value)	Returns iterator to element or end() <span class="kw">if</span> not found.</span>
+    <span class="kw">auto</span> it = s.find(<span class="num">20</span>);
+    <span class="kw">if</span> (it != s.end())
+        std::cout &lt;&lt; <span class="str">&quot;Found: &quot;</span> &lt;&lt; *it &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+    <span class="kw">else</span>
+        std::cout &lt;&lt; <span class="str">&quot;Not found\n&quot;</span>;
+
+    <span class="cmt">// count(value)	Returns <span class="num">0</span> or <span class="num">1</span> (since <span class="kw">set</span> stores unique elements).</span>
+    std::cout &lt;&lt; <span class="str">&quot;Count of <span class="num">2</span>: &quot;</span> &lt;&lt; s.count(<span class="num">2</span>) &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// contains(value)	Returns true <span class="kw">if</span> value exists</span>
+    <span class="cmt">// #### (C++<span class="num">20</span>+).</span>
+    <span class="cmt">// <span class="kw">if</span> (s.contains(<span class="num">200</span>))</span>
+    <span class="cmt">//     std::cout &lt;&lt; <span class="str">&quot;Set contains <span class="num">200</span>\n&quot;</span>;</span>
+
+    <span class="cmt">// Points to the first element in the <span class="kw">set</span></span>
+    <span class="cmt">// begin() gives an iterator to the smallest element.</span>
+    <span class="kw">if</span> (!s.empty())
+        std::cout &lt;&lt; <span class="str">&quot;First element: &quot;</span> &lt;&lt; *s.begin() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// rbegin() start reverse of begin() ==&gt; <span class="kw">return</span> last element (largest one as <span class="kw">set</span> is sorted by default)</span>
+    <span class="kw">if</span> (!s.empty())
+        std::cout &lt;&lt; <span class="str">&quot;First element: &quot;</span> &lt;&lt; *s.rbegin() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Important Methods ========== //</span>
+    <span class="cmt">// Returns the number of elements in the <span class="kw">set</span>.</span>
+    s.size();
+
+    <span class="cmt">// Checks <span class="kw">if</span> the <span class="kw">set</span> is empty</span>
+    s.empty(); <span class="cmt">// <span class="kw">return</span> true or false</span>
+
+    <span class="cmt">// Iterating <span class="kw">set</span></span>
+    <span class="cmt">// you can use &lt;<span class="kw">int</span>&gt; instead of &lt;<span class="kw">auto</span>&gt;</span>
+    <span class="cmt">// 🌸 Method <span class="num">1</span>:</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> num : s)
+        cout &lt;&lt; num &lt;&lt; endl;
+
+    <span class="cmt">// Method <span class="num">2</span>:</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> it = s.begin(); it != s.end(); it++)
+        cout &lt;&lt; *it &lt;&lt; endl;
+
+    <span class="cmt">// Swapping two sets</span>
+    <span class="kw">set</span>&lt;<span class="kw">int</span>&gt; set2 = {<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>};
+    <span class="kw">set</span>&lt;<span class="kw">int</span>&gt; set1 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>};
+    set1.swap(set2); <span class="cmt">// set1 = {<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>}, set2 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>}</span>
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="unordered-set">
+  <div class="section-badge">06 — STL</div>
+  <h2 class="section-title">Unordered-Set</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+
+    <span class="cmt">// ========== Note ========== //</span>
+    <span class="cmt">// std::<span class="kw">unordered_set</span> is not sorted, elements have no fixed order</span>
+
+    <span class="cmt">// ========== Declaration ========== //</span>
+    <span class="cmt">// Creates an empty <span class="kw">unordered_set</span> of integers.</span>
+    <span class="kw">unordered_set</span>&lt;<span class="kw">int</span>&gt; s;
+    <span class="cmt">// Creates an empty <span class="kw">unordered_set</span> of <span class="kw">string</span>.</span>
+    <span class="kw">unordered_set</span>&lt;<span class="kw">string</span>&gt; s;
+    <span class="cmt">// Creates a <span class="kw">unordered_set</span> containing {<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>}.</span>
+    <span class="kw">unordered_set</span>&lt;<span class="kw">int</span>&gt; s{<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>};
+    <span class="cmt">// Creates a <span class="kw">unordered_set</span> containing {<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>}.</span>
+    <span class="kw">unordered_set</span>&lt;<span class="kw">int</span>&gt; s = {<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>};
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding New Elements ========== //</span>
+    <span class="cmt">// Adds <span class="num">13</span> to the <span class="kw">unordered_set</span>;.</span>
+    s.insert(<span class="num">13</span>);
+    s.emplace(<span class="num">14</span>);
+    <span class="cmt">// For <span class="kw">int</span>, insert() and emplace() are effectively the same.</span>
+
+    <span class="cmt">// emplace_hint will insert <span class="num">20</span> after <span class="num">10</span></span>
+    <span class="cmt">// <span class="kw">auto</span> it = s.find(<span class="num">10</span>);</span>
+    <span class="cmt">// s.emplace_hint(it, <span class="num">20</span>);</span>
+    <span class="cmt">// No emplace_hint() in <span class="kw">unordered_set</span></span>
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+    <span class="cmt">// Delete element from the <span class="kw">unordered_set</span>.</span>
+    s.erase(<span class="num">10</span>);
+
+    <span class="cmt">// Removes all elements.</span>
+    s.clear();
+
+    <span class="cmt">// Erases element by range</span>
+    <span class="cmt">// {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>}</span>
+    <span class="kw">auto</span> start = s.find(<span class="num">20</span>);
+    <span class="kw">auto</span> end = s.find(<span class="num">50</span>);
+    s.erase(start, end); <span class="cmt">// removes <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span></span>
+    <span class="cmt">// Order is undefined, but range erase still works based on iterators.</span>
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+    <span class="cmt">// find(value)	Returns iterator to element or end() <span class="kw">if</span> not found.</span>
+    <span class="kw">auto</span> it = s.find(<span class="num">20</span>);
+    <span class="kw">if</span> (it != s.end())
+        std::cout &lt;&lt; <span class="str">&quot;Found: &quot;</span> &lt;&lt; *it &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+    <span class="kw">else</span>
+        std::cout &lt;&lt; <span class="str">&quot;Not found\n&quot;</span>;
+
+    <span class="cmt">// count(value)	Returns <span class="num">0</span> or <span class="num">1</span> (since <span class="kw">unordered_set</span>  stores unique elements).</span>
+    std::cout &lt;&lt; <span class="str">&quot;Count of <span class="num">2</span>: &quot;</span> &lt;&lt; s.count(<span class="num">2</span>) &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// contains(value)	Returns true <span class="kw">if</span> value exists</span>
+    <span class="cmt">// #### (C++<span class="num">20</span>+).</span>
+    <span class="cmt">// <span class="kw">if</span> (s.contains(<span class="num">200</span>))</span>
+    <span class="cmt">//     std::cout &lt;&lt; <span class="str">&quot;Unordered Set contains <span class="num">200</span>\n&quot;</span>;</span>
+
+    <span class="cmt">// Points to the first element in the case of <span class="kw">set</span></span>
+    <span class="cmt">// but <span class="kw">for</span> <span class="kw">unordered_set</span></span>
+    <span class="cmt">// begin() not gives <span class="str">&quot;first&quot;</span> in any order (asc or desc)</span>
+    <span class="kw">if</span> (!s.empty())
+        std::cout &lt;&lt; <span class="str">&quot;Some element: &quot;</span> &lt;&lt; *s.begin() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Important Methods ========== //</span>
+    <span class="cmt">// Returns the number of elements in the <span class="kw">unordered_set</span>.</span>
+    s.size();
+
+    <span class="cmt">// Checks <span class="kw">if</span> the <span class="kw">unordered_set</span> is empty</span>
+    s.empty(); <span class="cmt">// <span class="kw">return</span> true or false</span>
+
+    <span class="cmt">// Iterating <span class="kw">unordered_set</span></span>
+    <span class="cmt">// you can use &lt;<span class="kw">int</span>&gt; instead of &lt;<span class="kw">auto</span>&gt;</span>
+    <span class="cmt">// 🌸 Method <span class="num">1</span>:</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> num : s)
+        cout &lt;&lt; num &lt;&lt; endl;
+
+    <span class="cmt">// Method <span class="num">2</span>:</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> it = s.begin(); it != s.end(); it++)
+        cout &lt;&lt; *it &lt;&lt; endl;
+
+    <span class="cmt">// Swapping two unordered_sets</span>
+    <span class="kw">unordered_set</span>&lt;<span class="kw">int</span>&gt; set1 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>};
+    <span class="kw">unordered_set</span>&lt;<span class="kw">int</span>&gt; set2 = {<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>};
+    set1.swap(set2); <span class="cmt">// set1 = {<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>}, set2 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>}</span>
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="map">
+  <div class="section-badge">07 — STL</div>
+  <h2 class="section-title">Map</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Note ======================== //</span>
+    <span class="cmt">// std::<span class="kw">map</span> stores key-value pairs</span>
+    <span class="cmt">// Keys are unique and sorted in ascending order by default</span>
+    <span class="cmt">// Average time complexity: O(log n) <span class="kw">for</span> insert/find/erase</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Declaration ========== //</span>
+
+    <span class="cmt">// Empty <span class="kw">map</span> of <span class="kw">int</span> to <span class="kw">string</span></span>
+    <span class="cmt">// <span class="kw">map</span>&lt;key, value&gt; m;</span>
+    <span class="kw">map</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; my_map;
+    <span class="kw">map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; m;
+
+    <span class="cmt">// Map initialized with key-value pairs</span>
+    <span class="kw">map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; m1 = {
+        {<span class="num">1</span>, <span class="str">&quot;apple&quot;</span>},
+        {<span class="num">2</span>, <span class="str">&quot;banana&quot;</span>},
+        {<span class="num">3</span>, <span class="str">&quot;cherry&quot;</span>}};
+
+    <span class="cmt">// Copy constructor</span>
+    <span class="kw">map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; m2 = m1;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding New Elements ========== //</span>
+
+    <span class="cmt">// Method <span class="num">1</span>: insert() — <span class="kw">using</span> <span class="kw">pair</span></span>
+    m.insert({<span class="num">4</span>, <span class="str">&quot;date&quot;</span>});
+
+    <span class="cmt">// Method <span class="num">2</span>: emplace() — constructs in-place</span>
+    m.emplace(<span class="num">5</span>, <span class="str">&quot;elderberry&quot;</span>);
+
+    <span class="cmt">// Method <span class="num">3</span>: operator[] — inserts or updates</span>
+    <span class="cmt">// If key exists, then update it otherwise, insert it</span>
+    m[<span class="num">6</span>] = <span class="str">&quot;fig&quot;</span>;       <span class="cmt">// inserts new <span class="kw">pair</span></span>
+    m[<span class="num">2</span>] = <span class="str">&quot;blueberry&quot;</span>; <span class="cmt">// updates value <span class="kw">for</span> key <span class="num">2</span></span>
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+
+    <span class="cmt">// Erase by key</span>
+    m.erase(<span class="num">4</span>); <span class="cmt">// removes key <span class="num">4</span></span>
+
+    <span class="cmt">// Removes all key-value pairs</span>
+    m.clear();
+
+    <span class="cmt">// Erase by iterator</span>
+    <span class="kw">auto</span> it = m.find(<span class="num">3</span>);
+    <span class="kw">if</span> (it != m.end())
+        m.erase(it); <span class="cmt">// removes key <span class="num">3</span></span>
+
+    <span class="cmt">// Erase range</span>
+    <span class="kw">auto</span> start = m.begin();
+    <span class="kw">auto</span> end = m.find(<span class="num">5</span>); <span class="cmt">// not included</span>
+    m.erase(start, end);  <span class="cmt">// removes keys before <span class="num">5</span></span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+
+    <span class="cmt">// Access <span class="kw">using</span> key (inserts default value <span class="kw">if</span> key is absent!)</span>
+    cout &lt;&lt; m[<span class="num">1</span>] &lt;&lt; <span class="str">&quot;\n&quot;</span>; <span class="cmt">// returns <span class="str">&quot;&quot;</span> <span class="kw">if</span> key <span class="num">1</span> not present</span>
+
+    <span class="cmt">// at() — throws std::out_of_range <span class="kw">if</span> key not found</span>
+    cout &lt;&lt; m.at(<span class="num">5</span>) &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// find() — returns iterator to key, or end() <span class="kw">if</span> not found</span>
+    <span class="kw">if</span> (m.find(<span class="num">2</span>) != m.end())
+        cout &lt;&lt; <span class="str">&quot;Found key <span class="num">2</span>\n&quot;</span>;
+
+    <span class="cmt">// count() — returns <span class="num">1</span> <span class="kw">if</span> key exists, <span class="num">0</span> otherwise</span>
+    cout &lt;&lt; <span class="str">&quot;Count of <span class="num">6</span>: &quot;</span> &lt;&lt; m.count(<span class="num">6</span>) &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Access First &amp; Last Element ========== //</span>
+
+    <span class="cmt">// First element</span>
+    <span class="kw">auto</span> first = m5.begin();
+    cout &lt;&lt; <span class="str">&quot;First key: &quot;</span> &lt;&lt; first-&gt;first &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Last element</span>
+    <span class="kw">auto</span> last = m5.rbegin();
+    cout &lt;&lt; <span class="str">&quot;Last key: &quot;</span> &lt;&lt; last-&gt;first &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Iterating over <span class="kw">map</span> ========== //</span>
+
+    <span class="cmt">// 🌳 NOTE: Order of output is sorted</span>
+
+    <span class="cmt">// 🌸 Method <span class="num">1</span>: range-based <span class="kw">for</span> loop</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> [key, value] : m)
+        cout &lt;&lt; key &lt;&lt; <span class="str">&quot; =&gt; &quot;</span> &lt;&lt; value &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Method <span class="num">2</span>: iterator (ascending)</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> it = m.begin(); it != m.end(); ++it)
+        cout &lt;&lt; it-&gt;first &lt;&lt; <span class="str">&quot; -&gt; &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Reverse iteration</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> it = m5.rbegin(); it != m5.rend(); ++it)
+        cout &lt;&lt; it-&gt;first &lt;&lt; <span class="str">&quot; -&gt; &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Useful Methods ========== //</span>
+
+    <span class="cmt">// Check <span class="kw">if</span> empty</span>
+    <span class="kw">if</span> (m.empty())
+        cout &lt;&lt; <span class="str">&quot;Map is empty\n&quot;</span>;
+
+    <span class="cmt">// Size of <span class="kw">map</span></span>
+    cout &lt;&lt; <span class="str">&quot;Map size: &quot;</span> &lt;&lt; m.size() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Swap with another <span class="kw">map</span></span>
+    <span class="kw">map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; m3 = {{<span class="num">10</span>, <span class="str">&quot;grape&quot;</span>}, {<span class="num">20</span>, <span class="str">&quot;kiwi&quot;</span>}};
+    <span class="kw">map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; m4 = {{<span class="num">1</span>, <span class="str">&quot;apple&quot;</span>}, {<span class="num">2</span>, <span class="str">&quot;banana&quot;</span>}};
+    m3.swap(m4);
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="unordered-map">
+  <div class="section-badge">08 — STL</div>
+  <h2 class="section-title">Unordered-Map</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Note ======================== //</span>
+    <span class="cmt">// std::<span class="kw">unordered_map</span> stores key-value pairs</span>
+    <span class="cmt">// Keys are unique, but not sorted (hashed storage)</span>
+    <span class="cmt">// Average time complexity: O(<span class="num">1</span>) <span class="kw">for</span> insert/find/erase</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Declaration ========== //</span>
+
+    <span class="cmt">// Empty <span class="kw">unordered_map</span> of <span class="kw">int</span> to <span class="kw">string</span></span>
+    <span class="kw">unordered_map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; um;
+
+    <span class="cmt">// Initialized with key-value pairs</span>
+    <span class="kw">unordered_map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; um1 = {
+        {<span class="num">1</span>, <span class="str">&quot;apple&quot;</span>},
+        {<span class="num">2</span>, <span class="str">&quot;banana&quot;</span>},
+        {<span class="num">3</span>, <span class="str">&quot;cherry&quot;</span>}};
+
+    <span class="cmt">// Copy constructor</span>
+    <span class="kw">unordered_map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; um2 = um1;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding New Elements ========== //</span>
+
+    <span class="cmt">// Method <span class="num">1</span>: insert() — <span class="kw">using</span> <span class="kw">pair</span></span>
+    um.insert({<span class="num">4</span>, <span class="str">&quot;date&quot;</span>});
+
+    <span class="cmt">// Method <span class="num">2</span>: emplace() — constructs in-place</span>
+    um.emplace(<span class="num">5</span>, <span class="str">&quot;elderberry&quot;</span>);
+
+    <span class="cmt">// Method <span class="num">3</span>: operator[] — inserts or updates</span>
+    um[<span class="num">6</span>] = <span class="str">&quot;fig&quot;</span>;       <span class="cmt">// inserts new <span class="kw">pair</span></span>
+    um[<span class="num">2</span>] = <span class="str">&quot;blueberry&quot;</span>; <span class="cmt">// updates value <span class="kw">for</span> key <span class="num">2</span></span>
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+
+    <span class="cmt">// Erase by key</span>
+    um.erase(<span class="num">4</span>); <span class="cmt">// removes key <span class="num">4</span></span>
+
+    <span class="cmt">// Removes all key-value pairs</span>
+    um.clear();
+
+    <span class="cmt">// Erase by iterator</span>
+    <span class="kw">auto</span> it = um.find(<span class="num">3</span>);
+    <span class="kw">if</span> (it != um.end())
+        um.erase(it); <span class="cmt">// removes key <span class="num">3</span></span>
+
+    <span class="cmt">// 🌸 Range erase is not available in &lt;<span class="kw">unordered_map</span>&gt; like &lt;<span class="kw">map</span>&gt;</span>
+    <span class="cmt">// <span class="kw">auto</span> start = m.begin();</span>
+    <span class="cmt">// <span class="kw">auto</span> end = m.find(<span class="num">5</span>); // not included</span>
+    <span class="cmt">// m.erase(start, end);  // removes keys before <span class="num">5</span></span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+
+    <span class="cmt">// Access <span class="kw">using</span> key (inserts default value <span class="kw">if</span> key is absent)</span>
+    cout &lt;&lt; um[<span class="num">1</span>] &lt;&lt; <span class="str">&quot;\n&quot;</span>; <span class="cmt">// returns <span class="str">&quot;&quot;</span> <span class="kw">if</span> key <span class="num">1</span> not present</span>
+
+    <span class="cmt">// at() — throws std::out_of_range <span class="kw">if</span> key not found</span>
+    try {
+        cout &lt;&lt; um.at(<span class="num">5</span>) &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+    } catch (out_of_range &amp;e) {
+        cout &lt;&lt; <span class="str">&quot;Key <span class="num">5</span> not found\n&quot;</span>;
+    }
+
+    <span class="cmt">// find() — returns iterator to key, or end() <span class="kw">if</span> not found</span>
+    <span class="kw">if</span> (um.find(<span class="num">2</span>) != um.end())
+        cout &lt;&lt; <span class="str">&quot;Found key <span class="num">2</span>\n&quot;</span>;
+
+    <span class="cmt">// count() — returns <span class="num">1</span> <span class="kw">if</span> key exists, <span class="num">0</span> otherwise</span>
+    cout &lt;&lt; <span class="str">&quot;Count of <span class="num">6</span>: &quot;</span> &lt;&lt; um.count(<span class="num">6</span>) &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Iterating over <span class="kw">unordered_map</span> ========== //</span>
+
+    <span class="cmt">// 🌳 NOTE: Order of output is not sorted</span>
+
+    <span class="cmt">// 🌸 Method <span class="num">1</span>: range-based <span class="kw">for</span> loop</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> [key, value] : um)
+        cout &lt;&lt; key &lt;&lt; <span class="str">&quot; =&gt; &quot;</span> &lt;&lt; value &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Method <span class="num">2</span>: iterator</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> it = um.begin(); it != um.end(); ++it)
+        cout &lt;&lt; it-&gt;first &lt;&lt; <span class="str">&quot; -&gt; &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Useful Methods ========== //</span>
+
+    <span class="cmt">// Check <span class="kw">if</span> empty</span>
+    <span class="kw">if</span> (um.empty())
+        cout &lt;&lt; <span class="str">&quot;Map is empty\n&quot;</span>;
+
+    <span class="cmt">// Size of <span class="kw">unordered_map</span></span>
+    cout &lt;&lt; <span class="str">&quot;Map size: &quot;</span> &lt;&lt; um.size() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Swap with another <span class="kw">unordered_map</span></span>
+    <span class="kw">unordered_map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; um3 = {{<span class="num">10</span>, <span class="str">&quot;grape&quot;</span>}, {<span class="num">20</span>, <span class="str">&quot;kiwi&quot;</span>}};
+    <span class="kw">unordered_map</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; um4 = {{<span class="num">1</span>, <span class="str">&quot;apple&quot;</span>}, {<span class="num">2</span>, <span class="str">&quot;banana&quot;</span>}};
+    um3.swap(um4);
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// 🌳 NOTE: For now, not so important <span class="kw">for</span> DSA</span>
+
+    <span class="cmt">// ========== Unordered_map-specific features ========== //</span>
+
+    <span class="cmt">// Load factor — average elements per bucket</span>
+    cout &lt;&lt; <span class="str">&quot;Load factor: &quot;</span> &lt;&lt; um.load_factor() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Bucket count — total number of buckets</span>
+    cout &lt;&lt; <span class="str">&quot;Bucket count: &quot;</span> &lt;&lt; um.bucket_count() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Bucket access (<span class="kw">for</span> internal layout understanding)</span>
+    <span class="kw">for</span> (<span class="kw">size_t</span> i = <span class="num">0</span>; i &lt; um.bucket_count(); ++i) {
+        cout &lt;&lt; <span class="str">&quot;Bucket #&quot;</span> &lt;&lt; i &lt;&lt; <span class="str">&quot; contains: &quot;</span>;
+        <span class="kw">for</span> (<span class="kw">auto</span> it = um.begin(i); it != um.end(i); ++it) {
+            cout &lt;&lt; <span class="str">&quot;{&quot;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="str">&quot;,&quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="str">&quot;} &quot;</span>;
+        }
+        cout &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+    }
+
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="deque">
+  <div class="section-badge">09 — STL</div>
+  <h2 class="section-title">Deque</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Working Principal ========== //</span>
+    <span class="cmt">// Double Ended Queue — insertion &amp; deletion at both ends</span>
+    <span class="cmt">// Average time complexity: O(<span class="num">1</span>) <span class="kw">for</span> pop_front(), pop_back()</span>
+    <span class="cmt">// Average time complexity: O(<span class="num">1</span>) (amortized) <span class="kw">for</span> push_front(), push_back()</span>
+    <span class="cmt">// 🌳 Amortized – Average Constant Time (Sometimes More Costly)</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Declaration ========== //</span>
+    <span class="cmt">// Creates an empty <span class="kw">deque</span> of integers.</span>
+    <span class="kw">deque</span>&lt;<span class="kw">int</span>&gt; dq;
+    <span class="cmt">// Creates an empty <span class="kw">deque</span> of strings.</span>
+    <span class="kw">deque</span>&lt;<span class="kw">string</span>&gt; dq_str;
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding Elements ========== //</span>
+    <span class="cmt">// Adds elements at the back.</span>
+    dq.push_back(<span class="num">10</span>);
+    dq.push_back(<span class="num">20</span>);
+
+    <span class="cmt">// Adds elements at the front.</span>
+    dq.push_front(<span class="num">5</span>);
+
+    <span class="cmt">// emplace is generally faster than push.</span>
+    dq.emplace_back(<span class="num">30</span>);
+    dq.emplace_front(<span class="num">1</span>);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+    <span class="cmt">// Removes element from the back.</span>
+    dq.pop_back();
+    <span class="cmt">// Removes element from the front.</span>
+    dq.pop_front();
+
+    <span class="cmt">// Clear entire <span class="kw">deque</span></span>
+    dq.clear();
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+    <span class="cmt">// Get front element.</span>
+    <span class="kw">int</span> front_element = dq.front();
+    <span class="cmt">// Get back element.</span>
+    <span class="kw">int</span> back_element = dq.back();
+    <span class="cmt">// Get element at specific index.</span>
+    <span class="kw">int</span> second_element = dq[<span class="num">1</span>];   <span class="cmt">// no bounds check</span>
+    <span class="kw">int</span> third_element = dq.at(<span class="num">2</span>); <span class="cmt">// throws exception on invalid index</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Useful Methods ========== //</span>
+    <span class="cmt">// Check <span class="kw">if</span> <span class="kw">deque</span> is empty.</span>
+    dq.empty(); <span class="cmt">// returns true or false</span>
+
+    <span class="cmt">// Get number of elements.</span>
+    dq.size();
+
+    <span class="cmt">// Resize <span class="kw">deque</span></span>
+    dq.resize(<span class="num">5</span>); <span class="cmt">// <span class="kw">if</span> current size &lt; <span class="num">5</span>, fills with <span class="num">0</span> (or default <span class="kw">for</span> type)</span>
+
+    <span class="cmt">// Insert at specific position</span>
+    dq.insert(dq.begin() + <span class="num">1</span>, <span class="num">99</span>); <span class="cmt">// insert <span class="num">99</span> at index <span class="num">1</span></span>
+
+    <span class="cmt">// Erase element at specific position</span>
+    dq.erase(dq.begin() + <span class="num">2</span>); <span class="cmt">// removes element at index <span class="num">2</span></span>
+
+    <span class="cmt">// Swap with another <span class="kw">deque</span></span>
+    <span class="kw">deque</span>&lt;<span class="kw">int</span>&gt; dq2 = {<span class="num">100</span>, <span class="num">200</span>};
+    dq.swap(dq2);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Iterating Through Deque ========== //</span>
+
+    <span class="cmt">// Using index (random access is allowed in <span class="kw">deque</span>)</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; dq.size(); ++i)
+        cout &lt;&lt; dq[i] &lt;&lt; <span class="str">&quot; &quot;</span>;
+
+    <span class="cmt">// Using range-based <span class="kw">for</span> loop</span>
+    <span class="kw">for</span> (<span class="kw">int</span> x : dq)
+        cout &lt;&lt; x &lt;&lt; <span class="str">&quot; &quot;</span>;
+
+    <span class="cmt">// Using iterator</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> it = dq.begin(); it != dq.end(); ++it)
+        cout &lt;&lt; *it &lt;&lt; <span class="str">&quot; &quot;</span>;
+
+    <span class="cmt">// other method (not recommended)</span>
+    std::<span class="kw">deque</span>&lt;<span class="kw">int</span>&gt; temp = dq; <span class="cmt">// Copy the original <span class="kw">queue</span></span>
+    <span class="kw">while</span> (!temp.empty())
+    <span class="cmt">// but to &lt;reduce time complexity&gt; you can use above method :)</span>
+    {
+        std::cout &lt;&lt; temp.front() &lt;&lt; <span class="str">&quot; &quot;</span>;
+        temp.pop_front();
+    }
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="pair">
+  <div class="section-badge">10 — STL</div>
+  <h2 class="section-title">Pair</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Declaration ========== //</span>
+    <span class="cmt">// Simple <span class="kw">pair</span> of <span class="kw">int</span> and <span class="kw">int</span></span>
+    <span class="kw">pair</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; p1 = {<span class="num">1</span>, <span class="num">2</span>};
+
+    <span class="cmt">// Pair of <span class="kw">int</span> and <span class="kw">string</span></span>
+    <span class="kw">pair</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt; p2 = {<span class="num">10</span>, <span class="str">&quot;hello&quot;</span>};
+
+    <span class="cmt">// Using make_pair</span>
+    <span class="kw">pair</span>&lt;<span class="kw">char</span>, <span class="kw">double</span>&gt; p3 = make_pair(<span class="str">&#x27;A&#x27;</span>, <span class="num">3.14</span>);
+
+    <span class="cmt">// Nested <span class="kw">pair</span></span>
+    <span class="kw">pair</span>&lt;<span class="kw">int</span>, <span class="kw">pair</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;&gt; p4 = {<span class="num">1</span>, {<span class="num">2</span>, <span class="num">3</span>}};
+
+    <span class="cmt">// Pair of <span class="kw">pair</span></span>
+    <span class="kw">pair</span>&lt;<span class="kw">pair</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;, <span class="kw">pair</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;&gt; p5 = {{<span class="num">1</span>, <span class="num">2</span>}, {<span class="num">3</span>, <span class="num">4</span>}};
+    <span class="cmt">//   (<span class="num">1</span>)👆           (<span class="num">2</span>)👆</span>
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+    <span class="cmt">// Using first and second</span>
+    cout &lt;&lt; p1.first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; p1.second &lt;&lt; endl;
+
+    cout &lt;&lt; p2.first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; p2.second &lt;&lt; endl;
+
+    <span class="cmt">// Accessing nested <span class="kw">pair</span> elements</span>
+    cout &lt;&lt; p4.first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; p4.second.first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; p4.second.second &lt;&lt; endl;
+
+    <span class="cmt">// Accessing deeply nested <span class="kw">pair</span></span>
+    cout &lt;&lt; p5.first.first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; p5.first.second &lt;&lt; <span class="str">&quot; &quot;</span>;
+    cout &lt;&lt; p5.second.first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; p5.second.second &lt;&lt; endl;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Pair Array ========== //</span>
+    <span class="cmt">// Array of pairs</span>
+    <span class="kw">pair</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; arr[] = {{<span class="num">1</span>, <span class="num">2</span>}, {<span class="num">3</span>, <span class="num">4</span>}, {<span class="num">5</span>, <span class="num">6</span>}};
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">3</span>; i++)
+    {
+        cout &lt;&lt; arr[i].first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; arr[i].second &lt;&lt; endl;
+    }
+
+    <span class="cmt">// Vector of pairs</span>
+    <span class="kw">vector</span>&lt;<span class="kw">pair</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;&gt; vp;
+    vp.push_back({<span class="num">10</span>, <span class="num">20</span>});
+    <span class="cmt">// both are same 👆 👇</span>
+    vp.emplace_back(<span class="num">30</span>, <span class="num">40</span>);
+
+    <span class="kw">for</span> (<span class="kw">auto</span> pr : vp)
+    {
+        cout &lt;&lt; pr.first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; pr.second &lt;&lt; endl;
+    }
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Swapping Pairs ========== //</span>
+    <span class="kw">pair</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; a = {<span class="num">1</span>, <span class="num">2</span>}, b = {<span class="num">3</span>, <span class="num">4</span>};
+    swap(a, b); <span class="cmt">// Now a = {<span class="num">3</span>, <span class="num">4</span>}, b = {<span class="num">1</span>, <span class="num">2</span>}</span>
+
+    cout &lt;&lt; a.first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; a.second &lt;&lt; endl;
+    cout &lt;&lt; b.first &lt;&lt; <span class="str">&quot; &quot;</span> &lt;&lt; b.second &lt;&lt; endl;
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="list">
+  <div class="section-badge">11 — STL</div>
+  <h2 class="section-title">List</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Working Principle ========== //</span>
+    <span class="cmt">// Doubly linked <span class="kw">list</span> — each node points to previous and next.</span>
+    <span class="cmt">// Allows O(<span class="num">1</span>) insertion/deletion anywhere (with iterator).</span>
+    <span class="cmt">// No random access (no []), traversal is linear.</span>
+    <span class="cmt">// Extra memory used due to pointer overhead.</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Declaration ========== //</span>
+    <span class="cmt">// Creates an empty <span class="kw">list</span> of integers.</span>
+    <span class="kw">list</span>&lt;<span class="kw">int</span>&gt; l;
+    <span class="cmt">// Creates a <span class="kw">list</span> with <span class="num">5</span> elements, all initialized to <span class="num">10</span>.</span>
+    <span class="kw">list</span>&lt;<span class="kw">int</span>&gt; l1(<span class="num">5</span>, <span class="num">10</span>);
+    <span class="cmt">// Initializes <span class="kw">list</span> with given values.</span>
+    <span class="kw">list</span>&lt;<span class="kw">int</span>&gt; l2 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>};
+    <span class="cmt">// Copies all elements from l2 to l3.</span>
+    <span class="kw">list</span>&lt;<span class="kw">int</span>&gt; l3(l2);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding Elements ========== //</span>
+    <span class="cmt">// Adds to the end of the <span class="kw">list</span>.</span>
+    l.push_back(<span class="num">10</span>);
+    l.emplace_back(<span class="num">20</span>); <span class="cmt">// slightly faster</span>
+    <span class="cmt">// Adds to the front of the <span class="kw">list</span>.</span>
+    l.push_front(<span class="num">5</span>);
+    l.emplace_front(<span class="num">1</span>);
+    <span class="cmt">// Inserts <span class="num">100</span> at second position (after first element)</span>
+    <span class="kw">auto</span> it = l.begin();
+    ++it;
+    l.insert(it, <span class="num">100</span>);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+    <span class="cmt">// Removes element from the end.</span>
+    l.pop_back();
+    <span class="cmt">// Removes element from the front.</span>
+    l.pop_front();
+    <span class="cmt">// Erases element at iterator position.</span>
+    it = l.begin();
+    advance(it, <span class="num">2</span>); <span class="cmt">// move iterator <span class="num">2</span> steps ahead</span>
+    l.erase(it);
+    <span class="cmt">// Clears the whole <span class="kw">list</span>.</span>
+    l.clear();
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+    <span class="cmt">// 🌳 NOTE: No [] operator in <span class="kw">list</span> (unlike <span class="kw">vector</span>)</span>
+    <span class="cmt">// You must use iterators to access elements.</span>
+    <span class="kw">list</span>&lt;<span class="kw">int</span>&gt; l4 = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};
+    <span class="kw">auto</span> itr = l4.begin();
+    cout &lt;&lt; *itr &lt;&lt; endl; <span class="cmt">// prints first element</span>
+
+    <span class="cmt">// Access front and back elements</span>
+    l4.front(); <span class="cmt">// returns first element</span>
+    l4.back();  <span class="cmt">// returns last element</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Other Important Methods ========== //</span>
+    <span class="cmt">// Returns size of the <span class="kw">list</span></span>
+    l.size();
+    <span class="cmt">// Checks <span class="kw">if</span> <span class="kw">list</span> is empty</span>
+    l.empty(); <span class="cmt">// returns true or false</span>
+
+    <span class="cmt">// Remove all occurrences of a value</span>
+    l2.remove(<span class="num">3</span>); <span class="cmt">// removes all 3s</span>
+
+    <span class="cmt">// Sorting (O(n log n) time)</span>
+    l2.sort();
+
+    <span class="cmt">// Reversing <span class="kw">list</span></span>
+    l2.reverse();
+
+    <span class="cmt">// Removing duplicates (consecutive)</span>
+    l2.unique();
+
+    <span class="cmt">// Swapping two lists</span>
+    <span class="kw">list</span>&lt;<span class="kw">int</span>&gt; a = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>};
+    <span class="kw">list</span>&lt;<span class="kw">int</span>&gt; b = {<span class="num">4</span>, <span class="num">5</span>};
+    a.swap(b); <span class="cmt">// a = {<span class="num">4</span>, <span class="num">5</span>}, b = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>}</span>
+
+    <span class="cmt">// Merging two sorted lists</span>
+    <span class="kw">list</span>&lt;<span class="kw">int</span>&gt; l5 = {<span class="num">1</span>, <span class="num">3</span>, <span class="num">5</span>};
+    <span class="kw">list</span>&lt;<span class="kw">int</span>&gt; l6 = {<span class="num">2</span>, <span class="num">4</span>, <span class="num">6</span>};
+    l5.merge(l6); <span class="cmt">// l5 = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>}</span>
+
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Iterating through List ========== //</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> val : l2)
+    {
+        cout &lt;&lt; val &lt;&lt; <span class="str">&quot; &quot;</span>;
+    }
+    cout &lt;&lt; endl;
+
+    <span class="cmt">// Using iterator</span>
+    <span class="kw">for</span> (<span class="kw">auto</span> it = l2.begin(); it != l2.end(); ++it)
+    {
+        cout &lt;&lt; *it &lt;&lt; <span class="str">&quot; &quot;</span>;
+    }
+    cout &lt;&lt; endl;
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="string">
+  <div class="section-badge">12 — STL</div>
+  <h2 class="section-title">String</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main()
+{
+    <span class="cmt">// ========== Working Principle ========== //</span>
+    <span class="cmt">// std::<span class="kw">string</span> is a dynamic array of characters.</span>
+    <span class="cmt">// Supports O(<span class="num">1</span>) random access via index.</span>
+    <span class="cmt">// Can be concatenated, compared, and searched efficiently.</span>
+    <span class="cmt">// Strings automatically grow as needed.</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Declaration &amp; Initialization ========== //</span>
+    <span class="cmt">// Empty <span class="kw">string</span></span>
+    <span class="kw">string</span> s1;
+    <span class="cmt">// Initialized with literal</span>
+    <span class="kw">string</span> s2(<span class="str">&quot;Hello&quot;</span>);
+    <span class="cmt">// Copy initialization</span>
+    <span class="kw">string</span> s3 = <span class="str">&quot;World&quot;</span>;
+    <span class="cmt">// Copy constructor</span>
+    <span class="kw">string</span> s4(s2);
+    <span class="cmt">// Repeat <span class="str">&#x27;A&#x27;</span> <span class="num">5</span> times</span>
+    <span class="kw">string</span> s5(<span class="num">5</span>, <span class="str">&#x27;A&#x27;</span>);
+    <span class="cmt">// Range constructor</span>
+    <span class="cmt">// Copies all elements from s2 to s6.</span>
+    <span class="kw">string</span> s6(s2.begin(), s2.end());
+
+    <span class="cmt">// <span class="kw">vector</span> of strings</span>
+    <span class="cmt">// <span class="num">3</span> strings, all <span class="str">&quot;abc&quot;</span></span>
+    <span class="kw">vector</span>&lt;<span class="kw">string</span>&gt; strMat(<span class="num">3</span>, <span class="str">&quot;abc&quot;</span>);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Adding / Modifying Elements ========== //</span>
+    <span class="cmt">// Append a character</span>
+    s1.push_back(<span class="str">&#x27;H&#x27;</span>);
+    <span class="cmt">// Append character</span>
+    s1 += <span class="str">&#x27;i&#x27;</span>;
+    <span class="cmt">// Append <span class="kw">string</span></span>
+    s1 += <span class="str">&quot; there!&quot;</span>;
+    <span class="cmt">// Append <span class="kw">string</span></span>
+    s1.append(<span class="str">&quot; Welcome&quot;</span>);
+    <span class="cmt">// Insert at position</span>
+    s1.insert(<span class="num">2</span>, <span class="str">&quot; INSERTED &quot;</span>);
+    <span class="cmt">// Insert another <span class="kw">string</span></span>
+    s1.insert(<span class="num">0</span>, s2);
+    <span class="cmt">// Replace first <span class="num">2</span> chars</span>
+    s1.replace(<span class="num">0</span>, <span class="num">2</span>, <span class="str">&quot;Hi&quot;</span>);
+    <span class="cmt">// Resize <span class="kw">string</span> to length <span class="num">10</span>, fill with <span class="str">&#x27;x&#x27;</span></span>
+    s1.resize(<span class="num">10</span>, <span class="str">&#x27;x&#x27;</span>);
+    <span class="cmt">// Reduce capacity to fit size</span>
+    s1.shrink_to_fit();
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Deleting Elements ========== //</span>
+    <span class="cmt">// Remove last character</span>
+    s1.pop_back();
+    <span class="cmt">// Erase <span class="num">5</span> chars from index <span class="num">2</span></span>
+    s1.erase(<span class="num">2</span>, <span class="num">5</span>);
+    <span class="cmt">// Clear entire <span class="kw">string</span></span>
+    s1.clear();
+    <span class="cmt">// Remove first occurrence of substring</span>
+    <span class="kw">size_t</span> pos = s1.find(<span class="str">&quot;Hi&quot;</span>);
+    <span class="kw">if</span> (pos != <span class="kw">string</span>::npos)
+        s1.erase(pos, <span class="num">2</span>);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Accessing Elements ========== //</span>
+    <span class="cmt">// Using []</span>
+    <span class="kw">char</span> ch = s2[<span class="num">0</span>];
+    <span class="cmt">// Using at()</span>
+    <span class="kw">char</span> ch2 = s2.at(<span class="num">1</span>);
+    <span class="cmt">// First character</span>
+    <span class="kw">char</span> first = s2.front();
+    <span class="cmt">// Last character</span>
+    <span class="kw">char</span> last = s2.back();
+    <span class="cmt">// Iterators</span>
+    <span class="kw">auto</span> it = s2.begin();
+    <span class="kw">auto</span> itEnd = s2.end();
+    <span class="cmt">// Reverse iterator</span>
+    <span class="kw">auto</span> rit = s2.rbegin();
+    <span class="kw">auto</span> ritEnd = s2.rend();
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Size &amp; Capacity ========== //</span>
+    <span class="cmt">// Length</span>
+    <span class="kw">size_t</span> len = s2.size();
+    <span class="cmt">// Same as size()</span>
+    <span class="kw">size_t</span> len2 = s2.length();
+    <span class="cmt">// Check <span class="kw">if</span> empty</span>
+    <span class="kw">bool</span> emptyStr = s2.empty();
+    <span class="cmt">// Allocated memory</span>
+    <span class="kw">size_t</span> cap = s2.capacity();
+    <span class="cmt">// Preallocate space</span>
+    s2.reserve(<span class="num">50</span>);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Substring &amp; Comparison ========== //</span>
+    <span class="cmt">// Substring from index <span class="num">1</span>, length <span class="num">3</span></span>
+    <span class="kw">string</span> sub = s2.substr(<span class="num">1</span>, <span class="num">3</span>);
+    <span class="cmt">// Compare with s3 (-<span class="num">1</span>,<span class="num">0</span>,<span class="num">1</span>)</span>
+    <span class="kw">int</span> cmp1 = s2.compare(s3);
+    <span class="cmt">// Compare first <span class="num">2</span> chars</span>
+    <span class="kw">int</span> cmp2 = s2.compare(<span class="num">0</span>, <span class="num">2</span>, s3);
+    <span class="cmt">// Compare with literal</span>
+    <span class="kw">int</span> cmp3 = s2.compare(<span class="str">&quot;Hello&quot;</span>);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Conversion ========== //</span>
+    <span class="cmt">// <span class="kw">int</span> -&gt; <span class="kw">string</span></span>
+    <span class="kw">string</span> numStr = to_string(<span class="num">123</span>);
+    <span class="cmt">// <span class="kw">string</span> -&gt; <span class="kw">int</span></span>
+    <span class="kw">int</span> num = stoi(<span class="str">&quot;<span class="num">456</span>&quot;</span>);
+    <span class="cmt">// <span class="kw">string</span> -&gt; <span class="kw">long</span> <span class="kw">long</span></span>
+    <span class="kw">long</span> <span class="kw">long</span> big = stoll(<span class="str">&quot;<span class="num">123456789</span>&quot;</span>);
+    <span class="cmt">// <span class="kw">string</span> -&gt; <span class="kw">double</span></span>
+    <span class="kw">double</span> d = stod(<span class="str">&quot;<span class="num">3.14</span>&quot;</span>);
+    <span class="cmt">// <span class="kw">string</span> -&gt; <span class="kw">float</span></span>
+    <span class="kw">float</span> f = stof(<span class="str">&quot;<span class="num">2.71</span>&quot;</span>);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Iteration &amp; Traversal ========== //</span>
+    <span class="cmt">// Method <span class="num">1</span></span>
+    <span class="kw">for</span> (<span class="kw">char</span> c : s2)
+        cout &lt;&lt; c &lt;&lt; <span class="str">&quot; &quot;</span>;
+    cout &lt;&lt; endl;
+
+    <span class="cmt">// Method <span class="num">2</span></span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s2.size(); i++)
+        cout &lt;&lt; s2[i] &lt;&lt; <span class="str">&quot; &quot;</span>;
+
+    <span class="cmt">// Method <span class="num">3</span></span>
+    <span class="kw">for</span> (<span class="kw">auto</span> it = s2.begin(); it != s2.end(); ++it)
+        cout &lt;&lt; *it &lt;&lt; <span class="str">&quot; &quot;</span>;
+    cout &lt;&lt; endl;
+
+    <span class="cmt">// Method <span class="num">4</span></span>
+    <span class="kw">for</span> (<span class="kw">auto</span> rit = s2.rbegin(); rit != s2.rend(); ++rit)
+        cout &lt;&lt; *rit &lt;&lt; <span class="str">&quot; &quot;</span>;
+    cout &lt;&lt; endl;
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Sorting &amp; Reversing ========== //</span>
+    <span class="cmt">// Sort characters</span>
+    <span class="cmt">// Ascending order (default)</span>
+    sort(s2.begin(), s2.end());
+    <span class="cmt">// Descending order</span>
+    sort(s2.begin(), s2.end(), greater&lt;<span class="kw">int</span>&gt;());
+    
+    <span class="cmt">// Reverse <span class="kw">string</span></span>
+    reverse(s2.begin(), s2.end());
+    <span class="cmt">// Check <span class="kw">if</span> sorted</span>
+    <span class="kw">bool</span> sorted = is_sorted(s2.begin(), s2.end());
+    <span class="cmt">// Count occurrences</span>
+    <span class="kw">int</span> countL = count(s2.begin(), s2.end(), <span class="str">&#x27;l&#x27;</span>);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Concatenation &amp; Swap ========== //</span>
+    <span class="kw">string</span> s7 = s2 + <span class="str">&quot; &quot;</span> + s3; <span class="cmt">// Concatenation</span>
+    s2.append(s3);             <span class="cmt">// Append</span>
+    <span class="kw">string</span> a = <span class="str">&quot;Hello&quot;</span>, b = <span class="str">&quot;World&quot;</span>;
+    a.swap(b); <span class="cmt">// Swap strings</span>
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="cmt">// ========== Searching &amp; Finding ========== //</span>
+    <span class="cmt">// First occurrence</span>
+    <span class="kw">size_t</span> f1 = s2.find(<span class="str">&quot;ell&quot;</span>);
+    <span class="cmt">// Last occurrence</span>
+    <span class="kw">size_t</span> f2 = s2.rfind(<span class="str">&quot;l&quot;</span>);
+    <span class="cmt">// First <span class="str">&#x27;l&#x27;</span> or <span class="str">&#x27;o&#x27;</span></span>
+    <span class="kw">size_t</span> f3 = s2.find_first_of(<span class="str">&quot;lo&quot;</span>);
+    <span class="cmt">// Last <span class="str">&#x27;l&#x27;</span> or <span class="str">&#x27;o&#x27;</span></span>
+    <span class="kw">size_t</span> f4 = s2.find_last_of(<span class="str">&quot;lo&quot;</span>);
+    <span class="cmt">// First <span class="kw">char</span> not in <span class="kw">set</span></span>
+    <span class="kw">size_t</span> f5 = s2.find_first_not_of(<span class="str">&quot;Helo&quot;</span>);
+    <span class="cmt">// Last <span class="kw">char</span> not in <span class="kw">set</span></span>
+    <span class="kw">size_t</span> f6 = s2.find_last_not_of(<span class="str">&quot;Helo&quot;</span>);
+    <span class="cmt">// Check existence</span>
+    <span class="kw">bool</span> found = (f1 != <span class="kw">string</span>::npos);
+    <span class="cmt">// ======================================== //</span>
+    <span class="cmt">// ======================================== //</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="multi-set">
+  <div class="section-badge">13 — STL</div>
+  <h2 class="section-title">Multi-Set</h2>
+  <pre>#include &lt;bits/stdc++.h&gt;
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">int</span> main() {
+
+  <span class="cmt">// ========== Note ========== //</span>
+  <span class="cmt">// std::<span class="kw">multiset</span> is always sorted in ascending order by default.</span>
+  <span class="cmt">// Unlike <span class="kw">set</span>, <span class="kw">multiset</span> ALLOWS duplicate elements.</span>
+
+  <span class="cmt">// ========== Declaration ========== //</span>
+  <span class="cmt">// Creates an empty <span class="kw">multiset</span> of integers.</span>
+  <span class="kw">multiset</span>&lt;<span class="kw">int</span>&gt; ms;
+
+  <span class="cmt">// Creates an empty <span class="kw">multiset</span> of strings.</span>
+  <span class="kw">multiset</span>&lt;<span class="kw">string</span>&gt; ms2;
+
+  <span class="cmt">// Creates a <span class="kw">multiset</span> containing {<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>}.</span>
+  <span class="kw">multiset</span>&lt;<span class="kw">int</span>&gt; ms3{<span class="num">5</span>, <span class="num">20</span>, <span class="num">60</span>};
+
+  <span class="cmt">// Creates a <span class="kw">multiset</span> containing duplicates.</span>
+  <span class="kw">multiset</span>&lt;<span class="kw">int</span>&gt; ms4 = {<span class="num">5</span>, <span class="num">20</span>, <span class="num">20</span>, <span class="num">60</span>};
+  <span class="cmt">// ======================================== //</span>
+  <span class="cmt">// ======================================== //</span>
+
+  <span class="cmt">// ========== Adding New Elements ========== //</span>
+  ms.insert(<span class="num">10</span>);
+  ms.insert(<span class="num">10</span>); <span class="cmt">// duplicates allowed</span>
+  ms.emplace(<span class="num">20</span>);
+
+  <span class="cmt">// emplace_hint inserts near the hint position</span>
+  <span class="kw">auto</span> it = ms.find(<span class="num">10</span>);
+  ms.emplace_hint(it, <span class="num">15</span>);
+
+  <span class="cmt">// ======================================== //</span>
+  <span class="cmt">// ======================================== //</span>
+
+  <span class="cmt">// ========== Deleting Elements ========== //</span>
+  <span class="cmt">// Erases ALL occurrences of <span class="num">10</span></span>
+  ms.erase(<span class="num">10</span>);
+
+  <span class="cmt">// Erase a single occurrence <span class="kw">using</span> iterator</span>
+  <span class="kw">auto</span> itr = ms.find(<span class="num">20</span>);
+  <span class="kw">if</span> (itr != ms.end())
+    ms.erase(itr);
+
+  <span class="cmt">// Removes all elements</span>
+  ms.clear();
+
+  <span class="cmt">// Erase by range</span>
+  <span class="cmt">// {<span class="num">10</span>, <span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>}</span>
+  <span class="kw">auto</span> start = ms.find(<span class="num">20</span>);
+  <span class="kw">auto</span> end = ms.find(<span class="num">50</span>);
+  ms.erase(start, end); <span class="cmt">// removes <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span></span>
+
+  <span class="cmt">// ======================================== //</span>
+  <span class="cmt">// ======================================== //</span>
+
+  <span class="cmt">// ========== Accessing Elements ========== //</span>
+  <span class="cmt">// find(value) returns iterator to ONE occurrence</span>
+  <span class="kw">auto</span> it2 = ms.find(<span class="num">20</span>);
+  <span class="kw">if</span> (it2 != ms.end())
+    cout &lt;&lt; <span class="str">&quot;Found: &quot;</span> &lt;&lt; *it2 &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+  <span class="kw">else</span>
+    cout &lt;&lt; <span class="str">&quot;Not found\n&quot;</span>;
+
+  <span class="cmt">// count(value) returns number of occurrences</span>
+  cout &lt;&lt; <span class="str">&quot;Count of <span class="num">10</span>: &quot;</span> &lt;&lt; ms.count(<span class="num">10</span>) &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+  <span class="cmt">// lower_bound(x) -&gt; first element &gt;= x</span>
+  <span class="cmt">// upper_bound(x) -&gt; first element &gt; x</span>
+  <span class="kw">auto</span> lb = ms.lower_bound(<span class="num">10</span>);
+  <span class="kw">auto</span> ub = ms.upper_bound(<span class="num">10</span>);
+
+  <span class="cmt">// equal_range(x) -&gt; <span class="kw">pair</span> of (lower_bound, upper_bound)</span>
+  <span class="kw">auto</span> range = ms.equal_range(<span class="num">10</span>);
+
+  <span class="cmt">// ======================================== //</span>
+  <span class="cmt">// ======================================== //</span>
+
+  <span class="cmt">// ========== Getting Minimum &amp; Maximum Element ========== //</span>
+  <span class="cmt">// ========== First &amp; Last Element ========== //</span>
+  <span class="cmt">// <span class="kw">multiset</span> is sorted by default (ascending order)</span>
+  <span class="kw">if</span> (!ms.empty()) {
+    <span class="cmt">// Minimum element (smallest)</span>
+    cout &lt;&lt; <span class="str">&quot;First element: &quot;</span> &lt;&lt; *ms.begin() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Maximum element (largest)</span>
+    cout &lt;&lt; <span class="str">&quot;Last element: &quot;</span> &lt;&lt; *ms.rbegin() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+  }
+
+  <span class="cmt">// ========== Descending Order Multiset ========== //</span>
+  <span class="cmt">// If <span class="kw">multiset</span> is declared in descending order</span>
+
+  <span class="kw">multiset</span>&lt;<span class="kw">int</span>, greater&lt;<span class="kw">int</span>&gt;&gt; msDesc = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">20</span>, <span class="num">5</span>};
+
+  <span class="kw">if</span> (!msDesc.empty()) {
+    <span class="cmt">// First element is the largest</span>
+    cout &lt;&lt; <span class="str">&quot;Maximum element (desc): &quot;</span> &lt;&lt; *msDesc.begin() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+    <span class="cmt">// Last element is the smallest</span>
+    cout &lt;&lt; <span class="str">&quot;Minimum element (desc): &quot;</span> &lt;&lt; *msDesc.rbegin() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+  }
+
+  <span class="cmt">// ======================================== //</span>
+  <span class="cmt">// ======================================== //</span>
+
+  <span class="cmt">// ========== Other Important Methods ========== //</span>
+  <span class="cmt">// Number of elements (including duplicates)</span>
+  cout &lt;&lt; <span class="str">&quot;Size: &quot;</span> &lt;&lt; ms.size() &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+  <span class="cmt">// Check empty</span>
+  <span class="kw">if</span> (ms.empty())
+    cout &lt;&lt; <span class="str">&quot;Multiset is empty\n&quot;</span>;
+
+  <span class="cmt">// ======================================== //</span>
+  <span class="cmt">// ======================================== //</span>
+
+  <span class="cmt">// ========== Iterating Multiset ========== //</span>
+  <span class="cmt">// Method <span class="num">1</span>: Range-based loop</span>
+  <span class="kw">for</span> (<span class="kw">auto</span> num : ms)
+    cout &lt;&lt; num &lt;&lt; <span class="str">&quot; &quot;</span>;
+  cout &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+  <span class="cmt">// Method <span class="num">2</span>: Iterator-based</span>
+  <span class="kw">for</span> (<span class="kw">auto</span> it = ms.begin(); it != ms.end(); it++)
+    cout &lt;&lt; *it &lt;&lt; <span class="str">&quot; &quot;</span>;
+  cout &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+  <span class="cmt">// ======================================== //</span>
+  <span class="cmt">// ======================================== //</span>
+
+  <span class="cmt">// ========== Swapping Multisets ========== //</span>
+  <span class="kw">multiset</span>&lt;<span class="kw">int</span>&gt; msA = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>};
+  <span class="kw">multiset</span>&lt;<span class="kw">int</span>&gt; msB = {<span class="num">4</span>, <span class="num">5</span>};
+
+  msA.swap(msB);
+  <span class="cmt">// msA = {<span class="num">4</span>, <span class="num">5</span>}</span>
+  <span class="cmt">// msB = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>}</span>
+
+  <span class="cmt">// ======================================== //</span>
+  <span class="cmt">// ======================================== //</span>
+
+  <span class="cmt">// ========== Custom Order (Descending) ========== //</span>
+  <span class="kw">multiset</span>&lt;<span class="kw">int</span>, greater&lt;<span class="kw">int</span>&gt;&gt; msDesc = {<span class="num">10</span>, <span class="num">5</span>, <span class="num">20</span>, <span class="num">20</span>};
+
+  <span class="kw">for</span> (<span class="kw">auto</span> x : msDesc)
+    cout &lt;&lt; x &lt;&lt; <span class="str">&quot; &quot;</span>;
+  cout &lt;&lt; <span class="str">&quot;\n&quot;</span>;
+
+  <span class="cmt">// ======================================== //</span>
+  <span class="cmt">// ======================================== //</span>
+
+  <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+</section>
+
+<hr class="divider">
+
+<div class="footer">
+  CPP STL DSA Reference &nbsp;·&nbsp; Quick Reference Guide
+</div>
+
+</main>
+
+<script>
+  // Progress bar
+  const main = document.getElementById('main');
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const pct = (scrollTop / scrollHeight) * 100;
+    progress.style.width = pct + '%';
+  });
+
+  // Navigation
+  const sections = document.querySelectorAll('.section, .hero');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Highlight active nav link based on scroll position
+  window.addEventListener('scroll', () => {
+    let current = 'intro';
+    
+    sections.forEach(s => {
+      const rect = s.getBoundingClientRect();
+      if (rect.top <= 150) {
+        current = s.id;
+      }
+    });
+
+    // If at the absolute bottom of the page, highlight the last section
+    if (window.innerHeight + Math.round(window.scrollY) >= document.documentElement.scrollHeight - 10) {
+      if (sections.length > 0) {
+        current = sections[sections.length - 1].id;
+      }
+    }
+
+    navLinks.forEach(l => {
+      const onclick = l.getAttribute('onclick') || '';
+      l.classList.toggle('active', onclick.includes(`'${current}'`));
+    });
+  });
+
+  // Trigger initial highlight
+  window.dispatchEvent(new Event('scroll'));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docker Command Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161e;
+    --bg3: #1a1e28;
+    --bg4: #222736;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8eaf0;
+    --text2: #8b90a8;
+    --text3: #555c78;
+    --accent: #7c6ef7;
+    --accent2: #5b4fe3;
+    --green: #3ecf8e;
+    --amber: #f5a623;
+    --red: #f06565;
+    --blue: #4da6ff;
+    --pink: #e879a0;
+    --teal: #2ed8c3;
+    --cpp: #f5a623;
+    --js: #3ecf8e;
+    --font: 'Syne', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+  .sidebar-header {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .sidebar-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .sidebar-sub {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .sidebar-nav { padding: 12px 0; flex: 1; }
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 12px 20px 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    font-size: 13.5px;
+    color: var(--text2);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .nav-link:hover { color: var(--text); background: var(--bg3); border-left-color: var(--border2); }
+  .nav-link.active { color: var(--accent); background: rgba(124,110,247,0.08); border-left-color: var(--accent); }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; opacity: 0.6; }
+
+  /* ── MAIN ── */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 48px 56px;
+  }
+  #main > * {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #main::-webkit-scrollbar { width: 6px; }
+  #main::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 64px; scroll-margin-top: 24px; }
+  .section-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(124,110,247,0.12);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-family: var(--mono);
+  }
+  h1.section-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  h2.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: var(--text2);
+    margin-bottom: 28px;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, rgba(124,110,247,0.1) 0%, rgba(62,207,142,0.06) 100%);
+    border: 1px solid rgba(124,110,247,0.2);
+    border-radius: 16px;
+    padding: 36px;
+    margin-bottom: 48px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-family: var(--mono);
+  }
+  .hero h1 {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p { font-size: 16px; color: var(--text2); line-height: 1.7; max-width: 560px; margin-bottom: 20px; }
+  .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .hero-tag {
+    font-size: 12px;
+    font-family: var(--mono);
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .tag-blue { color: var(--blue); border-color: rgba(77,166,255,0.3); background: rgba(77,166,255,0.08); }
+  .tag-js { color: var(--js); border-color: rgba(62,207,142,0.3); background: rgba(62,207,142,0.08); }
+
+  /* ── CODE BLOCKS ── */
+  pre {
+    background: var(--bg3);
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 16px 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  code {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--bg3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--teal);
+  }
+  
+  .terminal-prompt { color: var(--pink); margin-right: 8px; font-weight: bold; }
+  .terminal-cmd { color: var(--text); }
+  .terminal-arg { color: var(--green); }
+  .terminal-flag { color: var(--blue); }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 20px 0;
+    border-left: 3px solid;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; }
+  .callout-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .callout-text { font-size: 13.5px; color: var(--text2); line-height: 1.6; }
+  .callout-text code { font-size: 12px; }
+  .callout.warn { background: rgba(245,166,35,0.07); border-color: var(--amber); }
+  .callout.warn .callout-title { color: var(--amber); }
+  .callout.info { background: rgba(77,166,255,0.07); border-color: var(--blue); }
+  .callout.info .callout-title { color: var(--blue); }
+  .callout.tip { background: rgba(62,207,142,0.07); border-color: var(--green); }
+  .callout.tip .callout-title { color: var(--green); }
+  .callout.danger { background: rgba(240,101,101,0.07); border-color: var(--red); }
+  .callout.danger .callout-title { color: var(--red); }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg3);
+    color: var(--text2);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+  }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  td:first-child { color: var(--text); font-weight: 500; font-family: var(--mono); font-size: 12.5px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ── SCROLL PROGRESS ── */
+  #progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 999; transition: width 0.1s; }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 48px;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text3);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">Docker Guide</div>
+    <div class="sidebar-title">Containerization Basics</div>
+    <div class="sidebar-sub">DevOps Reference</div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section-label">Commands</div>
+    <a class="nav-link active" onclick="navTo('intro')"><span class="nav-dot"></span>Getting Started</a>
+    <a class="nav-link" onclick="navTo('images')"><span class="nav-dot"></span>Images</a>
+    <a class="nav-link" onclick="navTo('containers')"><span class="nav-dot"></span>Containers</a>
+    <a class="nav-link" onclick="navTo('volumes')"><span class="nav-dot"></span>Volumes</a>
+    <a class="nav-link" onclick="navTo('dockerfile')"><span class="nav-dot"></span>Dockerfile</a>
+    <a class="nav-link" onclick="navTo('compose')"><span class="nav-dot"></span>Docker Compose</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<div class="hero" id="intro">
+  <div class="hero-eyebrow">Tutorial / Cheatsheet</div>
+  <h1>Docker <span>Essentials</span></h1>
+  <p>A quick-reference tutorial for the most commonly used Docker commands, core concepts, and deployment configurations.</p>
+  <div class="hero-tags">
+    <span class="hero-tag tag-blue">Docker</span>
+    <span class="hero-tag tag-js">DevOps</span>
+  </div>
+</div>
+
+<section class="section" id="images">
+  <div class="section-badge">01 — Images</div>
+  <h2 class="section-title">Working with Images</h2>
+  <p class="section-desc">Images are the blueprints of your application. They are read-only templates that contain everything needed to run your code.</p>
+  
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-title">Pro Tip</div>
+      <div class="callout-text">On Linux, you may need to prefix commands with <code>sudo</code> unless you add your user to the <code>docker</code> group.</div>
+    </div>
+  </div>
+  
+  <table>
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td>docker pull &lt;image&gt;</td><td>Download an image from Docker Hub</td></tr>
+    <tr><td>docker images</td><td>List all downloaded images locally</td></tr>
+    <tr><td>docker rmi &lt;image_id&gt;</td><td>Remove a specific image</td></tr>
+    <tr><td>docker build -t &lt;name&gt; .</td><td>Build an image from a Dockerfile in the current directory</td></tr>
+  </table>
+
+  <pre><code><span class="terminal-prompt">$</span><span class="terminal-cmd">docker pull</span> <span class="terminal-arg">ubuntu:latest</span>
+<span class="terminal-prompt">$</span><span class="terminal-cmd">docker build</span> <span class="terminal-flag">-t</span> <span class="terminal-arg">my-app:v1</span> <span class="terminal-arg">.</span></code></pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="containers">
+  <div class="section-badge">02 — Containers</div>
+  <h2 class="section-title">Running Containers</h2>
+  <p class="section-desc">Containers are the live, running instances of your images.</p>
+  
+  <table>
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td>docker run &lt;image&gt;</td><td>Create and start a new container</td></tr>
+    <tr><td>docker ps</td><td>List all currently running containers</td></tr>
+    <tr><td>docker ps -a</td><td>List all containers (running and stopped)</td></tr>
+    <tr><td>docker stop &lt;container_id&gt;</td><td>Gracefully stop a running container</td></tr>
+    <tr><td>docker rm &lt;container_id&gt;</td><td>Remove a stopped container</td></tr>
+    <tr><td>docker exec -it &lt;id&gt; sh</td><td>Open an interactive shell inside a running container</td></tr>
+  </table>
+
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <div class="callout-title">Common Flags for Run</div>
+      <div class="callout-text">
+        <code>-d</code> (Detached mode: run in background)<br>
+        <code>-p 8080:80</code> (Port mapping: host_port:container_port)<br>
+        <code>--name my-nginx</code> (Assign a custom name to the container)
+      </div>
+    </div>
+  </div>
+
+  <pre><code><span class="terminal-prompt">$</span><span class="terminal-cmd">docker run</span> <span class="terminal-flag">-d</span> <span class="terminal-flag">-p</span> <span class="terminal-arg">8080:80</span> <span class="terminal-flag">--name</span> <span class="terminal-arg">web-server</span> <span class="terminal-arg">nginx</span></code></pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="volumes">
+  <div class="section-badge">03 — Data Persistence</div>
+  <h2 class="section-title">Volumes</h2>
+  <p class="section-desc">By default, data inside a container is lost when the container is removed. Volumes allow you to persist data permanently on the host machine.</p>
+
+  <table>
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td>docker volume create &lt;name&gt;</td><td>Create a new volume</td></tr>
+    <tr><td>docker volume ls</td><td>List all volumes</td></tr>
+    <tr><td>docker volume rm &lt;name&gt;</td><td>Delete a volume</td></tr>
+  </table>
+
+  <p class="section-desc">To attach a volume when running a container, use the <code>-v</code> flag.</p>
+  <pre><code><span class="terminal-prompt">$</span><span class="terminal-cmd">docker run</span> <span class="terminal-flag">-d</span> <span class="terminal-flag">-v</span> <span class="terminal-arg">my-data:/var/lib/mysql</span> <span class="terminal-arg">mysql</span></code></pre>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <div class="callout-title">Bind Mounts</div>
+      <div class="callout-text">You can also map a specific folder on your computer directly to the container: <code>-v /home/user/app:/app</code>. This is great for local development!</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="dockerfile">
+  <div class="section-badge">04 — Building</div>
+  <h2 class="section-title">Dockerfile Basics</h2>
+  <p class="section-desc">A Dockerfile is a text document containing all the commands a user could call to assemble an image.</p>
+
+  <pre><code><span class="cmt"># 1. Use an official runtime as a parent image</span>
+<span class="kw">FROM</span> <span class="str">node:18-alpine</span>
+
+<span class="cmt"># 2. Set the working directory</span>
+<span class="kw">WORKDIR</span> <span class="str">/usr/src/app</span>
+
+<span class="cmt"># 3. Copy package.json and install dependencies</span>
+<span class="kw">COPY</span> <span class="str">package*.json ./</span>
+<span class="kw">RUN</span> <span class="str">npm install</span>
+
+<span class="cmt"># 4. Copy the rest of your app's source code</span>
+<span class="kw">COPY</span> <span class="str">. .</span>
+
+<span class="cmt"># 5. Expose the port the app runs on</span>
+<span class="kw">EXPOSE</span> <span class="num">3000</span>
+
+<span class="cmt"># 6. Define the command to run your app</span>
+<span class="kw">CMD</span> <span class="str">["npm", "start"]</span></code></pre>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="compose">
+  <div class="section-badge">05 — Multi-Container</div>
+  <h2 class="section-title">Docker Compose</h2>
+  <p class="section-desc">Docker Compose is a tool for defining and running multi-container Docker applications using a YAML file.</p>
+
+  <table>
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td>docker compose up -d</td><td>Start all services defined in docker-compose.yml in the background</td></tr>
+    <tr><td>docker compose down</td><td>Stop and remove containers, networks, and volumes</td></tr>
+    <tr><td>docker compose logs -f</td><td>Follow log output from all services</td></tr>
+  </table>
+
+  <p class="section-desc">Example <code>docker-compose.yml</code> file:</p>
+  <pre><code><span class="kw">version:</span> <span class="str">'3.8'</span>
+
+<span class="kw">services:</span>
+  <span class="blue">web:</span>
+    <span class="kw">image:</span> <span class="str">nginx:alpine</span>
+    <span class="kw">ports:</span>
+      - <span class="str">"80:80"</span>
+    <span class="kw">volumes:</span>
+      - <span class="str">./html:/usr/share/nginx/html</span>
+
+  <span class="blue">api:</span>
+    <span class="kw">build:</span> <span class="str">.</span>
+    <span class="kw">ports:</span>
+      - <span class="str">"3000:3000"</span>
+    <span class="kw">depends_on:</span>
+      - <span class="str">db</span>
+
+  <span class="blue">db:</span>
+    <span class="kw">image:</span> <span class="str">postgres:13</span>
+    <span class="kw">environment:</span>
+      <span class="kw">POSTGRES_PASSWORD:</span> <span class="str">secret</span>
+    <span class="kw">volumes:</span>
+      - <span class="str">db-data:/var/lib/postgresql/data</span>
+
+<span class="kw">volumes:</span>
+  <span class="blue">db-data:</span></code></pre>
+</section>
+
+<div class="footer">
+  Docker Reference Guide &nbsp;·&nbsp; Containerization Basics
+</div>
+
+</main>
+
+<script>
+  // Progress bar
+  const main = document.getElementById('main');
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const pct = (scrollTop / scrollHeight) * 100;
+    progress.style.width = pct + '%';
+  });
+
+  // Navigation
+  const sections = document.querySelectorAll('.section, .hero');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Highlight active nav link based on scroll position
+  window.addEventListener('scroll', () => {
+    let current = 'intro';
+    
+    sections.forEach(s => {
+      const rect = s.getBoundingClientRect();
+      if (rect.top <= 150) {
+        current = s.id;
+      }
+    });
+
+    // If at the absolute bottom of the page, highlight the last section
+    if (window.innerHeight + Math.round(window.scrollY) >= document.documentElement.scrollHeight - 10) {
+      if (sections.length > 0) {
+        current = sections[sections.length - 1].id;
+      }
+    }
+
+    navLinks.forEach(l => {
+      const onclick = l.getAttribute('onclick') || '';
+      l.classList.toggle('active', onclick.includes(`'${current}'`));
+    });
+  });
+
+  // Trigger initial highlight
+  window.dispatchEvent(new Event('scroll'));
+</script>
+
+</body>
+</html>

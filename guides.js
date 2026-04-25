@@ -4,16 +4,16 @@ window.guidesData = [
     "url": "guides/stl-cpp-guide.html",
     "tags": [
       "dsa",
-      "cpp",
-      "stl"
+      "stl",
+      "cpp"
     ]
   },
   {
     "title": "DSA in JavaScript \u2014 C++ Developer's Guide",
     "url": "guides/dsa-js-guide.html",
     "tags": [
-      "dsa",
       "js",
+      "dsa",
       "cpp"
     ]
   },

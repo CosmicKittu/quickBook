@@ -1,14 +1,10 @@
 # Guide Authoring Reference (For AI & Humans)
 
-This document serves as the absolute source of truth for creating new guides in this repository. When generating or writing a new guide, follow these rules, layout structures, and color schemas to ensure visual consistency across the library.
+This document serves as the absolute source of truth for creating new guides in this repository. We use a **Markdown-to-HTML Generator Pipeline** to author guides efficiently. Do not write raw HTML files for new guides; always write in Markdown and compile them.
 
 ## 🎨 Design System & Color Schema
 
-All guides MUST use the exact same CSS root variables and fonts to match the deep dark mode aesthetic.
-
-**Fonts (via Google Fonts):**
-- Headings & Body: `'Syne', sans-serif`
-- Code & Monospace: `'JetBrains Mono', monospace`
+All generated guides automatically inherit our exact CSS root variables and fonts to match the deep dark mode aesthetic via `templates/guide_template.html`.
 
 **Core Colors:**
 - `--bg: #0d0f14` (Main background)
@@ -18,74 +14,85 @@ All guides MUST use the exact same CSS root variables and fonts to match the dee
 - `--text2: #8b90a8` (Secondary text)
 - `--accent: #7c6ef7` (Primary brand color)
 
-**Syntax & Alert Colors:**
-- `--green: #3ecf8e` (Success / JS / Tips)
-- `--amber: #f5a623` (Warning / C++ / Numbers)
-- `--red: #f06565` (Danger / Errors)
-- `--blue: #4da6ff` (Info / Functions)
+**Syntax Colors (Handled by Prism.js automatically):**
+- `--green: #3ecf8e` (Strings / Tips)
+- `--amber: #f5a623` (Numbers / Warnings)
+- `--red: #f06565` (Errors / Danger)
+- `--blue: #4da6ff` (Functions / Info)
 - `--teal: #2ed8c3` (Types)
 
-## 🏗️ Base File Structure
-Every new guide must be a single `.html` file placed inside the `guides/` directory.
-It MUST contain:
-1. **The Global `<style>` block:** Copy the CSS exactly from existing guides (`dsa-js-guide.html` or `stl-cpp-guide.html`). Do not use external stylesheets.
-2. **Sidebar Navigation:** A sticky `<nav id="sidebar">` containing `<a class="nav-link" onclick="navTo('section-id')">`.
-3. **Hero Header:** A `<div class="hero">` block introducing the guide with a title and description.
-4. **Main Sections:** Content divided into `<section class="section" id="section-id">`.
+## 🏗️ Guide Authoring Workflow
 
+Every new guide must be written as a `.md` file and compiled.
+
+### 1. File Structure & Frontmatter
+Start your Markdown file with a configuration block at the very top:
+
+```markdown
 ---
-
-## 📖 Guide Type 1: The Code Reference
-*Best for: Language overviews, data structures, and syntax references (e.g. C++ STL, JavaScript DSA).*
-
-**Key Components:**
-- **Code Compare Blocks**: If comparing two languages (e.g. C++ vs JS), use a grid layout.
-  ```html
-  <div class="compare">
-    <div class="compare-block">
-      <div class="compare-header cpp"><span class="dot"></span>C++</div>
-      <pre>...</pre>
-    </div>
-    <div class="compare-block">
-      <div class="compare-header js"><span class="dot"></span>JS</div>
-      <pre>...</pre>
-    </div>
-  </div>
-  ```
-- **Syntax Highlighting**: Use inline spans like `<span class="kw">int</span>`, `<span class="str">"text"</span>`, `<span class="cmt">// comment</span>`.
-- **Performance Badges**: Use `.tag-o1`, `.tag-on`, etc. for Big-O notation.
-
+title: Python DSA Reference
+logo: Python Guide
+sidebartitle: Python Standard Library
+sidebarsub: DSA Reference
+herotitle: Python <span>Collections</span> DSA
+herodesc: This is a quick reference for Python data structures in DSA.
+tags: Python, Interview Ready
 ---
+```
 
-## 💻 Guide Type 2: The Command/Tutorial Guide
-*Best for: CLI tools, deployment steps, DevOps, and sequential tutorials (e.g. Linux Commands, Docker).*
+### 2. Sections and Sidebar
+To create a section (which automatically generates a sticky sidebar link), use an H2 `##` header. You can optionally include a badge string separated by a pipe `|`:
 
-**Key Components:**
-- **Sequential Flow**: Sections should flow logically (e.g., "1. Installation", "2. Basic Commands", "3. Volumes").
-- **Terminal Blocks**: Code blocks should clearly represent terminal inputs. 
-  ```html
-  <pre><code>$ docker run -d -p 80:80 nginx</code></pre>
-  ```
-- **Tables for Arguments**: Use HTML tables to explain flags and commands clearly.
-  ```html
-  <table>
-    <tr><th>Command</th><th>Description</th></tr>
-    <tr><td><code>ls -la</code></td><td>List all files with hidden and details</td></tr>
-  </table>
-  ```
-- **Callout Boxes**: Use callouts heavily to explain gotchas, warnings, or tips.
-  ```html
-  <div class="callout tip">
-    <div class="callout-icon">💡</div>
-    <div class="callout-body">
-      <div class="callout-title">Pro Tip</div>
-      <div class="callout-text">You can use aliases to make navigating directories faster.</div>
-    </div>
+```markdown
+## 01 — PYTHON | List
+
+Lists are the primary array type in Python.
+```
+
+### 3. Syntax Highlighting
+**DO NOT** use manual inline spans like `<span class="kw">`. Use standard Markdown code blocks with the appropriate language identifier. Our custom Prism.js theme will automatically highlight them perfectly matching the UI:
+
+```python
+def hello():
+    print("Hello, World!")
+```
+
+### 4. Code Comparison (If needed)
+If you need a two-column comparison block, use raw HTML inside the Markdown:
+```html
+<div class="compare">
+  <div class="compare-block">
+    <div class="compare-header cpp"><span class="dot"></span>C++</div>
+    <pre><code class="language-cpp">std::cout &lt;&lt; "Hi";</code></pre>
   </div>
-  ```
+  <div class="compare-block">
+    <div class="compare-header js"><span class="dot"></span>JS</div>
+    <pre><code class="language-javascript">console.log("Hi");</code></pre>
+  </div>
+</div>
+```
+
+### 5. Callouts
+Use raw HTML for callout boxes (warn, info, tip, danger):
+```html
+<div class="callout tip">
+  <div class="callout-icon">💡</div>
+  <div class="callout-body">
+    <div class="callout-title">Pro Tip</div>
+    <div class="callout-text">You can use aliases to make navigating directories faster.</div>
+  </div>
+</div>
+```
+
+## 🛠️ Compiling The Guide
+
+Once the Markdown file is complete, run the generator script from the root of the project:
+```bash
+python scripts/build_guide.py <input.md> guides/<output>.html
+```
+*Note: Make sure to output the HTML file to the `guides/` directory so the auto-indexer can find it.*
 
 ## 🏷️ Auto-Indexing & Tags
 You do NOT need to manually add the guide to the home page. Just ensure:
-1. The `<title>` tag inside your HTML `<head>` is descriptive.
-2. The file is saved in the `guides/` folder.
-3. Relevant keywords (like `docker`, `linux`, `bash`, `react`) are present in the text, as the auto-indexer uses them to generate tags automatically.
+1. The output `.html` file is saved in the `guides/` folder.
+2. Run the auto-indexer script (`python scripts/build_index.py`).

@@ -3,30 +3,18 @@ window.guidesData = [
     "title": "CPP STL DSA Reference",
     "url": "guides/stl-cpp-guide.html",
     "tags": [
-<<<<<<< HEAD
-      "stl",
-      "cpp",
-      "dsa"
-=======
-      "cpp",
       "dsa",
-      "stl"
->>>>>>> 5915fd0 (added dsa in java and python)
+      "stl",
+      "cpp"
     ]
   },
   {
     "title": "DSA in JavaScript \u2014 C++ Developer's Guide",
     "url": "guides/dsa-js-guide.html",
     "tags": [
-<<<<<<< HEAD
-      "cpp",
       "dsa",
-      "js"
-=======
-      "js",
       "cpp",
-      "dsa"
->>>>>>> 5915fd0 (added dsa in java and python)
+      "js"
     ]
   },
   {
@@ -45,8 +33,8 @@ window.guidesData = [
     "title": "Python DSA Reference",
     "url": "guides/dsa-python-guide.html",
     "tags": [
-      "python",
-      "dsa"
+      "dsa",
+      "python"
     ]
   }
 ];

@@ -2,7 +2,7 @@
 
 A curated, beautifully styled static library for developer references, algorithms, and technical tutorials.
 
-🔗 **Live Site**: [https://cosmickittu.github.io/quickBook/](https://cosmickittu.github.io/quickBook/)
+🔗 **Live Site**: [https://devnode.pw/](https://devnode.pw/)
 
 ## ✨ Features
 - **Premium Interface**: Dark mode, glassmorphism, and responsive layouts.

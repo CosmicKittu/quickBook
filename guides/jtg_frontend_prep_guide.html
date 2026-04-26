@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JTG Frontend Prep Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+    --color-background-base: #0a0a0b;
+    --color-background-secondary: #131417;
+    --color-background-tertiary: #1c1d22;
+    --color-background-float: rgba(255, 255, 255, 0.03);
+    
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #a1a1aa;
+    --color-text-tertiary: #71717a;
+    
+    --color-border-secondary: rgba(255, 255, 255, 0.1);
+    --color-border-tertiary: rgba(255, 255, 255, 0.05);
+    
+    --color-info: #3b82f6;
+    --color-background-info: rgba(59, 130, 246, 0.1);
+    --color-text-info: #93c5fd;
+    --color-border-info: rgba(59, 130, 246, 0.2);
+    
+    --color-warning: #f59e0b;
+    --color-background-warning: rgba(245, 158, 11, 0.1);
+    --color-text-warning: #fcd34d;
+    --color-border-warning: rgba(245, 158, 11, 0.2);
+    
+    --color-danger: #ef4444;
+    --color-background-danger: rgba(239, 68, 68, 0.1);
+    --color-text-danger: #fca5a5;
+    --color-border-danger: rgba(239, 68, 68, 0.2);
+    
+    --color-success: #10b981;
+    --color-background-success: rgba(16, 185, 129, 0.1);
+    --color-text-success: #6ee7b7;
+    --color-border-success: rgba(16, 185, 129, 0.2);
+    
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background-color: var(--color-background-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.05), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05), transparent 25%);
+    background-attachment: fixed;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 32px 0 16px;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    background: var(--color-background-secondary);
+    padding: 6px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-tertiary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .tab {
+    padding: 10px 20px;
+    border-radius: var(--radius-full);
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    background: transparent;
+    color: var(--color-text-secondary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .tab:hover {
+    color: var(--color-text-primary);
+    background: var(--color-background-float);
+  }
+
+  .tab.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  .section {
+    display: none;
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+
+  .section.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Cards */
+  .round-card {
+    border: 1px solid var(--color-border-secondary);
+    border-radius: var(--radius-lg);
+    margin-bottom: 16px;
+    background: var(--color-background-secondary);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+
+  .round-card:hover {
+    border-color: var(--color-border-info);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .round-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    cursor: pointer;
+    border-radius: var(--radius-lg);
+  }
+  
+  .round-header-content {
+    flex: 1;
+  }
+  
+  .round-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .round-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .round-sub {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+  }
+
+  .chevron {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+
+  .chevron.open {
+    transform: rotate(180deg);
+  }
+
+  .round-body {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 1px solid transparent;
+    opacity: 0;
+  }
+
+  .round-body.open {
+    padding: 20px;
+    max-height: 800px;
+    border-top-color: var(--color-border-tertiary);
+    opacity: 1;
+  }
+
+  /* Badges */
+  .badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-blue { background: var(--color-background-info); color: var(--color-text-info); border: 1px solid var(--color-border-info); }
+  .badge-amber { background: var(--color-background-warning); color: var(--color-text-warning); border: 1px solid var(--color-border-warning); }
+  .badge-red { background: var(--color-background-danger); color: var(--color-text-danger); border: 1px solid var(--color-border-danger); }
+  .badge-green { background: var(--color-background-success); color: var(--color-text-success); border: 1px solid var(--color-border-success); }
+
+  /* Tips List */
+  ul.tips {
+    list-style: none;
+  }
+
+  ul.tips li {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    padding: 6px 0 6px 24px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  ul.tips li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--color-info);
+    font-weight: bold;
+  }
+
+  ul.tips li code {
+    background: var(--color-background-tertiary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--color-text-primary);
+  }
+
+  /* Tags */
+  .topic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .topic-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    background: var(--color-background-tertiary);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-tertiary);
+    transition: all 0.2s ease;
+  }
+
+  .topic-tag:hover {
+    transform: translateY(-2px);
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .topic-tag.hot {
+    background: var(--color-background-danger);
+    color: var(--color-text-danger);
+    border-color: var(--color-border-danger);
+  }
+  .topic-tag.hot:hover {
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  }
+
+  .topic-tag.med {
+    background: var(--color-background-warning);
+    color: var(--color-text-warning);
+    border-color: var(--color-border-warning);
+  }
+  .topic-tag.med:hover {
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+  }
+
+  /* Week Cards */
+  .week-card {
+    border-left: 4px solid var(--color-info);
+    padding: 20px;
+    margin-bottom: 24px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    background: linear-gradient(90deg, var(--color-background-secondary) 0%, transparent 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .week-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.03), transparent 50%);
+    pointer-events: none;
+  }
+
+  .week-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  .week-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
+  }
+
+  .week-goal {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .res-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-info);
+    display: inline-flex;
+    align-items: center;
+    margin-right: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--color-background-info);
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-info);
+    margin-top: 8px;
+  }
+
+  .res-link:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  }
+
+  /* Alert Boxes */
+  .warn-box, .info-box, .success-box {
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+
+  .warn-box p, .info-box p, .success-box p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .warn-box strong, .info-box strong, .success-box strong {
+    font-weight: 600;
+  }
+
+  .warn-box {
+    background: var(--color-background-warning);
+    border: 1px solid var(--color-border-warning);
+  }
+  .warn-box p { color: var(--color-text-warning); }
+
+  .info-box {
+    background: var(--color-background-info);
+    border: 1px solid var(--color-border-info);
+  }
+  .info-box p { color: var(--color-text-info); }
+
+  .success-box {
+    background: var(--color-background-success);
+    border: 1px solid var(--color-border-success);
+  }
+  .success-box p { color: var(--color-text-success); }
+
+  /* DSA Cards */
+  .dsa-card {
+    border: 1px solid var(--color-border-tertiary);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 16px;
+    background: var(--color-background-secondary);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .dsa-card:hover {
+    border-color: var(--color-border-secondary);
+    background: var(--color-background-tertiary);
+  }
+
+  .dsa-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: var(--color-background-base);
+    border-radius: var(--radius-full);
+    margin-top: 16px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--color-info), #60a5fa);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+
+  .progress-label {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    margin-top: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .tabs {
+      flex-direction: column;
+      border-radius: var(--radius-md);
+      padding: 8px;
+    }
+    .tab {
+      border-radius: var(--radius-sm);
+    }
+    .round-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .round-header-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="info-box">
+    <p><strong>JTG Frontend Internship + PPO</strong> — The process has 7–9 elimination rounds. Every round counts. CSS gets people eliminated most. JavaScript depth wins offers. DSA is required even for frontend.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('rounds', event)">Interview Rounds</button>
+    <button class="tab" onclick="switchTab('depth', event)">What They Go Deep On</button>
+    <button class="tab" onclick="switchTab('beyond', event)">Beyond HTML/CSS/JS</button>
+    <button class="tab" onclick="switchTab('pathway', event)">Prep Pathway</button>
+  </div>
+
+  <!-- ROUNDS TAB -->
+  <div class="section active" id="tab-rounds">
+    <div class="warn-box">
+      <p><strong>Real talk:</strong> Multiple candidates were rejected specifically due to weak CSS skills in technical interviews. One reported being eliminated in Round 7 after failing CSS questions. CSS is their filter.</p>
+    </div>
+
+    <div class="round-card">
+      <div class="round-header" onclick="toggleRound(this)">
+        <div class="round-header-content">
+          <div class="round-title">Round 1 — MCQ Assessment</div>
+          <div class="round-sub">70 questions · 1 hour · Negative marking</div>
+        </div>
+        <div class="round-header-actions">
+          <span class="badge badge-blue">Aptitude + Frontend</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="round-body">
+        <ul class="tips">
+          <li>50 questions: pseudo-code, input/output prediction, language syntax (JS heavy)</li>
+          <li>Remaining: aptitude, OS basics, DBMS, DSA easy-level MCQs</li>
+          <li>Questions like: "What does <code>typeof null</code> return?", "Output of this JS snippet?"</li>
+          <li>HTML5 semantic tags, CSS box model, specificity rules</li>
+          <li><strong>Negative marking</strong> — don't guess randomly</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="round-card">
+      <div class="round-header" onclick="toggleRound(this)">
+        <div class="round-header-content">
+          <div class="round-title">Round 2 — Coding Test (DSA)</div>
+          <div class="round-sub">2 questions · 1 hour · Both must be solved</div>
+        </div>
+        <div class="round-header-actions">
+          <span class="badge badge-amber">DSA Required</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="round-body">
+        <ul class="tips">
+          <li>Arrays: third largest element, maximum subarray, missing positive number</li>
+          <li>Linked Lists: swap nodes, reverse in K groups</li>
+          <li>Stack/Queue based problems</li>
+          <li>DP (Dynamic Programming) — easy to medium level</li>
+          <li>Both questions must be solved to advance — partial credit not enough</li>
+          <li>Write comments — shows approach even if code is incomplete</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="round-card">
+      <div class="round-header" onclick="toggleRound(this)">
+        <div class="round-header-content">
+          <div class="round-title">Round 3 — Advance Subjective</div>
+          <div class="round-sub">5 questions · 70 minutes · Mixed frontend</div>
+        </div>
+        <div class="round-header-actions">
+          <span class="badge badge-blue">HTML + CSS + JS</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="round-body">
+        <ul class="tips">
+          <li>Given a webpage screenshot — write HTML & CSS to match it exactly</li>
+          <li>JavaScript form validation with specific functionality</li>
+          <li>Read JS snippet → write correct output (closures, hoisting, async)</li>
+          <li>Balanced parentheses / DSA in JS</li>
+          <li>Platform: Calyxpod</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="round-card">
+      <div class="round-header" onclick="toggleRound(this)">
+        <div class="round-header-content">
+          <div class="round-title">Round 4 — Take-Home Assignment</div>
+          <div class="round-sub">1 week · Static page only · No frameworks</div>
+        </div>
+        <div class="round-header-actions">
+          <span class="badge badge-red">Critical Round</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="round-body">
+        <ul class="tips">
+          <li>Build a portfolio website from a Figma design provided by JTG</li>
+          <li><strong>Only HTML, CSS, JavaScript</strong> — no React, no Bootstrap, no jQuery</li>
+          <li>Must be pixel-perfect to the design</li>
+          <li>Code of conduct enforced — clean, readable, commented code</li>
+          <li>Responsive design expected</li>
+          <li>This is where most candidates get eliminated</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="round-card">
+      <div class="round-header" onclick="toggleRound(this)">
+        <div class="round-header-content">
+          <div class="round-title">Round 5 — MCQ (DSA + Frontend)</div>
+          <div class="round-sub">Medium difficulty · 1 hour</div>
+        </div>
+        <div class="round-header-actions">
+          <span class="badge badge-blue">Mixed</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="round-body">
+        <ul class="tips">
+          <li>DSA + Frontend technology MCQs combined</li>
+          <li>Deeper JS questions — closures, promises, event loop</li>
+          <li>CSS layout specifics — Flexbox, Grid, positioning</li>
+          <li>Only shortlisted students from Round 4 reach here</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="round-card">
+      <div class="round-header" onclick="toggleRound(this)">
+        <div class="round-header-content">
+          <div class="round-title">Round 6 — Live Coding (Screen Share)</div>
+          <div class="round-sub">2–3 hours · Updates every 20 mins · JS focused</div>
+        </div>
+        <div class="round-header-actions">
+          <span class="badge badge-red">Hardest Round</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="round-body">
+        <ul class="tips">
+          <li>Build a complete website with JavaScript functionality — live, screen shared</li>
+          <li>Interviewer checks progress every 20 minutes</li>
+          <li>Google is allowed for syntax — logic must be your own</li>
+          <li>React component structuring and JS event handling tested here</li>
+          <li>Speed + correctness + code quality all evaluated</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="round-card">
+      <div class="round-header" onclick="toggleRound(this)">
+        <div class="round-header-content">
+          <div class="round-title">Rounds 7–8 — Technical Interviews</div>
+          <div class="round-sub">In-depth · Face to face · Project based</div>
+        </div>
+        <div class="round-header-actions">
+          <span class="badge badge-red">CSS Killer Round</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="round-body">
+        <ul class="tips">
+          <li>Deep questions on HTML, CSS, JavaScript, Computer Networks</li>
+          <li><strong>CSS is the focus — interviewers specifically judge CSS skill</strong></li>
+          <li>Questions from your assignment: "Why did you write this CSS this way?"</li>
+          <li>JS concepts: closures, this keyword, promises, event delegation</li>
+          <li>Project discussion + live debugging of your own code</li>
+          <li>One experienced candidate was eliminated here due to CSS weakness</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="round-card">
+      <div class="round-header" onclick="toggleRound(this)">
+        <div class="round-header-content">
+          <div class="round-title">Round 9 — HR Interview</div>
+          <div class="round-sub">45 mins · Personality + Communication</div>
+        </div>
+        <div class="round-header-actions">
+          <span class="badge badge-green">Non-Technical</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="round-body">
+        <ul class="tips">
+          <li>Personality traits, adaptability, communication</li>
+          <li>Why frontend? Why JTG? Future goals?</li>
+          <li>Work environment expectations</li>
+          <li>Straightforward — most candidates pass if they reach here</li>
+          <li>PPO discussion happens here if selected</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEPTH TAB -->
+  <div class="section" id="tab-depth">
+    <div class="warn-box">
+      <p>These are the exact topics JTG interviewers drill on — from actual interview reports. The ones marked HOT are confirmed killers.</p>
+    </div>
+
+    <h3>HTML — What They Really Ask</h3>
+    <div class="topic-tags">
+      <span class="topic-tag hot">Semantic HTML5 tags</span>
+      <span class="topic-tag hot">DOCTYPE & meta tags</span>
+      <span class="topic-tag hot">Forms & validation attributes</span>
+      <span class="topic-tag med">input types (email, date, range)</span>
+      <span class="topic-tag med">data-* attributes</span>
+      <span class="topic-tag">void elements</span>
+      <span class="topic-tag">accessibility (alt, aria-*)</span>
+      <span class="topic-tag">iframe, canvas, svg tags</span>
+      <span class="topic-tag med">block vs inline elements</span>
+      <span class="topic-tag">script defer vs async</span>
+      <span class="topic-tag">HTML5 storage APIs</span>
+      <span class="topic-tag">character encoding</span>
+    </div>
+
+    <h3>CSS — Their Main Filter</h3>
+    <div class="topic-tags">
+      <span class="topic-tag hot">Box model (content/padding/border/margin)</span>
+      <span class="topic-tag hot">Flexbox (all properties)</span>
+      <span class="topic-tag hot">CSS Grid</span>
+      <span class="topic-tag hot">Specificity & cascade</span>
+      <span class="topic-tag hot">Responsive + media queries</span>
+      <span class="topic-tag hot">Positioning (relative/absolute/fixed/sticky)</span>
+      <span class="topic-tag med">box-sizing: border-box</span>
+      <span class="topic-tag med">Pseudo-classes & pseudo-elements</span>
+      <span class="topic-tag med">CSS transitions & animations</span>
+      <span class="topic-tag med">z-index & stacking context</span>
+      <span class="topic-tag">CSS variables (--custom-properties)</span>
+      <span class="topic-tag">display: none vs visibility: hidden</span>
+      <span class="topic-tag">overflow, clip</span>
+      <span class="topic-tag med">Combinators & selectors</span>
+      <span class="topic-tag">BEM methodology</span>
+    </div>
+
+    <h3>JavaScript — Goes Very Deep</h3>
+    <div class="topic-tags">
+      <span class="topic-tag hot">Closures</span>
+      <span class="topic-tag hot">Event loop & call stack</span>
+      <span class="topic-tag hot">Promises, async/await</span>
+      <span class="topic-tag hot">this keyword (all contexts)</span>
+      <span class="topic-tag hot">DOM manipulation</span>
+      <span class="topic-tag hot">Event delegation</span>
+      <span class="topic-tag hot">Output prediction (snippets)</span>
+      <span class="topic-tag med">Hoisting (var/let/const/functions)</span>
+      <span class="topic-tag med">Prototype chain</span>
+      <span class="topic-tag med">ES6+ (arrow functions, destructuring, spread)</span>
+      <span class="topic-tag med">localStorage vs sessionStorage</span>
+      <span class="topic-tag med">AJAX & fetch API</span>
+      <span class="topic-tag med">Array methods (map/filter/reduce)</span>
+      <span class="topic-tag">typeof, instanceof</span>
+      <span class="topic-tag">Debounce & throttle</span>
+      <span class="topic-tag">Scope chain</span>
+      <span class="topic-tag med">Form validation in JS</span>
+      <span class="topic-tag">== vs ===</span>
+      <span class="topic-tag">Callback hell</span>
+    </div>
+
+    <div class="success-box">
+      <p><strong>Practice this daily:</strong> Read a JS snippet → predict the output before running it. JTG gives these in MCQs and subjective rounds both. Practice on javascript.info exercises and "You Don't Know JS".</p>
+    </div>
+  </div>
+
+  <!-- BEYOND TAB -->
+  <div class="section" id="tab-beyond">
+    <h3>What JTG Tests Beyond HTML/CSS/JS</h3>
+
+    <div class="dsa-card">
+      <h4>Data Structures & Algorithms (Required — Not Optional)</h4>
+      <div class="topic-tags">
+        <span class="topic-tag hot">Arrays & Strings</span>
+        <span class="topic-tag hot">Linked Lists</span>
+        <span class="topic-tag hot">Stacks & Queues</span>
+        <span class="topic-tag med">Binary Search</span>
+        <span class="topic-tag med">Dynamic Programming (easy)</span>
+        <span class="topic-tag med">Sliding Window</span>
+        <span class="topic-tag">Trees (basic traversal)</span>
+        <span class="topic-tag">Sorting algorithms</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+      <div class="progress-label">Importance level for Frontend role</div>
+    </div>
+
+    <div class="dsa-card">
+      <h4>Computer Science Fundamentals</h4>
+      <div class="topic-tags">
+        <span class="topic-tag med">Computer Networks basics</span>
+        <span class="topic-tag med">HTTP vs HTTPS, status codes</span>
+        <span class="topic-tag med">How browsers work</span>
+        <span class="topic-tag">OS: threads, deadlocks (basic)</span>
+        <span class="topic-tag">DBMS: basic SQL queries</span>
+        <span class="topic-tag">How DNS works</span>
+        <span class="topic-tag">REST APIs</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
+      <div class="progress-label">Importance level for Frontend role</div>
+    </div>
+
+    <div class="dsa-card">
+      <h4>Aptitude & Logic</h4>
+      <div class="topic-tags">
+        <span class="topic-tag med">Logical reasoning</span>
+        <span class="topic-tag med">Analytical puzzles</span>
+        <span class="topic-tag">Number series</span>
+        <span class="topic-tag">Time & work problems</span>
+        <span class="topic-tag">Coding puzzles (100 coins type)</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+      <div class="progress-label">Importance level for Frontend role</div>
+    </div>
+
+    <div class="dsa-card">
+      <h4>Personality Assessment (Round in itself)</h4>
+      <div class="topic-tags">
+        <span class="topic-tag">Personality traits test</span>
+        <span class="topic-tag">Communication skills</span>
+        <span class="topic-tag">Adaptability scenarios</span>
+        <span class="topic-tag">Group discussion (GD)</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+      <div class="progress-label">Importance level for Frontend role</div>
+    </div>
+
+    <div class="info-box">
+      <p><strong>Actual DSA questions asked:</strong> Third largest element in array · Swap linked list nodes · Balanced parentheses · Capacity to Ship Packages · Missing positive number · Union & intersection of two lists · Morris Traversal · Maximum subarray circular</p>
+    </div>
+  </div>
+
+  <!-- PATHWAY TAB -->
+  <div class="section" id="tab-pathway">
+    <div class="success-box">
+      <p><strong>Strategy:</strong> JTG goes depth over breadth. Master each topic completely — especially CSS — before moving on. Do not skip the output-prediction practice. Build at least 3 projects in pure HTML/CSS/JS.</p>
+    </div>
+
+    <div class="week-card" style="border-color:var(--color-info)">
+      <div class="week-label">Week 1–2</div>
+      <div class="week-title">HTML — Full Depth</div>
+      <div class="week-goal">Goal: Know every semantic tag, form attribute, and HTML5 feature. Be able to convert any design to clean HTML.</div>
+      <ul class="tips">
+        <li>All semantic tags: header, nav, main, section, article, aside, footer</li>
+        <li>All form elements + input types + validation attributes</li>
+        <li>Accessibility: alt, aria-label, tabindex, role</li>
+        <li>data-* attributes, meta tags, viewport, charset</li>
+        <li>script defer vs async — memorize the difference</li>
+        <li>Practice: clone 5 different webpage layouts in pure HTML</li>
+      </ul>
+      <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span class="res-link" onclick="openLink('https://developer.mozilla.org/en-US/docs/Learn/HTML')">MDN HTML Guide</span>
+        <span class="res-link" onclick="openLink('https://web.dev/learn/html')">web.dev/learn/html</span>
+        <span class="res-link" onclick="openLink('https://www.w3schools.com/html/')">W3Schools HTML</span>
+      </div>
+    </div>
+
+    <div class="week-card" style="border-color:var(--color-success)">
+      <div class="week-label">Week 3–5</div>
+      <div class="week-title">CSS — Their Main Filter (Most Time Here)</div>
+      <div class="week-goal">Goal: Master Flexbox and Grid completely. Understand every positioning rule. Build pixel-perfect layouts from any design.</div>
+      <ul class="tips">
+        <li>Box model: content, padding, border, margin — draw it from memory</li>
+        <li>Flexbox: every single property (justify-content, align-items, flex-wrap, flex-grow)</li>
+        <li>CSS Grid: grid-template, areas, auto-fit, minmax</li>
+        <li>Positioning: relative, absolute, fixed, sticky — know when to use each</li>
+        <li>Specificity: inline > ID > class > element — calculate any selector</li>
+        <li>Responsive: mobile-first, media queries, viewport units</li>
+        <li>Pseudo-classes: :hover, :nth-child, :not — and pseudo-elements: ::before, ::after</li>
+        <li>Transitions & @keyframes animations</li>
+        <li>Play CSS Diner (selectors) and Grid Garden + Flexbox Froggy daily</li>
+        <li>Practice: rebuild JTG-style portfolio pages from Figma mockups</li>
+      </ul>
+      <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span class="res-link" onclick="openLink('https://www.youtube.com/@KevinPowell')">Kevin Powell YouTube</span>
+        <span class="res-link" onclick="openLink('https://web.dev/learn/css')">web.dev/learn/css</span>
+        <span class="res-link" onclick="openLink('https://cssgridgarden.com')">Grid Garden</span>
+        <span class="res-link" onclick="openLink('https://flexboxfroggy.com')">Flexbox Froggy</span>
+      </div>
+    </div>
+
+    <div class="week-card" style="border-color:var(--color-warning)">
+      <div class="week-label">Week 6–9</div>
+      <div class="week-title">JavaScript — Go Very Deep</div>
+      <div class="week-goal">Goal: Predict output of any JS snippet. Write DOM manipulation, form validation, and async code from scratch under time pressure.</div>
+      <ul class="tips">
+        <li>Closures — understand and write examples daily</li>
+        <li>Hoisting: var, let, const, function declarations vs expressions</li>
+        <li>this keyword: global, object method, arrow function, bind/call/apply</li>
+        <li>Event Loop: call stack, web APIs, callback queue, microtask queue</li>
+        <li>Promises + async/await: chain them, handle errors, know the order</li>
+        <li>DOM: querySelector, addEventListener, createElement, event delegation</li>
+        <li>ES6+: destructuring, spread, rest, template literals, optional chaining</li>
+        <li>Array methods: map, filter, reduce, find, some, every</li>
+        <li>AJAX / fetch API — write a real API call from scratch</li>
+        <li>localStorage, sessionStorage, cookies — differences</li>
+        <li>Form validation in pure JS — JTG assignment staple</li>
+        <li><strong>Daily: read 3 JS snippets on javascript.info and predict output before running</strong></li>
+      </ul>
+      <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span class="res-link" onclick="openLink('https://javascript.info')">javascript.info</span>
+        <span class="res-link" onclick="openLink('https://github.com/getify/You-Dont-Know-JS')">You Don't Know JS</span>
+        <span class="res-link" onclick="openLink('https://www.freecodecamp.org')">freeCodeCamp</span>
+      </div>
+    </div>
+
+    <div class="week-card" style="border-color:var(--color-danger)">
+      <div class="week-label">Week 10–11</div>
+      <div class="week-title">DSA — Just Enough for JTG</div>
+      <div class="week-goal">Goal: Solve easy-medium array, linked list, and stack problems. Write in JavaScript. Solve at least 30 LeetCode problems.</div>
+      <ul class="tips">
+        <li>Arrays: two-pointer, sliding window, prefix sum, sorting</li>
+        <li>Linked Lists: reversal, merge, detect cycle, swap nodes</li>
+        <li>Stacks: balanced parentheses, next greater element</li>
+        <li>Dynamic Programming: climbing stairs, coin change (easy DP only)</li>
+        <li>Binary Search: basic + "binary search on answer" pattern</li>
+        <li>Solve problems in JavaScript — JTG expects JS logic even in DSA</li>
+        <li>Target: 30–40 LeetCode Easy/Medium problems, then revise</li>
+      </ul>
+      <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span class="res-link" onclick="openLink('https://leetcode.com')">LeetCode</span>
+        <span class="res-link" onclick="openLink('https://www.geeksforgeeks.org')">GeeksforGeeks</span>
+        <span class="res-link" onclick="openLink('https://roadmap.sh/javascript')">JS Roadmap</span>
+      </div>
+    </div>
+
+    <div class="week-card" style="border-color:#a855f7">
+      <div class="week-label">Week 12–13</div>
+      <div class="week-title">Projects + Mock Assignments</div>
+      <div class="week-goal">Goal: Build 3 complete projects in pure HTML/CSS/JS. Simulate the JTG take-home assignment under real conditions.</div>
+      <ul class="tips">
+        <li>Build a portfolio site (JTG assignment is exactly this — from Figma)</li>
+        <li>Build a form with full JavaScript validation (name, email, password, etc.)</li>
+        <li>Build a to-do app or weather app using fetch API</li>
+        <li>Practice: take a screenshot of any website → recreate it in 2 hours</li>
+        <li>No frameworks — vanilla HTML, CSS, JS only</li>
+        <li>Code must be clean, commented, and follow BEM or consistent naming</li>
+        <li>Push everything to GitHub — they check your code style</li>
+      </ul>
+    </div>
+
+    <div class="week-card" style="border-color:#64748b">
+      <div class="week-label">Week 14</div>
+      <div class="week-title">CS Fundamentals + Mock Interviews</div>
+      <div class="week-goal">Goal: Be ready for technical interview questions on networks, browsers, and past project explanations.</div>
+      <ul class="tips">
+        <li>HTTP vs HTTPS, status codes (200, 404, 500, 301)</li>
+        <li>How browsers render a page (DOM → CSSOM → Render tree)</li>
+        <li>DNS, how the internet works (basic)</li>
+        <li>REST API basics: GET, POST, PUT, DELETE</li>
+        <li>Review all your projects — explain every line of CSS you wrote</li>
+        <li>Do 2–3 mock interviews with a friend asking deep CSS + JS questions</li>
+        <li>Watch JTG interview experience videos on YouTube</li>
+      </ul>
+      <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;">
+        <span class="res-link" onclick="openLink('https://www.youtube.com/results?search_query=josh+technology+group+frontend+interview')">JTG YouTube Videos</span>
+        <span class="res-link" onclick="openLink('https://www.geeksforgeeks.org/tag/josh-technology/')">GFG JTG Experiences</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(id, e){
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelector(`#tab-${id}`).classList.add('active');
+  if(e) e.target.classList.add('active');
+}
+function toggleRound(header){
+  const body = header.nextElementSibling;
+  const chev = header.querySelector('.chevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+function openLink(url){ window.open(url, '_blank'); }
+</script>
+</body>
+</html>

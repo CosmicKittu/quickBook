@@ -4,8 +4,8 @@ window.guidesData = [
     "url": "guides/stl-cpp-guide.html",
     "tags": [
       "dsa",
-      "stl",
-      "cpp"
+      "cpp",
+      "stl"
     ]
   },
   {
@@ -20,6 +20,11 @@ window.guidesData = [
   {
     "title": "Docker Command Reference",
     "url": "guides/docker-guide.html",
+    "tags": []
+  },
+  {
+    "title": "JTG Frontend Prep Guide",
+    "url": "guides/jtg_frontend_prep_guide.html",
     "tags": []
   },
   {

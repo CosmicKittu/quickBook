@@ -13,8 +13,8 @@ window.guidesData = [
     "url": "guides/dsa-js-guide.html",
     "tags": [
       "dsa",
-      "cpp",
-      "js"
+      "js",
+      "cpp"
     ]
   },
   {
@@ -38,8 +38,8 @@ window.guidesData = [
     "title": "Python DSA Reference",
     "url": "guides/dsa-python-guide.html",
     "tags": [
-      "dsa",
-      "python"
+      "python",
+      "dsa"
     ]
   }
 ];
